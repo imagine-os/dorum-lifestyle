@@ -1,0 +1,36 @@
+name: Publish to gh-pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gh-pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build gh-pages tree (site root minus .git and .github)
+        run: |
+          set -euo pipefail
+          OUT="$(mktemp -d)"
+          tar --exclude=./.git --exclude=./.github -cf - . | tar -xf - -C "$OUT"
+          touch "$OUT/.nojekyll"
+          cd "$OUT"
+          git init -q
+          git checkout -q -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Deploy ${GITHUB_SHA}"
+          git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" gh-pages

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lifestyle & Experiences · Dorum Lifestyle</title>
+<meta name="description" content="Dorum Lifestyle & Experiences: administración de rentas vacacionales y de vivienda, experiencias en Guatapé y Dorum Projects. Convierte tu propiedad en un activo productivo.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23C2542B'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-size='18' fill='%23FFFCF5'%3ED%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<header id="siteHeader"></header>
+
+<section class="dz-lf-hero">
+  <img class="dz-hero-img" src="https://picsum.photos/seed/dorum-lifestyle/1800/1000" alt="Muelle de madera sobre el embalse de Guatapé al atardecer">
+  <div class="container dz-hero-inner">
+    <p class="eyebrow" data-i18n="lf.eyebrow"></p>
+    <h1 class="display-hero" data-i18n="lf.title"></h1>
+    <p class="lead" data-i18n="lf.lead"></p>
+    <div class="dz-hero-ctas">
+      <a class="btn btn-accent btn-lg" href="#propietarios" data-i18n="lf.cta1"></a>
+      <a class="btn btn-secondary btn-lg" href="index.html#inmuebles" data-mode="stay" data-i18n="lf.cta2"></a>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="dz-stats" id="stats"></div>
+</div>
+
+<section class="container section" id="como">
+  <div class="dz-section-head"><div><p class="eyebrow" data-i18n="lf.how"></p><h2 data-i18n="lf.how.title"></h2></div></div>
+  <div class="dz-steps" id="steps"></div>
+</section>
+
+<section class="band-sand dz-band" id="extracto">
+  <div class="container dz-stmt-wrap">
+    <div>
+      <p class="eyebrow" data-i18n="lf.stmt"></p>
+      <h2 class="display" style="font-size:clamp(1.75rem,3.6vw,var(--fs-3xl));font-weight:400;margin-top:var(--s-2)" data-i18n="lf.stmt.title"></h2>
+      <p class="lead" style="margin-top:var(--s-4)" id="stmtLead"></p>
+      <ul class="dz-facts" style="grid-template-columns:1fr;margin-top:var(--s-6)" id="stmtFacts"></ul>
+    </div>
+    <div class="card card-raised dz-stmt-card" id="stmtCard"></div>
+  </div>
+</section>
+
+<section class="container section" id="servicios">
+  <div class="dz-section-head"><div><p class="eyebrow" data-i18n="lf.services"></p><h2 data-i18n="lf.services.title"></h2></div></div>
+  <div class="dz-services-grid" id="services"></div>
+</section>
+
+<section class="band-sand dz-band" id="experiencias">
+  <div class="container">
+    <div class="dz-section-head"><div><p class="eyebrow" data-i18n="lf.exp"></p><h2 data-i18n="lf.exp.title"></h2></div><span class="pill" data-i18n="lf.demo"></span></div>
+    <div class="dz-exps" id="exps"></div>
+  </div>
+</section>
+
+<section class="container section" id="projects">
+  <div class="dz-section-head"><div><p class="eyebrow" data-i18n="lf.proj"></p><h2 data-i18n="lf.proj.title"></h2></div><span class="pill pill-accent" data-i18n="ls.soon"></span></div>
+  <div class="dz-projects" id="projects"></div>
+</section>
+
+<section class="band-sand dz-band" id="propietarios">
+  <div class="container dz-contact">
+    <div>
+      <p class="eyebrow" data-i18n="lf.eyebrow"></p>
+      <h2 class="display" style="font-size:clamp(1.75rem,3.6vw,var(--fs-3xl));font-weight:400;margin-top:var(--s-2)" data-i18n="lf.form.title"></h2>
+      <p class="lead" style="margin-top:var(--s-4)" id="ownerLead"></p>
+    </div>
+    <form class="card dz-form" id="ownerForm">
+      <label class="field"><span class="label" data-i18n="ct.name"></span><input class="input" id="oName" required placeholder="Felipe Correa"></label>
+      <label class="field"><span class="label" data-i18n="ct.wa"></span><input class="input" id="oWa" required inputmode="tel" placeholder="+57 300 000 0000"></label>
+      <label class="field"><span class="label" data-i18n="lf.form.prop"></span><select class="select" id="oType"></select></label>
+      <label class="field"><span class="label" data-i18n="lf.form.zone"></span><select class="select" id="oZone"></select></label>
+      <button type="submit" class="btn btn-primary btn-lg span-2" data-i18n="lf.form.send"></button>
+      <p class="dz-form-note span-2" id="ownerNote"></p>
+    </form>
+  </div>
+</section>
+
+<footer id="siteFooter"></footer>
+
+<script src="../assets/data.js"></script>
+<script src="site.js"></script>
+<script>
+(function () {
+  var D = window.DORUM, S = window.SITE;
+  S.renderChrome({ active: 'lifestyle' });
+  var en = function () { return S.lang === 'en'; };
+
+  // Programme reference unit: the vacation-rental deal + listing from data.js
+  var deal = D.deals.filter(function (d) { return d.rentalType === 'vacacional'; })[0];
+  var unit = deal ? D.listing(deal.listingId) : null;
+  var progUnits = D.listings.filter(function (l) { return l.division === 'lifestyle'; });
+  var split = deal ? D.computeSplit(deal) : null;
+
+  function renderStats() {
+    var items = [
+      [en() ? 'Programme properties' : 'Propiedades en el programa', progUnits.length, en() ? 'reservoir · Oriente · Medellín' : 'embalse · Oriente · Medellín'],
+      [en() ? 'Occupancy 2025' : 'Ocupación 2025', deal ? deal.occupancyPct + ' %' : '—', unit ? unit.title.split(' · ')[0] : ''],
+      [en() ? 'Nightly rate' : 'Tarifa por noche', unit ? D.fmtCOP(unit.price) : '—', en() ? 'up to 8 guests' : 'hasta 8 huéspedes'],
+      [en() ? 'Full management fee' : 'Fee de administración integral', deal ? deal.mgmtPct + ' %' : '—', en() ? 'bookings, cleaning, statement' : 'reservas, limpieza, extracto']
+    ];
+    document.getElementById('stats').innerHTML = items.map(function (it) { return '<div class="card"><span class="stat-label">' + it[0] + '</span><span class="stat-value">' + it[1] + '</span><span class="xs muted">' + S.esc(it[2]) + '</span></div>'; }).join('');
+  }
+
+  var STEPS = [
+    { es: ['Valoramos tu propiedad', 'Visita, fotos profesionales y tarifa sugerida por noche o canon mensual según comparables del embalse.', 'AI + asesor'], en: ['We value your property', 'Visit, professional photos and a suggested nightly rate or monthly rent from reservoir comparables.', 'AI + advisor'] },
+    { es: ['Firmamos el acuerdo', 'Acuerdo de corretaje de arriendo Lifestyle con e-firma, inventario con fotos y póliza.', 'Firma digital'], en: ['We sign the agreement', 'Lifestyle rental listing agreement with e-signature, photo inventory and insurance policy.', 'E-signature'] },
+    { es: ['Operamos la casa', 'Reservas, check-in sin contacto, limpieza, chef y experiencias. Tú no recibes una sola llamada.', 'Operación integral'], en: ['We run the house', 'Bookings, contactless check-in, cleaning, chef and experiences. You never take a call.', 'Full operation'] },
+    { es: ['Te liquidamos cada mes', 'Extracto con ingresos, fee y gastos trasladados; transferencia a tu cuenta, en Colombia o en el exterior.', 'Extracto mensual'], en: ['We pay you every month', 'Statement with income, fee and passed-through costs; transfer to your account in Colombia or abroad.', 'Monthly statement'] }
+  ];
+  function renderSteps() {
+    document.getElementById('steps').innerHTML = STEPS.map(function (s) { var t = s[S.lang]; return '<div class="dz-step"><h3>' + t[0] + '</h3><p>' + t[1] + '</p><span class="pill pill-brand">' + t[2] + '</span></div>'; }).join('');
+  }
+
+  function renderStatement() {
+    if (!deal || !unit) return;
+    var owner = D.user(deal.parties.landlord) || {};
+    var ownerRow = split.rows.filter(function (r) { return r.participant === deal.parties.landlord; })[0];
+    var feeRow = split.rows.filter(function (r) { return r.participant !== deal.parties.landlord; })[0];
+    var nights = Math.round(30 * deal.occupancyPct / 100);
+    document.getElementById('stmtLead').textContent = en()
+      ? 'A real example from the programme: ' + unit.title + '. Nightly rate, occupancy and management fee come straight from the property record in Llave.'
+      : 'Un ejemplo real del programa: ' + unit.title + '. Tarifa por noche, ocupación y fee salen directo del registro de la propiedad en Llave.';
+    document.getElementById('stmtFacts').innerHTML = [
+      [en() ? 'Guest payments collected up front into escrow' : 'Los huéspedes pagan por adelantado a una cuenta escrow', 'shield'],
+      [en() ? 'Cleaning and experiences are passed through to the guest' : 'Limpieza y experiencias se trasladan al huésped', 'sparkles'],
+      [en() ? 'Statement approved by the accountant before payout' : 'Extracto aprobado por la contadora antes del giro', 'check']
+    ].map(function (f) { return '<li>' + S.icon(f[1]) + f[0] + '</li>'; }).join('');
+    document.getElementById('stmtCard').innerHTML =
+      '<div class="card-header"><div><p class="eyebrow">' + S.t('lf.stmt') + ' · ' + (en() ? 'September 2026' : 'Septiembre 2026') + '</p><h3 class="card-title" style="margin-top:var(--s-1)">' + S.esc(unit.title) + '</h3><p class="small muted">' + S.esc(owner.name || '') + ' · ' + S.esc(owner.city || '') + '</p></div><span class="badge badge-status" data-status="pendiente">' + (en() ? 'Payout 30 Sep' : 'Giro 30 sep') + '</span></div>' +
+      '<ul class="dz-stmt">' +
+        '<li><span>' + (en() ? 'Nights booked' : 'Noches reservadas') + ' <span class="xs muted">(' + deal.occupancyPct + ' % ' + (en() ? 'occupancy' : 'ocupación') + ')</span></span><span class="num">' + nights + '</span></li>' +
+        '<li><span>' + (en() ? 'Gross income' : 'Ingreso bruto') + ' <span class="xs muted">' + D.fmtCOP(unit.price) + ' × ' + nights + '</span></span><span class="money">' + D.fmtCOP(split.gross) + '</span></li>' +
+        '<li><span>' + S.esc(feeRow ? feeRow.note : 'Fee') + '</span><span class="money">− ' + D.fmtCOP(feeRow ? feeRow.amount : 0) + '</span></li>' +
+        '<li><span>' + (en() ? 'Cleaning & experiences (guest-paid)' : 'Limpieza y experiencias (pagadas por el huésped)') + '</span><span class="money">$0</span></li>' +
+        '<li><span>' + (en() ? 'Owner payout' : 'Liquidación al propietario') + ' · ' + (ownerRow ? ownerRow.pct : 80) + ' %</span><span class="money">' + D.fmtCOP(ownerRow ? ownerRow.amount : 0) + '</span></li>' +
+      '</ul>' +
+      '<p class="xs muted" style="margin-top:var(--s-3)">' + (en() ? 'Demo statement computed from data.js (DORUM.computeSplit). Excludes VAT on the fee.' : 'Extracto de demo calculado desde data.js (DORUM.computeSplit). No incluye IVA sobre el fee.') + '</p>';
+  }
+
+  function renderServices() {
+    document.getElementById('services').innerHTML = D.lifestyle.filter(function (s) { return s.id !== 'ls-remodel' && s.id !== 'ls-build'; }).map(function (s) {
+      var pilot = s.status === 'pilot';
+      return '<div class="dz-service-card">' + S.icon(S.iconFor[s.id] || 'leaf') + '<h3>' + S.esc(en() ? s.name : s.nameEs) + '</h3><p>' + S.esc(s.desc) + '</p>' +
+        '<div class="row"><span class="pill ' + (pilot ? 'pill-success' : 'pill-accent') + '">' + S.t(pilot ? 'ls.pilot' : 'ls.soon') + '</span><small>' + (pilot ? (en() ? 'Guatapé · book via concierge' : 'Guatapé · reserva vía concierge') : (en() ? 'Q1 2027' : 'Primer trimestre 2027')) + '</small></div></div>';
+    }).join('');
+  }
+
+  var EXPS = [
+    { seed: 'lancha-atardecer', es: ['Lancha al atardecer', 'Dos horas por el embalse con capitán local, parada en La Piedra y vino de la casa. Hasta 8 personas.'], en: ['Sunset boat ride', 'Two hours across the reservoir with a local captain, a stop at La Piedra and house wine. Up to 8 people.'], price: 480000, unit: ['por grupo', 'per group'], icon: 'boat' },
+    { seed: 'sendero-bosque', es: ['Senderismo de niebla', 'Caminata guiada al amanecer por bosque de niebla hasta un mirador privado. Desayuno campesino incluido.'], en: ['Cloud-forest hike', 'Guided sunrise walk through cloud forest to a private lookout. Farm breakfast included.'], price: 160000, unit: ['por persona', 'per person'], icon: 'mountain' },
+    { seed: 'chef-embalse', es: ['Cena de embalse', 'Chef privado en tu muelle: trucha del Peñol, vegetales de Guarne y postre de café. Menú de cinco tiempos.'], en: ['Reservoir dinner', 'Private chef on your dock: Peñol trout, Guarne vegetables and a coffee dessert. Five courses.'], price: 320000, unit: ['por persona', 'per person'], icon: 'utensils' }
+  ];
+  function renderExps() {
+    document.getElementById('exps').innerHTML = EXPS.map(function (x) { var t = x[S.lang];
+      return '<article class="dz-exp"><div class="listing-media"><img src="https://picsum.photos/seed/' + x.seed + '/900/600" alt="' + S.esc(t[0]) + '" loading="lazy"><span class="pill">' + S.t('lf.demo') + '</span></div>' +
+        '<div class="dz-exp-body"><h3>' + t[0] + '</h3><p>' + t[1] + '</p><div class="row"><span class="money">' + D.fmtCOP(x.price) + ' <span class="xs muted">' + x.unit[en() ? 1 : 0] + '</span></span><button type="button" class="btn btn-secondary btn-sm dz-book">' + S.icon(x.icon) + ' ' + S.t('lf.book') + '</button></div></div></article>';
+    }).join('');
+    document.querySelectorAll('.dz-book').forEach(function (b) { b.onclick = function () { D.toast(S.t('lf.book.toast'), S.t('lf.book.body'), 'success'); }; });
+  }
+
+  function renderProjects() {
+    var items = D.lifestyle.filter(function (s) { return s.id === 'ls-remodel' || s.id === 'ls-build'; });
+    var constr = D.usersByRole('construction')[0];
+    document.getElementById('projects').innerHTML = items.map(function (s) {
+      return '<div class="dz-project"><div class="dz-project-ico">' + S.icon(S.iconFor[s.id]) + '</div><div><div class="row" style="gap:var(--s-2)"><h3>' + S.esc(en() ? s.name : s.nameEs) + '</h3><span class="pill pill-accent">' + S.t('ls.soon') + '</span></div><p>' + S.esc(s.desc) + '</p>' +
+        '<p class="xs muted" style="margin-top:var(--s-2)">' + (en() ? 'Partner builder: ' : 'Constructor aliado: ') + S.esc(constr ? constr.title : 'Dorum Projects') + '</p>' +
+        '<div class="row"><button type="button" class="btn btn-primary dz-quote">' + S.icon('hammer') + ' ' + S.t('lf.quote') + '</button></div></div></div>';
+    }).join('');
+    document.querySelectorAll('.dz-quote').forEach(function (b) { b.onclick = function () { D.toast(S.t('lf.quote.toast'), S.t('lf.quote.body'), 'success'); }; });
+  }
+
+  function renderOwnerForm() {
+    document.getElementById('ownerLead').textContent = en()
+      ? 'A Lifestyle administrator visits your property, proposes a rate and shows you the projected statement before you sign anything.'
+      : 'Una administradora Lifestyle visita tu propiedad, propone una tarifa y te muestra el extracto proyectado antes de firmar nada.';
+    document.getElementById('oType').innerHTML = ['casa', 'apartamento', 'finca', 'lote'].map(function (t) { return '<option value="' + t + '">' + D.typeLabel(t) + '</option>'; }).join('');
+    document.getElementById('oZone').innerHTML = S.ZONES.filter(function (z) { return z.id !== 'intl'; }).map(function (z) { return '<option value="' + z.id + '">' + z.label + '</option>'; }).join('');
+    document.getElementById('ownerNote').innerHTML = S.icon('sparkles') + '<span>' + (en() ? 'Goes straight into the Llave CRM as a landlord lead, assigned to the Lifestyle administrator.' : 'Entra directo al CRM de Llave como lead de propietario, asignado a la administradora de Lifestyle.') + '</span>';
+  }
+  document.getElementById('ownerForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    D.toast(S.t('lf.owner.toast'), S.t('lf.owner.body'), 'success'); e.target.reset(); renderOwnerForm();
+  });
+
+  function renderAll() { renderStats(); renderSteps(); renderStatement(); renderServices(); renderExps(); renderProjects(); renderOwnerForm(); }
+  document.addEventListener('dorum:lang', renderAll);
+  renderAll();
+})();
+</script>
+</body>
+</html>

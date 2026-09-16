@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Llave OS · Dorum</title>
+<meta name="description" content="Dorum Lifestyle en Llave OS: la app de la agencia con roles, aprobaciones de IA, voz, escrow, contratos y sitio web en un solo sistema.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230F3D2E'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-size='18' fill='%23F3EDE0'%3EL%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<!-- The shell (sidebar + topbar + page, per CONVENTIONS §5a) and the role picker are rendered into #root by app.js
+     according to the route (#/ → role picker, #/role/<roleId>/<module>[/<id>] → app shell) and the display mode
+     (?mode=tv | watch | phone before the hash). -->
+<div id="root" aria-live="polite"></div>
+<noscript><p style="padding:2rem;font-family:system-ui">Llave OS necesita JavaScript para funcionar.</p></noscript>
+
+<script src="../assets/data.js"></script>
+<script src="app.js"></script>
+<script src="modules/core.js"></script>
+<script src="modules/sales.js"></script>
+<script src="modules/ops.js"></script>
+<script src="modules/portals.js"></script>
+<script>
+  // Router boot happens on DOMContentLoaded inside app.js (after every module has registered).
+  // Fallback for browsers that fired the event before app.js attached its listener.
+  document.addEventListener('DOMContentLoaded', function () { if (window.LLAVE && !window.LLAVE._booted) { window.LLAVE._booted = true; window.LLAVE.boot(); } });
+</script>
+</body>
+</html>
