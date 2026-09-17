@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Llave OS · Docs</title>
+<meta name="description" content="Llave OS documentation hub: end-to-end process map, role × module matrix, tenant model, what Llave replaces, links to the product plan and build conventions.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="docs.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230F3D2E'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-size='18' fill='%23F3EDE0'%3EL%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<header id="siteHeader"></header>
+
+<section class="container docs-hero">
+  <div>
+    <p class="eyebrow">Llave OS · product docs · phase 0 demo</p>
+    <h1>One system, <em>every step</em> of a listing's life</h1>
+    <p class="lead" style="margin-top:var(--s-4)">Llave (Spanish for <em>key</em>) runs a real-estate agency from the first ad to the last payout. These pages hold the plan, the build conventions and the maps the team builds against. First tenant: <b id="tenantName"></b>.</p>
+  </div>
+  <div class="docs-links" id="quickLinks"></div>
+</section>
+
+<section class="docs-section" id="process">
+  <div class="container">
+    <p class="eyebrow">Process map</p>
+    <h2>From advertising to keys, in one pipeline</h2>
+    <p class="lead">Swimlanes are the people who touch a deal; columns are the five pipelines in the plan (P1–P5). Every box carries who does it: an automated step, an AI draft that a person approves, or a human action. Scroll sideways on small screens.</p>
+    <figure class="diagram">
+      <div class="scroll" id="processMap"></div>
+      <figcaption>Advertising and the website feed the Get-Listings CRM; a signed listing agreement (venta or arriendo) spawns production orders to vendors; the generated listing site, portal syndication and the campaign feed the Sell/Rent CRM; tours and offers lead either to paperwork → promesa → steps of sale → escrow payout, or to a rental agreement with inventory and monthly owner statements. Buyers and renters gather from ads and portals, tour, and sign; lending is an opt-in side path.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="docs-section" id="matrix">
+  <div class="container">
+    <p class="eyebrow">Role × module</p>
+    <h2>Who sees which module</h2>
+    <p class="lead" id="matrixLead">Rendered live from <code>DORUM.roles[].navItems</code> — the same data that builds the app sidebar. A dot means the module is in that role's navigation; the plan's §3.1 refines this into full / edit-own / view-scoped permissions.</p>
+    <div class="table-wrap" id="roleMatrix"></div>
+  </div>
+</section>
+
+<section class="docs-section" id="tenant">
+  <div class="container">
+    <p class="eyebrow">Tenant model</p>
+    <h2>Platform → tenant → office → roles → users</h2>
+    <p class="lead">Roles are data, not code: a tenant can rename “Broker” to “Asesor” or add a “Marketing Lead” without a release. Customers and vendors are users too, scoped to the deals they take part in.</p>
+    <figure class="diagram">
+      <div class="scroll" id="tenantModel"></div>
+      <figcaption>Numbers come from <code>assets/data.js</code>: one tenant, its offices, the fifteen roles grouped as staff, vendor and customer, and the demo users that hold them.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="docs-section" id="replaces">
+  <div class="container">
+    <p class="eyebrow">What replaces what</p>
+    <h2>Five tools out, one system in</h2>
+    <p class="lead">Llave keeps the portals as publishing targets — they still bring leads — but stops them being systems of record.</p>
+    <div class="table-wrap">
+      <table class="table" id="replacesTable">
+        <thead><tr><th>Today</th><th>Used for</th><th>In Llave</th><th>Status in demo</th></tr></thead>
+        <tbody>
+          <tr><td class="rep-tool">ChatGPT<small>copy-paste writing</small></td><td>Listing write-ups, follow-up messages, translations, contract drafts</td><td><b>AI inside every module</b> — Listings, CRM, Contracts, Paperwork. Drafts keep provenance and wait for a named approver (<span class="badge badge-ai">AI · revisar</span>).</td><td data-int="none">Phase 3 · leaves ChatGPT</td></tr>
+          <tr><td class="rep-tool">Dropbox<small>files & photos</small></td><td>Vendor deliveries, photo libraries, signed PDFs</td><td><b>Media</b> (AI tags, portal ordering, watermark) + <b>Paperwork</b> (OCR checklists per deal) + vendor delivery inbox</td><td data-int="none">Phase 1 · leaves Dropbox</td></tr>
+          <tr><td class="rep-tool">Go High Level<small>funnels & ads</small></td><td>Landing pages, ad campaigns, lead routing, WhatsApp blasts</td><td><b>Website CMS</b> + <b>Advertising</b> (Meta/Google, AI creative, CPL) + WhatsApp automation with approval queue</td><td data-int="metaAds">Phase 3 · leaves GHL</td></tr>
+          <tr><td class="rep-tool">Wasi<small>property CRM</small></td><td>Property records and one-click syndication to portals</td><td><b>Listings</b> is the record of truth; Wasi stays as a <b>Publishing</b> target</td><td data-int="wasi"></td></tr>
+          <tr><td class="rep-tool">Finca Raíz<small>listing portal</small></td><td>Listing exposure, buyer leads, agency profile</td><td><b>Publishing</b> pushes validated payloads; leads and views sync back into the Sell/Rent CRM</td><td data-int="fincaRaiz"></td></tr>
+          <tr><td class="rep-tool">Metrocuadrado<small>listing portal</small></td><td>Listing exposure</td><td><b>Publishing</b> target (per-portal field mapping)</td><td data-int="metrocuadrado"></td></tr>
+          <tr><td class="rep-tool">Spreadsheets & bank apps<small>commissions, escrow</small></td><td>Splits, payouts, payroll, landlord statements</td><td><b>Escrow, Payouts & Payroll</b> — split engine per deal, accountant release gate, DIAN hooks; <b>Rental Ops</b> statements</td><td data-int="bancolombia"></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="docs-section" id="conventions">
+  <div class="container">
+    <p class="eyebrow">Read next</p>
+    <h2>Plan and conventions</h2>
+    <div class="grid grid-2" style="margin-top:var(--s-6)">
+      <a class="card docs-link" href="plan.html"><b>Product plan <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></b><span>Vision, tenant model, roles and permissions, modules, the five pipelines, deal-split model, integrations, voice layer, roadmap.</span></a>
+      <a class="card docs-link" href="conventions.html"><b>Build conventions <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></b><span>Ground rules, file structure, head boilerplate, tokens, components, shared snippets, data cookbook, Colombian details, definition of done.</span></a>
+    </div>
+  </div>
+</section>
+
+<footer id="siteFooter"></footer>
+
+<script src="../assets/data.js"></script>
+<script src="../assets/i18n.js"></script>
+<script src="docs.js"></script>
+<script>
+(function () {
+  var D = window.DORUM, X = window.DOCS;
+  X.chrome('Overview');
+  document.getElementById('tenantName').textContent = D.tenant.name + ' · ' + D.tenant.hq.city;
+  var links = [
+    ['plan.html', 'Product plan', 'PLAN.md rendered · vision, roles, modules, pipelines, roadmap'],
+    ['conventions.html', 'Build conventions', 'CONVENTIONS.md rendered · tokens, components, data cookbook'],
+    ['../app/index.html#/role/owner/home', 'Tenant app', '#/role/<role>/<module> · ' + D.roles.length + ' roles'],
+    ['../mockups/', 'Device mockups', 'Phone, desktop, watch screens for the sales site'],
+    ['../dorum/index.html', 'Dorum brokerage site', 'ES/EN public site generated by the CMS'],
+    ['../index.html', 'Llave sales site', 'English pitch: one system replaces five tools']
+  ];
+  document.getElementById('quickLinks').innerHTML = links.map(function (l) { return '<a class="docs-link" href="' + l[0] + '"><b>' + l[1] + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></b><span>' + X.esc(l[2]) + '</span></a>'; }).join('');
+  X.processMap(document.getElementById('processMap'));
+  var m = X.roleMatrix(document.getElementById('roleMatrix'));
+  document.getElementById('matrixLead').insertAdjacentHTML('beforeend', ' <span class="muted">' + m.modules + ' modules × ' + m.roles + ' roles.</span>');
+  X.tenantModel(document.getElementById('tenantModel'));
+  document.querySelectorAll('#replacesTable td[data-int]').forEach(function (td) {
+    var it = D.byId(D.integrations, td.dataset.int);
+    if (!it) return;
+    var extra = it.listings ? it.listings + ' listings · ' + (it.leads30d || 0) + ' leads/30d' : it.spend30d ? 'spend 30d ' + D.fmtCOP(it.spend30d) : it.balance ? 'escrow ' + D.fmtCOP(it.balance) : '';
+    td.innerHTML = '<span class="badge badge-status" data-status="' + (it.status === 'conectado' ? 'activo' : 'pendiente') + '">' + X.esc(it.name) + ' · ' + it.status + '</span>' + (extra ? '<div class="xs muted" style="margin-top:4px">' + extra + '</div>' : '') + (td.textContent && td.textContent.trim() && !it.listings ? '' : '');
+  });
+})();
+</script>
+</body>
+</html>

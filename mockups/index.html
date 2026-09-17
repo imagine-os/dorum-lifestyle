@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" class="js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Llave OS · Device gallery</title>
+<meta name="description" content="Every Llave OS surface in its device frame: desktop, laptop, tablet, phone, TV wallboard and watch — live from the Dorum demo app.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230F3D2E'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-size='18' fill='%23F3EDE0'%3EL%3C/text%3E%3C/svg%3E">
+<style>
+  .device-screen { background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 45%, var(--brand-soft) 100%); }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+</defs></svg>
+
+<header class="container site-header" id="siteHeader">
+  <a class="site-logo" href="../index.html"><span class="mark">L</span> Llave OS</a>
+  <nav class="site-nav" id="siteNav">
+    <a href="../index.html#modules">Modules</a><a href="../index.html#roles">Roles</a><a href="../index.html#voice">Voice</a><a href="../index.html#pricing">Pricing</a>
+    <a class="btn btn-primary btn-sm" href="../app/index.html#/role/owner/home">Open the demo</a>
+    <span data-lang-toggle></span>
+    <button class="btn btn-ghost btn-icon" aria-label="Toggle theme" onclick="DORUM.setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark')"><svg width="18" height="18"><use href="#i-sun"/></svg></button>
+  </nav>
+  <button class="btn btn-ghost btn-icon" aria-label="Menu" aria-expanded="false" onclick="siteNav.classList.toggle('is-open');this.setAttribute('aria-expanded',siteNav.classList.contains('is-open'))" style="display:none" id="navBtn"><svg width="20" height="20"><use href="#i-menu"/></svg></button>
+</header>
+
+<main class="container section">
+  <div class="section-head">
+    <p class="eyebrow">Device gallery</p>
+    <h1 class="display" style="font-size:var(--fs-3xl);font-weight:400">Every surface, <em>live.</em></h1>
+    <p class="lead">Each frame loads the real demo app at the route shown. Pick a role to swap every frame to that role's home screen, or leave it on the curated set.</p>
+  </div>
+
+  <div class="gallery-controls">
+    <label class="field" for="roleSelect">
+      <span class="label">Role in all frames</span>
+      <select class="select" id="roleSelect"><option value="">Curated set (one role per device)</option></select>
+    </label>
+    <p class="small muted" id="galleryHint">Showing the curated set. TV always shows the owner wallboard.</p>
+  </div>
+
+  <div class="gallery" id="gallery">
+    <section class="gallery-item" data-kind="desktop" data-role="owner" data-module="home">
+      <div class="device device-desktop"><div class="device-screen"><iframe loading="eager" title="Owner · home · desktop"></iframe></div></div>
+      <div class="g-meta"><h3>Owner · desktop</h3><p class="small muted">Approvals first, then the numbers. 1440 × 900.</p><span class="route"></span><p class="device-open"><a href="#" target="_blank" rel="noopener">Open live <svg width="12" height="12"><use href="#i-external"/></svg></a></p></div>
+    </section>
+
+    <section class="gallery-item" data-kind="laptop" data-role="accountant" data-module="money">
+      <div class="device device-laptop"><div class="device-screen"><iframe loading="lazy" title="Accountant · money · laptop"></iframe></div></div>
+      <div class="g-meta"><h3>Accountant · laptop</h3><p class="small muted">Escrow, pending releases, payout batches. 1440 × 900.</p><span class="route"></span><p class="device-open"><a href="#" target="_blank" rel="noopener">Open live <svg width="12" height="12"><use href="#i-external"/></svg></a></p></div>
+    </section>
+
+    <div class="gallery-pair">
+      <section class="gallery-item" data-kind="tablet" data-role="sales_admin" data-module="projects">
+        <div class="device device-tablet"><div class="device-screen"><iframe loading="lazy" title="Sales admin · projects · tablet"></iframe></div></div>
+        <div class="g-meta"><h3>Sales admin · tablet</h3><p class="small muted">Project board per listing. 1024 × 768.</p><span class="route"></span><p class="device-open"><a href="#" target="_blank" rel="noopener">Open live <svg width="12" height="12"><use href="#i-external"/></svg></a></p></div>
+      </section>
+      <div class="gallery-pair">
+        <section class="gallery-item" data-kind="phone" data-role="broker" data-module="crm-sell">
+          <div class="device device-phone"><div class="device-screen"><iframe loading="lazy" title="Broker · sell pipeline · phone"></iframe></div></div>
+          <div class="g-meta"><h3>Broker · phone</h3><p class="small muted">Ventas &amp; arriendos. 390 × 844.</p><span class="route"></span><p class="device-open"><a href="#" target="_blank" rel="noopener">Open live <svg width="12" height="12"><use href="#i-external"/></svg></a></p></div>
+        </section>
+        <section class="gallery-item" data-kind="phone" data-role="renter" data-module="home">
+          <div class="device device-phone"><div class="device-screen"><iframe loading="lazy" title="Renter · home · phone"></iframe></div></div>
+          <div class="g-meta"><h3>Renter · phone</h3><p class="small muted">Rent due, receipts, lifestyle. 390 × 844.</p><span class="route"></span><p class="device-open"><a href="#" target="_blank" rel="noopener">Open live <svg width="12" height="12"><use href="#i-external"/></svg></a></p></div>
+        </section>
+      </div>
+    </div>
+
+    <section class="gallery-item" data-kind="tv" data-role="owner" data-module="home" data-fixed="true">
+      <div class="device device-tv"><div class="device-screen"><iframe loading="lazy" title="Office wallboard · TV"></iframe></div></div>
+      <div class="g-meta"><h3>Office wallboard · TV</h3><p class="small muted">Pipeline, escrow, today's tours. 1920 × 1080.</p><span class="route"></span><p class="device-open"><a href="#" target="_blank" rel="noopener">Open live <svg width="12" height="12"><use href="#i-external"/></svg></a></p></div>
+    </section>
+
+    <section class="gallery-item" data-kind="watch" data-role="broker" data-module="home">
+      <div class="device device-watch" style="--max:220px"><span class="crown"></span><div class="device-screen"><iframe loading="lazy" title="Broker · watch"></iframe></div></div>
+      <div class="g-meta"><h3>Broker · watch</h3><p class="small muted">Next visit, say "Llave". 198 × 242.</p><span class="route"></span><p class="device-open"><a href="#" target="_blank" rel="noopener">Open live <svg width="12" height="12"><use href="#i-external"/></svg></a></p></div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container grid grid-4">
+    <div><a class="site-logo" href="../index.html"><span class="mark">L</span> Llave OS</a><p class="small" style="margin-top:var(--s-3)">The operating system for real-estate agencies. Built first for Dorum Lifestyle, Medellín.</p></div>
+    <div><h4>Product</h4><a href="../index.html#modules">Modules</a><a href="../index.html#roles">Roles</a><a href="../app/index.html">Tenant app</a><a href="index.html">Mockups</a></div>
+    <div><h4>Dorum</h4><a href="../dorum/index.html">Brokerage site</a><a href="../dorum/index.html#lifestyle">Lifestyle</a><a href="../dorum/index.html#nosotros">About</a></div>
+    <div><h4>Docs</h4><a href="../docs/">Product plan</a><a href="../docs/#conventions">Conventions</a><span class="xs" style="display:block;margin-top:var(--s-3)">Demo data. Placeholder names except the owner. © 2026 Llave</span></div>
+  </div>
+</footer>
+
+<script src="../assets/data.js"></script>
+<script src="../assets/i18n.js"></script>
+<script>
+(function () {
+  'use strict';
+  var D = window.DORUM;
+  var MODE = { desktop: '', laptop: '', tablet: '', phone: 'phone', tv: 'tv', watch: 'watch' };
+  var sel = document.getElementById('roleSelect'), hint = document.getElementById('galleryHint');
+  D.roles.forEach(function (r) { var o = document.createElement('option'); o.value = r.id; o.textContent = r.label + ' · ' + r.labelEs; sel.appendChild(o); });
+  function url(kind, role, module) {
+    var mode = MODE[kind];
+    return '../app/index.html' + (mode ? '?mode=' + mode : '') + '#/role/' + role + '/' + module;
+  }
+  function apply(roleId) {
+    document.querySelectorAll('.gallery-item').forEach(function (item) {
+      var kind = item.dataset.kind;
+      var role = (roleId && !item.dataset.fixed) ? roleId : item.dataset.role;
+      var module = roleId && !item.dataset.fixed ? 'home' : item.dataset.module;
+      var u = url(kind, role, module);
+      var f = item.querySelector('iframe'); if (f.getAttribute('src') !== u) f.setAttribute('src', u);
+      item.querySelector('.route').textContent = u.replace('../', '');
+      item.querySelector('.device-open a').setAttribute('href', u);
+      var h = item.querySelector('h3'); var r = D.role(role);
+      h.textContent = (r ? r.label : role) + ' · ' + ({ desktop: 'desktop', laptop: 'laptop', tablet: 'tablet', phone: 'phone', tv: 'TV', watch: 'watch' })[kind];
+    });
+    hint.textContent = roleId ? 'Every frame shows the ' + D.role(roleId).label + ' home. TV stays on the owner wallboard.' : 'Showing the curated set. TV always shows the owner wallboard.';
+  }
+  sel.addEventListener('change', function () { apply(sel.value); });
+  apply('');
+  D.fitDevices();
+  window.addEventListener('load', function () { D.fitDevices(); });
+  var header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', function () { header.classList.toggle('is-scrolled', (window.scrollY || 0) > 8); }, { passive: true });
+})();
+</script>
+</body>
+</html>

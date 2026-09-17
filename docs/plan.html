@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Product plan · Llave OS</title>
+<meta name="description" content="Llave OS product plan: vision, tenant model, roles, modules, pipelines, deal-split model, integrations, voice layer and roadmap.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="docs.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230F3D2E'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-size='18' fill='%23F3EDE0'%3EL%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<header id="siteHeader"></header>
+
+<div class="container doc-layout">
+  <aside class="doc-toc" id="toc"><details open><summary>On this page</summary></details></aside>
+  <article class="doc-body" id="doc">
+    <div class="doc-meta"><span class="pill pill-brand">PLAN.md</span><span>Rendered client-side from the embedded Markdown · <a href="PLAN.md">raw file</a></span></div>
+    <noscript><p>This page renders <code>PLAN.md</code> with JavaScript. Open the raw file instead.</p></noscript>
+  </article>
+</div>
+
+<footer id="siteFooter"></footer>
+
+<!-- Source Markdown, embedded so the page works from file:// (no fetch). "</script" inside code blocks is escaped as "<\/script". -->
+<script type="text/markdown" id="md">
+# Llave OS — Product Plan
+
+**Llave** (Spanish: *key*) is the operating system for real-estate agencies. One login runs the whole business: the public brokerage site, listings, CRM, project management, contracts, paperwork, media, publishing, advertising, escrow, payouts and payroll. AI drafts and moves work forward; people approve where judgment or law requires it. A voice layer lets agents run the day from the car.
+
+First tenant: **Dorum Lifestyle** (Dorum Group), a boutique "nature-luxury" agency based in Antioquia, Colombia. Owner: `DORUM.OWNER_NAME` (see `assets/data.js`; spelling unverified). Brokers and realtors work under the owner; **Realtor OS** is the realtor-facing sub-OS inside Llave.
+
+Replaces today's stack: ChatGPT (writing), Dropbox (files), Go High Level (ads/funnels), Wasi (property management), Finca Raíz (listing portal). Llave keeps Finca Raíz, Wasi and Metrocuadrado as **publishing targets**, not systems of record.
+
+### Tenant profile — Dorum Group (from public sources, Sept 2026)
+
+- **Mission / tagline:** "Uniting nature with modern life". Instagram line: "Curated by nature". Focus on homes immersed in nature and well-being; "purposeful projects and smart investments in Colombia, Mexico & Dubai".
+- **Divisions:** Dorum Real Estate (curated luxury homes, fincas of high scenic value, reservoir-view lots, development opportunities) · Dorum Lifestyle & Experiences (tourism experiences + rental management, "converting purchases into productive assets") · Dorum Projects (sustainable design/build) · Dorum Foundation · Dorum Boutique.
+- **Geography:** core base **Guatapé** and the Embalse (Tierra Prometida development, Parque Natural Paraíso Antioqueño, Luxe by The Charlee), **Medellín** (El Poblado HQ), **Oriente Antioqueño** (Rionegro/Llanogrande, El Retiro, Guarne — near JMC airport), **Cartagena**; international projects in **México** (Tulum) and **Dubai**.
+- **Portals today:** Finca Raíz agency profile "DORUM LIFESTYLE" (venta y arriendo); Wasi as CRM/syndicator; Metrocuadrado.
+- **Languages:** bilingual EN/ES site; English-speaking international buyers are a core audience.
+- **Unverified:** owner's name spelling, team names (all invented placeholders in `data.js`), brand colors, phone/email. Palette chosen for the demo: emerald/forest green + warm sand + terracotta ("curated by nature").
+
+How the divisions map onto Llave: Real Estate → Listings/CRM/Contracts/Close; Lifestyle & Experiences → Rental Ops (long-term + vacation rentals, monthly owner statements, experiences); Projects → Construction vendor role + Remodeling/Build roadmap; Foundation & Boutique → CMS pages only (phase 0).
+
+---
+
+## 1. Vision
+
+- **One record of truth per property, person, deal and peso.** Every module reads and writes the same objects.
+- **AI does the step; a human signs the step.** Every automated action leaves a draft-with-diff a person can approve in one tap. Nothing legal, financial or public goes out without a named approver unless the tenant has explicitly set that step to auto.
+- **Tailored by role.** A seller, a photographer and an accountant open the same URL and see three different products.
+- **Voice-first for the field.** "Llave, agenda visita mañana 10am en el apartamento de Laureles con Camila" is a complete transaction.
+- **Colombian-first, multi-country ready.** COP, estrato, certificado de tradición y libertad, promesa de compraventa, Ley 820 rental rules, DIAN-compliant invoicing; locale and legal packs per tenant.
+
+---
+
+## 2. Tenant model
+
+```
+Platform (Llave)
+└── Tenant / Agency          e.g. Dorum Lifestyle — brand, domain, legal pack, plan
+    └── Office               e.g. Medellín HQ, Rionegro satellite
+        └── Users            each user holds ONE primary role per tenant (+ optional secondary)
+            └── Role         = permission set + navigation + home-screen widgets (config-driven, see DORUM.roles)
+```
+
+- **Tenant** owns: brand (logo, colors, domain), legal templates, commission defaults, integrations, billing plan.
+- **Office** owns: address, phone, listings inventory, local team.
+- **User** carries: identity, contact channels (WhatsApp, email), role, calendar, payout account.
+- **Customers and vendors are users too**, scoped to the deals they participate in. A seller sees their listing's progress; a photographer sees their orders. Nothing else.
+- **Role = permission set + tailored home.** Roles are data (`DORUM.roles[]`), so a tenant can rename "Broker" to "Asesor" or add a "Marketing Lead" without a code change.
+
+---
+
+## 3. Roles
+
+| Group | Role id | Label (ES / EN) | Who |
+|---|---|---|---|
+| Staff | `owner` | Propietaria de agencia / Company Owner | Runs the agency; sees everything, approves money and legal |
+| Staff | `broker` | Asesor inmobiliario / Broker–Realtor | Wins listings, sells and rents them |
+| Staff | `sales_admin` | Administradora de ventas / Sales Administrator | Coordinates sale pipeline, vendors, paperwork |
+| Staff | `rental_admin` | Administradora de arriendos / Rental Administrator | Rental agreements, inventory, monthly collections |
+| Staff | `accountant` | Contadora / Accountant | Escrow, payouts, payroll, DIAN |
+| Staff | `lawyer` | Abogada / Lawyer | Contracts, redlines, title review |
+| Vendor | `photographer` | Fotógrafo / Photographer | Photo/video/drone orders |
+| Vendor | `advertiser` | Pauta digital / Advertiser | Meta/Google campaigns, graphics |
+| Vendor | `writer` | Redactor–investigador / Writer & Researcher | Write-ups, comps, neighbourhood research |
+| Vendor | `construction` | Remodelación / Construction | Quotes, remodel projects |
+| Vendor | `lender` | Crédito hipotecario / Lender | Pre-approvals, mortgage tracking |
+| Customer | `seller` | Vendedor / Seller | Owner selling a property |
+| Customer | `buyer` | Comprador / Buyer | Looking to purchase |
+| Customer | `landlord` | Arrendador / Landlord | Owner renting a property |
+| Customer | `renter` | Arrendatario / Renter | Looking to rent |
+
+### 3.1 Role × module matrix
+
+Legend: **F** full (create/edit/approve) · **E** edit own · **V** view scoped · **—** none
+
+| Module | owner | broker | sales_admin | rental_admin | accountant | lawyer | photographer | advertiser | writer | construction | lender | seller | buyer | landlord | renter |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Dashboard / Home | F | E | E | E | E | E | E | E | E | E | E | V | V | V | V |
+| Website CMS (brand site, pages, lifestyle) | F | — | E | E | — | — | — | E | E | — | — | — | — | — | — |
+| Listings (property records) | F | E | F | F | V | V | V | V | V | V | V | V own | V | V own | V |
+| Media (images, video, AI tags) | F | E | F | F | — | — | E orders | V | V | E | — | V own | V | V own | V |
+| Publishing / Syndication | F | E | F | F | — | — | — | E | — | — | — | V status | — | V status | — |
+| CRM — Get Listings (sellers/landlords) | F | E | F | F | — | — | — | — | — | — | — | — | — | — | — |
+| CRM — Sell/Rent Listings (buyers/renters) | F | E | F | F | — | — | — | — | — | — | V leads | — | — | — | — |
+| Calendar (visits, tours, open houses) | F | E | F | F | V | V | E own | — | — | E own | E own | E own | E own | E own | E own |
+| Projects & Tasks | F | E | F | F | E | E | E own | E own | E own | E own | E own | V | V | V | V |
+| Contracts & Negotiation | F | E | E | E | V | F | — | — | — | — | V | V/sign | V/sign | V/sign | V/sign |
+| Paperwork (document checklists) | F | E | F | F | V | F | — | — | — | — | E | E upload | E upload | E upload | E upload |
+| Advertising (campaigns) | F | V | E | E | V | — | — | F | — | — | — | V own | — | V own | — |
+| Escrow & Payouts | F | V own | V | V | F | V | V own | V own | V own | V own | V own | V own | V own | V own | V own |
+| Payroll | F | V own | — | — | F | — | — | — | — | — | — | — | — | — | — |
+| Rental Ops (monthly collection, maintenance) | F | V | — | F | E | V | — | — | — | E | — | — | — | V own | E own |
+| Lifestyle services (coming soon) | F | V | E | E | — | — | — | — | — | E | — | V | V | V | V |
+| Reports & Analytics | F | E own | E | E | F | — | — | E own | — | — | — | — | — | — | — |
+| Settings / Tenant admin | F | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
+| Voice assistant | F | F | F | F | F | F | E | E | E | E | E | E | E | E | E |
+
+---
+
+## 4. Modules
+
+1. **Website CMS** — brand site editor (hero, galería de inmuebles, lifestyle), listing pages auto-generated from the property record, lead forms wired to CRM, bilingual ES/EN, SEO per neighbourhood, custom domain per tenant.
+2. **Listings** — Finca Raíz–grade property record (tipo, operación, m², habitaciones, baños, parqueaderos, estrato, administración, año), status workflow (borrador → en preparación → activo → bajo oferta → vendido/arrendado), AI price suggestion from comps, ownership & legal checks, duplicate detection.
+3. **Media** — image library per listing, AI tagging (room, feature, quality), auto-ordering for portals, watermarking, virtual staging queue, video and drone assets, vendor delivery inbox replacing Dropbox.
+4. **Publishing / Syndication** — one-click push to Finca Raíz, Wasi, Metrocuadrado; Instagram/Facebook post only when flagged; per-portal field mapping and validation; sync of views/leads back into CRM; unpublish on status change.
+5. **CRM — Get Listings** — seller/landlord pipeline: lead → contacted → visita agendada → propuesta → acuerdo firmado; call & email logging, WhatsApp threads, AI follow-up drafts, valuation (avalúo) request.
+6. **CRM — Sell/Rent Listings** — buyer/renter pipeline: lead → calificado → tour → oferta → contrato; matching engine (budget, zona, estrato), tour scheduler, open-house mode, lender hand-off, AI-drafted replies awaiting approval.
+7. **Projects & Tasks** — a project auto-spawns per listing with the marketing package (fotos, redacción, comps, gráficos, pauta); kanban and timeline, vendor assignment, due-dates, `aiDrafted` items shown as "AI listo · revisa".
+8. **Contracts & Negotiation** — templates (acuerdo de corretaje venta/arriendo, promesa de compraventa, contrato de arrendamiento, inventario), version history, redline tracking between parties, e-signature (DocuSign-style), lawyer approval gate, clause library in Spanish.
+9. **Paperwork** — document checklists per deal type (cédula, certificado de tradición y libertad, paz y salvo administración, avalúo, predial, escritura anterior, RUT), OCR + AI validation (name match, expiry), reminders to whoever owes a document.
+10. **Advertising** — Meta/Instagram and Google campaigns per listing or per brand, AI-generated creative from listing media, budget pacing, CPL, lead routing back to CRM; replaces Go High Level.
+11. **Escrow, Payouts & Payroll** — ledger per deal, deal-split engine (see §6), escrow holds, bank payout batches, vendor invoices, monthly payroll, DIAN e-invoicing hooks, commission statements per broker.
+12. **Rental Ops** — monthly rent collection, late-fee rules, incrementos IPC, maintenance tickets, inventory (inventario) check-in/out with photos, landlord monthly statement.
+13. **Lifestyle Services (coming soon)** — housekeeping, food delivery, activities, transportation, concierge booked from the listing or the renter's home screen; vendor marketplace; later: remodeling and construction-from-scratch.
+14. **Reports** — pipeline velocity, listing days-on-market, source attribution, spend vs. leads, commission forecast, rental arrears.
+15. **Voice** — assistant embedded in every screen and in WhatsApp voice notes; intents in §8.
+
+---
+
+## 5. Pipelines (process map)
+
+Marking: **[AI]** automated step · **[✓]** human check / approval · **[AI→✓]** AI drafts, human approves.
+
+### P1 · Get Listings (seller / landlord acquisition)
+1. Brand advertising runs (Meta, Google, Instagram) → leads land in CRM with source. **[AI]**
+2. Lead enriched (phone normalised, WhatsApp opt-in, property guessed from address). **[AI]**
+3. First-touch message drafted in seller's tone. **[AI→✓]**
+4. Broker calls / emails; call notes transcribed and summarised. **[AI]**
+5. Visita de captación scheduled; broker confirms. **[✓]**
+6. Comps & suggested price prepared. **[AI→✓]**
+7. Sales Listing Agreement or Rental Listing Agreement generated, redlines tracked, sent for e-sign. **[AI→✓ lawyer if edited]**
+8. Signed → listing record created in `en preparación`, project P2 auto-spawned. **[AI]**
+
+### P2 · Market Listing (marketing package)
+1. Orders created: photography package, writing service, comps & data, ad graphics & video, ad buying; optional remodeling quote. **[AI]**
+2. Vendors accept and deliver into the listing's media inbox. **[✓ vendor]**
+3. Images AI-tagged, ordered, watermarked; best 20 selected. **[AI→✓]**
+4. Write-up (ES + EN) and neighbourhood research drafted. **[AI→✓ writer/broker]**
+5. Individual listing site generated; syndication payload validated per portal. **[AI]**
+6. Publish to Finca Raíz / Wasi / Metrocuadrado; Instagram only if flagged. **[✓ broker or admin]**
+7. Campaign launched with budget cap; creative variants generated. **[AI→✓ advertiser]**
+8. Status → `activo`.
+
+### P3 · Sell / Rent Listing (buyer / renter conversion)
+1. Portal and ad leads land in CRM, matched to listings. **[AI]**
+2. Qualifying questions sent via WhatsApp (presupuesto, zona, fecha). **[AI→✓]**
+3. Tours scheduled; open house optional. **[✓ broker]**
+4. Tour feedback captured by voice; summarised to seller. **[AI]**
+5. Lender introduced for buyers who need credit. **[✓ buyer opt-in]**
+6. Offer received → status `bajo oferta`; counter-offer drafts and redlines tracked. **[AI→✓]**
+7. Offer accepted → hand to P4 or P5.
+
+### P4 · Close a sale
+1. Promesa de compraventa generated from deal terms. **[AI→✓ lawyer]**
+2. Paperwork checklist opened for buyer and seller; reminders sent. **[AI]**
+3. Documents validated (OCR, name match, expiry). **[AI→✓]**
+4. Steps of the sale tracked: inspección, avalúo bancario, crédito aprobado, escritura en notaría, registro, entrega de llaves. **[✓ each]**
+5. Escrow receives arras / down payment; ledger updated. **[✓ accountant]**
+6. At escritura: split engine computes payouts; accountant releases batch. **[AI→✓]**
+7. Listing → `vendido`; portals unpublished; review request sent. **[AI]**
+
+### P5 · Rental Ops
+1. Contrato de arrendamiento + inventario generated; co-signer/insurer (afianzadora) attached. **[AI→✓ lawyer]**
+2. Move-in inventory with photos; both parties sign. **[✓]**
+3. Monthly rent invoiced and collected; late fees applied by rule. **[AI]**
+4. Landlord statement and payout each month; admin fee retained. **[AI→✓ accountant]**
+5. Maintenance tickets triaged, vendor dispatched. **[AI→✓ rental admin]**
+6. Renewal / IPC increase notices; exit inventory and deposit reconciliation. **[AI→✓]**
+
+### P6 · Buyer journey
+Discover (site, portal, ad) → save & compare listings → AI concierge answers questions → schedule tours → lender pre-approval (optional) → offer → promesa → paperwork → keys. Buyer home shows: shortlisted listings, next tour, offer status, document to-dos.
+
+### P7 · Renter journey
+Discover → shortlist → tour → application (documentos, codeudor or afianzadora) → contrato + inventario → monthly payments → maintenance requests → renewal. Renter home shows: rent due, receipts, tickets, lifestyle services.
+
+---
+
+## 6. Deal-split & payout model
+
+Every deal carries a `split[]` — ordered rules the ledger applies when money arrives.
+
+| Kind | Meaning | Example |
+|---|---|---|
+| `commission` | % of the gross commission | Listing broker 40 %, selling broker 40 %, agency 20 % |
+| `referral` | % or fixed amount to whoever referred | 10 % of commission to referring realtor |
+| `fee` | fixed amount for a service | Photographer COP 650.000 at listing |
+| `salary` | recurring payroll | Sales admin monthly |
+
+Each rule has a **stage**: `at-listing` (paid from marketing budget when the agreement is signed), `at-close` (paid from escrow at escritura / contract signature), `monthly` (rental admin fee, payroll).
+
+- **Straight payment** — one participant, one amount (e.g. flat fee to a vendor).
+- **Shared commission** — multiple `commission` rules summing to 100 % of the agency's gross.
+- **Referral fee** — a `referral` rule deducted before commission rules apply.
+- **Per-participant per-stage** — the same person can appear twice (e.g. broker 10 % at-listing as marketing advance, 30 % at-close).
+- **Escrow** — client funds (arras, depósitos, rent) sit in a segregated ledger; releases require accountant approval (owner for > COP 50.000.000).
+- **Payroll** — salaries + commission statements produce one monthly batch; PILA/DIAN exports.
+- **Rental** — gross rent → landlord payout minus admin fee (typically 8–10 %) and any maintenance deductions, itemised on the landlord statement.
+- **Vacation rental (Lifestyle & Experiences)** — nightly bookings collected up front into escrow; monthly liquidation to the owner minus the integral-management fee (demo: 20 %), cleaning and experience costs passed through.
+
+Colombian market defaults (typical, set per tenant): sale commission ~3 % + IVA urban, 4–5 % + IVA rural/fincas; rental placement = one month's rent or ~10 % monthly management + IVA; paid by the owner; fixed by private agreement, not by law. Listings always show **estrato** (1–6, property-level classification) and **administración** (monthly HOA fee) separately from price.
+
+---
+
+## 7. Integrations
+
+| Integration | Purpose | Direction |
+|---|---|---|
+| Finca Raíz | Listing syndication, lead intake | push listing, pull leads/views |
+| Wasi | Listing syndication (legacy property mgmt) | push |
+| Metrocuadrado | Listing syndication | push |
+| Instagram / Facebook | Posts & Reels when flagged; Meta Ads | push creative, pull comments/leads |
+| WhatsApp Business API | Conversations, voice notes, reminders, signing links | two-way |
+| Meta Ads / Google Ads | Campaign creation, spend, CPL | two-way |
+| E-signature (DocuSign-style) | Contract signing, audit trail | two-way |
+| Banks (Bancolombia, Davivienda, PSE) | Escrow accounts, payout batches, rent collection | two-way |
+| DIAN | Electronic invoicing | push |
+| Google Calendar / iCal | Visits & tours | two-way |
+| Email (IMAP/SMTP) | Logging & sending | two-way |
+
+---
+
+## 8. Voice layer
+
+Wake word "Llave". Works in-app, on the watch, and via WhatsApp voice notes. Every intent returns a confirmation card; destructive or financial intents require a spoken "confirmar".
+
+Intents: `schedule_visit`, `log_call`, `create_lead`, `listing_status`, `price_update`, `send_followup`, `order_service` (fotos, redacción, comps), `publish_listing`, `read_pipeline`, `next_appointment`, `navigate_to`, `capture_tour_feedback`, `open_house_start`, `document_status`, `approve_ai_draft`, `payout_status`, `rent_status`, `maintenance_ticket`, `translate_message`. Sample commands live in `DORUM.voiceIntents`.
+
+---
+
+## 9. Roadmap
+
+| Phase | Scope | Outcome |
+|---|---|---|
+| **0 · Demo** (now) | Static product demo: sales site, tenant app with role homes, Dorum brokerage site, device mockups | Sell the vision to Dorum and next tenants |
+| **1 · Core** (0–3 mo) | Auth + roles, Listings, Media, CRM (both pipelines), Projects, Website CMS, Finca Raíz + Wasi push | Dorum leaves Wasi and Dropbox |
+| **2 · Money & Law** (3–6 mo) | Contracts + e-sign, Paperwork with AI validation, Escrow & split engine, Payouts, Payroll | Dorum closes deals end-to-end in Llave |
+| **3 · Growth** (6–9 mo) | Advertising module, WhatsApp automation, Voice layer, Rental Ops, Reports | Dorum leaves Go High Level and ChatGPT |
+| **4 · Platform** (9–12 mo) | Multi-tenant onboarding, tenant themes, legal packs by country, marketplace of vendors, Lifestyle services | Second and third agencies onboard |
+| **5 · Build** (12 mo+) | Remodeling and construction-from-scratch project management, lender network | Dorum Group vertical integration |
+
+---
+
+## 10. Non-functional
+
+- Spanish first, English second; every string keyed for i18n.
+- Mobile-first for brokers and customers; desktop for admins and accountant.
+- Audit log on every approval; AI drafts keep provenance (model, prompt, source records).
+- Data residency option per tenant; encrypted documents; role-scoped storage.
+- Offline-tolerant voice capture (queue and sync).
+
+</script>
+
+<script src="../assets/data.js"></script>
+<script src="../assets/i18n.js"></script>
+<script src="docs.js"></script>
+<script>
+(function () {
+  var X = window.DOCS;
+  X.chrome('Product plan');
+  var r = X.md(X.readEmbedded('md'));
+  document.getElementById('doc').insertAdjacentHTML('beforeend', r.html);
+  var tocEl = document.createElement('div'); document.getElementById('toc').querySelector('details').appendChild(tocEl);
+  X.toc(r.headings, tocEl);
+  if (window.matchMedia && matchMedia('(max-width: 900px)').matches) document.querySelector('#toc details').open = false;
+  if (location.hash) { try { var t = document.querySelector(location.hash); if (t) t.scrollIntoView(); } catch (e) {} }
+})();
+</script>
+</body>
+</html>

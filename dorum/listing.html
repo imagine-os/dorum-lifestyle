@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Inmueble · Dorum Lifestyle</title>
+<meta name="description" content="Ficha de inmueble Dorum Lifestyle: galería, precio, especificaciones, ubicación, asesor y agenda de visita. Generada desde el registro de propiedad de Llave OS.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23C2542B'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-size='18' fill='%23FFFCF5'%3ED%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<header id="siteHeader"></header>
+
+<main class="container" id="listingPage">
+  <nav class="dz-crumbs" aria-label="Ruta">
+    <a href="index.html#inmuebles" id="backLink"></a><span>/</span><span id="crumbZone"></span><span>/</span><b id="crumbTitle" style="color:var(--text)"></b>
+  </nav>
+
+  <div class="dz-gallery" id="gallery"></div>
+
+  <div class="dz-listing">
+    <div class="dz-listing-main">
+      <div class="dz-title" id="titleBlock"></div>
+      <div class="dz-specs" id="specs"></div>
+      <section><h3 class="dz-h3" data-i18n="l.desc"></h3><p class="dz-prose" id="desc"></p></section>
+      <section><h3 class="dz-h3" data-i18n="l.amen"></h3><div class="dz-amen" id="amenities"></div></section>
+      <section id="investBox"></section>
+      <section>
+        <h3 class="dz-h3" data-i18n="l.map"></h3>
+        <div class="dz-map" id="map"></div>
+      </section>
+      <section id="similarSec">
+        <h3 class="dz-h3" data-i18n="l.similar"></h3>
+        <div class="dz-strip" id="similar"></div>
+      </section>
+    </div>
+
+    <aside class="dz-listing-side">
+      <div class="card card-raised dz-agent" id="agentCard"></div>
+      <div class="card">
+        <h3 class="card-title" data-i18n="l.visit"></h3>
+        <p class="small muted" style="margin-top:var(--s-1)" data-i18n="l.visit.lead"></p>
+        <form id="visitForm" class="stack" style="margin-top:var(--s-4)">
+          <div class="grid grid-2">
+            <label class="field"><span class="label" data-i18n="l.date"></span><input class="input" type="date" id="vDate" required></label>
+            <label class="field"><span class="label" data-i18n="l.time"></span>
+              <select class="select" id="vTime"><option>09:00</option><option>10:00</option><option selected>11:00</option><option>14:00</option><option>15:00</option><option>16:00</option></select></label>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
+            <span data-i18n="l.visit.cta"></span></button>
+        </form>
+      </div>
+      <div class="card dz-calc" id="calcCard" hidden></div>
+      <div class="card dz-calc" id="yieldCard" hidden></div>
+      <div class="card card-flat">
+        <h3 class="card-title" data-i18n="l.share"></h3>
+        <div class="dz-share" id="share" style="margin-top:var(--s-3)"></div>
+        <hr>
+        <div class="dz-synd" id="synd"></div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer id="siteFooter"></footer>
+
+<script src="../assets/data.js"></script>
+<script src="../assets/i18n.js"></script>
+<script src="site.js"></script>
+<script>
+(function () {
+  var D = window.DORUM, S = window.SITE;
+  S.renderChrome({ active: 'inmuebles' });
+
+  var id = new URLSearchParams(location.search).get('id');
+  var l = D.listing(id) || S.featured()[0] || D.listings[0];
+  var broker = D.user(l.listedBy) || {};
+  var deal = D.deals.filter(function (d) { return d.listingId === l.id; })[0];
+  document.title = S.title(l) + ' · ' + D.tenant.name;
+  var isRent = l.operacion === 'arriendo', isStay = l.rentalType === 'vacacional', isUSD = l.currency === 'USD';
+
+  /* ---- gallery ---- */
+  var imgs = l.images && l.images.length ? l.images : [{ url: l.cover, aiTags: '' }];
+  var g = document.getElementById('gallery');
+  g.innerHTML = '<span class="badge badge-status" data-status="' + l.status + '">' + D.statusLabel(l.status) + '</span>' +
+    imgs.slice(0, 5).map(function (im, i) { return '<button type="button" data-i="' + i + '" aria-label="Foto ' + (i + 1) + '"><img src="' + (i === 0 ? l.cover : im.url) + '" alt="' + S.esc(l.title) + ' · ' + S.esc(im.aiTags || '') + '" loading="' + (i ? 'lazy' : 'eager') + '"></button>'; }).join('') +
+    '<button type="button" class="btn btn-secondary btn-sm dz-gallery-all" id="allPhotos">' + S.icon('camera') + ' <span>' + S.t('l.photos') + '</span> (' + imgs.length + ')</button>';
+  g.querySelectorAll('button[data-i]').forEach(function (b) { b.onclick = function () { S.lightbox(imgs, +b.dataset.i); }; });
+  document.getElementById('allPhotos').onclick = function () { S.lightbox(imgs, 0); };
+
+  /* ---- title & price ---- */
+  function renderTitle() {
+    var perM2 = D.pricePerM2(l);
+    var unit = isRent ? (isStay ? '/ noche' : S.t('l.mes')) : (S.lang === 'en' ? 'for sale' : 'venta');
+    var line = [];
+    line.push(D.typeLabel(l.type) + (isStay ? (S.lang === 'en' ? ' · Vacation rental' : ' · Renta vacacional') : ''));
+    if (l.estrato) line.push('Estrato ' + l.estrato);
+    if (l.administracion) line.push((S.lang === 'en' ? 'HOA ' : 'Administración ') + D.fmtCOP(l.administracion) + (S.lang === 'en' ? '/mo' : '/mes'));
+    if (isUSD) line.push(S.lang === 'en' ? 'Price in USD' : 'Precio en USD');
+    document.getElementById('titleBlock').innerHTML =
+      '<div class="row" style="gap:var(--s-2);margin-bottom:var(--s-3)"><span class="pill pill-brand">' + D.typeLabel(l.type) + '</span>' + (isUSD ? '<span class="pill pill-accent">' + (S.lang === 'en' ? 'International' : 'Internacional') + '</span>' : '') + (l.division === 'lifestyle' ? '<span class="pill pill-success">Lifestyle & Experiences</span>' : '') + (l.division === 'projects' ? '<span class="pill">Dorum Projects</span>' : '') + '</div>' +
+      '<h1>' + S.esc(S.title(l)) + '</h1>' +
+      '<span class="listing-loc">' + S.icon('pin') + S.esc(l.barrio + ' · ' + l.city + (l.country ? ', ' + l.country : ', ' + l.region)) + '</span>' +
+      '<div class="dz-price"><span class="listing-price">' + D.fmtPrice(l) + '</span><span class="muted">' + unit + '</span>' + (perM2 && !isRent ? '<span class="muted">· ' + D.fmtMoney(perM2, l.currency) + ' ' + S.t('l.perm2') + '</span>' : '') + '</div>' +
+      '<p class="dz-price-line">' + line.join(' · ') + '</p>';
+    document.getElementById('crumbTitle').textContent = S.title(l);
+    document.title = S.title(l) + ' · ' + D.tenant.name;
+    document.getElementById('desc').textContent = S.desc(l);
+    document.getElementById('crumbZone').textContent = S.zoneLabel(S.zoneOf(l));
+    document.getElementById('backLink').innerHTML = S.icon('left') + S.t('l.back');
+  }
+
+  /* ---- specs ---- */
+  function spec(icon, key, val) { return val == null || val === '' ? '' : '<div class="dz-spec">' + S.icon(icon) + '<small>' + S.t(key) + '</small><b>' + val + '</b></div>'; }
+  function renderSpecs() {
+    document.getElementById('specs').innerHTML =
+      spec('area', 'l.spec.area', l.type === 'lote' ? null : D.fmtM2(l.area)) +
+      spec('mountain', 'l.spec.lote', l.areaLote ? D.fmtM2(l.areaLote) : null) +
+      spec('bed', 'l.spec.hab', l.habitaciones || null) +
+      spec('bath', 'l.spec.ban', l.banos || null) +
+      spec('car', 'l.spec.parq', l.parqueaderos || null) +
+      spec('layers', 'l.spec.estrato', l.estrato || '—') +
+      spec('wallet', 'l.spec.admin', l.administracion ? D.fmtCOP(l.administracion) + '<span class="muted xs">' + (S.lang === 'en' ? ' /mo' : ' /mes') + '</span>' : '—') +
+      spec('calendar', 'l.spec.ano', l.ano || null);
+  }
+
+  document.getElementById('amenities').innerHTML = (l.amenities || []).map(function (a) { return '<span class="chip">' + S.icon('check') + S.esc(a) + '</span>'; }).join('');
+
+  /* ---- investor callout (venta with rental potential) ---- */
+  function renderInvest() {
+    var box = document.getElementById('investBox');
+    var rentable = !isRent && /renta|turístic|Renta/i.test((l.amenities || []).join(' ') + ' ' + l.description);
+    if (!rentable) { box.hidden = true; return; }
+    box.hidden = false;
+    box.innerHTML = '<div class="callout callout-success" style="align-items:flex-start">' + S.icon('trend') + '<div><b>' + S.t('l.invest') + '</b><p style="margin-top:2px;color:var(--text-2)">' + S.t('l.invest.body') + ' <a href="lifestyle.html">Lifestyle & Experiences →</a></p></div></div>';
+  }
+
+  /* ---- map placeholder ---- */
+  function renderMap() {
+    var zone = S.zoneOf(l), water = zone === 'guatape' || zone === 'cartagena' || zone === 'intl';
+    var svg = '<svg viewBox="0 0 800 360" role="img" aria-label="' + S.esc(S.t('l.map') + ': ' + l.barrio + ', ' + l.city) + '">' +
+      '<rect width="800" height="360" fill="var(--surface-2)"/>' +
+      '<g fill="none" stroke="var(--border)" stroke-width="1.2">' +
+        '<path d="M-20 300c120-80 220-20 320-70s180-130 300-120 180 60 220 110"/><path d="M-20 260c120-80 220-20 320-70s180-130 300-120 180 60 220 110"/><path d="M-20 220c120-80 220-20 320-70s180-130 300-120 180 60 220 110"/>' +
+        '<path d="M-20 340c120-80 220-20 320-70s180-130 300-120 180 60 220 110"/><path d="M60 380c120-80 220-20 320-70s180-130 300-120 180 60 220 110"/>' +
+      '</g>' +
+      (water ? '<path d="M0 260c90-40 150-70 250-60s150 70 260 60 180-90 290-70V360H0Z" fill="var(--info-soft)" opacity="0.9"/><g fill="none" stroke="var(--info)" stroke-width="1" opacity="0.5"><path d="M80 300c20-10 40-10 60 0s40 10 60 0"/><path d="M420 320c20-10 40-10 60 0s40 10 60 0"/><path d="M620 290c20-10 40-10 60 0s40 10 60 0"/></g>' : '<g fill="var(--brand-soft)" opacity="0.8"><ellipse cx="140" cy="120" rx="110" ry="60"/><ellipse cx="640" cy="260" rx="130" ry="70"/></g>') +
+      '<g fill="none" stroke="var(--border-strong)" stroke-width="3" stroke-linecap="round"><path d="M-10 190c150-30 260 10 400-30s230-40 420-20"/><path d="M300 380c40-90 60-160 100-230s60-90 90-150"/></g>' +
+      '<g fill="none" stroke="var(--surface)" stroke-width="1" stroke-dasharray="6 8"><path d="M-10 190c150-30 260 10 400-30s230-40 420-20"/></g>' +
+      '<g fill="var(--brand-2)" opacity="0.7"><circle cx="230" cy="80" r="5"/><circle cx="250" cy="96" r="4"/><circle cx="215" cy="98" r="4"/><circle cx="560" cy="120" r="5"/><circle cx="585" cy="140" r="4"/><circle cx="700" cy="70" r="4"/></g>' +
+      '<circle cx="400" cy="170" r="46" fill="var(--accent)" opacity="0.12"/><circle cx="400" cy="170" r="24" fill="var(--accent)" opacity="0.18"/>' +
+      '<g transform="translate(400 170)"><path d="M0 8c0 0-16-14-16-26a16 16 0 0 1 32 0C16-6 0 8 0 8Z" fill="var(--accent)" transform="translate(0 -8)"/><circle cx="0" cy="-26" r="6" fill="var(--surface)"/></g>' +
+      '<g font-family="Inter, system-ui, sans-serif" font-size="13" fill="var(--text-2)"><text x="424" y="200" font-weight="600" fill="var(--text)">' + S.esc(l.barrio) + '</text><text x="424" y="218">' + S.esc(l.city + (l.country ? ' · ' + l.country : ' · ' + l.region)) + '</text></g>' +
+      '<g font-family="Inter, system-ui, sans-serif" font-size="11" fill="var(--text-3)" font-style="italic">' + (water ? '<text x="40" y="340">' + (zone === 'cartagena' ? 'Mar Caribe' : zone === 'intl' ? 'Mar / cenotes' : 'Embalse Peñol – Guatapé') + '</text>' : '<text x="70" y="124">Reserva · bosque</text>') + '</g>' +
+    '</svg>';
+    document.getElementById('map').innerHTML = svg + '<div class="dz-map-foot"><span>' + S.icon('pin') + ' ' + S.esc(l.barrio + ' · ' + l.city) + '</span><span class="xs muted">' + S.t('l.map.note') + '</span></div>';
+  }
+
+  /* ---- agent ---- */
+  function renderAgent() {
+    var name = broker.name || '—';
+    document.getElementById('agentCard').innerHTML =
+      '<p class="eyebrow">' + S.t('l.agent') + '</p>' +
+      '<div class="dz-agent-head"><span class="avatar">' + S.esc(broker.initials || S.initials(name)) + '</span><div><b>' + S.esc(name) + '</b><small>' + S.esc(broker.title || '') + '</small><small>' + S.esc(D.tenant.name) + ' · ' + (broker.langs || []).map(function (x) { return x.toUpperCase(); }).join(' / ') + '</small></div></div>' +
+      '<div class="row"><a class="btn btn-accent" target="_blank" rel="noopener" href="' + S.wa('Hola ' + name.split(' ')[0] + ', me interesa “' + l.title + '” (' + l.id + ').', broker.phone) + '">' + S.icon('chat') + ' ' + S.t('l.wa') + '</a><a class="btn btn-secondary" href="tel:' + (broker.phone || '').replace(/\s/g, '') + '">' + S.icon('phone') + ' ' + S.t('l.call') + '</a></div>' +
+      '<p class="xs muted">' + (S.lang === 'en' ? 'Demo contact. Messages land in the advisor’s Llave CRM.' : 'Contacto de demo. Los mensajes llegan al CRM Llave del asesor.') + '</p>';
+  }
+
+  /* ---- visit ---- */
+  var tomorrow = new Date(Date.now() + 864e5); document.getElementById('vDate').value = tomorrow.toISOString().slice(0, 10);
+  document.getElementById('visitForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var d = document.getElementById('vDate').value, t = document.getElementById('vTime').value;
+    D.toast(S.t('l.visit.toast') + ' · ' + D.fmtDate(d, 'short') + ' ' + t, S.t('l.visit.body') + ' (' + (broker.name || '') + ')', 'success');
+  });
+
+  /* ---- mortgage (venta, COP) ---- */
+  var calc = { down: 30, years: 20, rate: 11.5 };
+  function renderCalc() {
+    var card = document.getElementById('calcCard');
+    if (isRent || isUSD) { card.hidden = true; return; }
+    card.hidden = false;
+    var L = l.price * (1 - calc.down / 100), m = Math.pow(1 + calc.rate / 100, 1 / 12) - 1, n = calc.years * 12;
+    var pay = L * m / (1 - Math.pow(1 + m, -n));
+    card.innerHTML =
+      '<div><h3 class="card-title">' + S.t('l.mort') + '</h3><p class="small muted" style="margin-top:var(--s-1)">' + S.t('l.mort.lead') + '</p></div>' +
+      '<label class="field"><span class="dz-range"><span class="label">' + S.t('l.down') + '</span><b class="num">' + calc.down + ' % · ' + D.fmtCOP(l.price * calc.down / 100, { compact: true }) + '</b></span><input type="range" id="cDown" min="20" max="70" step="5" value="' + calc.down + '"></label>' +
+      '<div class="grid grid-2"><label class="field"><span class="label">' + S.t('l.term') + '</span><select class="select" id="cYears">' + [10, 15, 20, 30].map(function (y) { return '<option value="' + y + '"' + (y === calc.years ? ' selected' : '') + '>' + y + ' ' + S.t('l.years') + '</option>'; }).join('') + '</select></label>' +
+      '<label class="field"><span class="label">' + S.t('l.rate') + '</span><select class="select" id="cRate">' + [10, 11.5, 13, 15].map(function (r) { return '<option value="' + r + '"' + (r === calc.rate ? ' selected' : '') + '>' + r.toLocaleString('es-CO') + ' %</option>'; }).join('') + '</select></label></div>' +
+      '<div class="dz-calc-out"><small>' + S.t('l.monthly') + '</small><b class="money">' + D.fmtCOP(pay) + '</b><span class="small">' + S.t('l.financed') + ': ' + D.fmtCOP(L) + '</span></div>' +
+      '<span class="pill pill-warn" style="align-self:flex-start">' + (S.lang === 'en' ? 'Estimate · demo rate' : 'Estimación · tasa de demo') + '</span>';
+    card.querySelector('#cDown').oninput = function (e) { calc.down = +e.target.value; renderCalc(); };
+    card.querySelector('#cYears').onchange = function (e) { calc.years = +e.target.value; renderCalc(); };
+    card.querySelector('#cRate').onchange = function (e) { calc.rate = +e.target.value; renderCalc(); };
+  }
+
+  /* ---- yield (arriendo / vacacional) ---- */
+  var occ = deal && deal.occupancyPct ? deal.occupancyPct : 65;
+  function renderYield() {
+    var card = document.getElementById('yieldCard');
+    if (!isRent) { card.hidden = true; return; }
+    card.hidden = false;
+    var feePct = deal && deal.mgmtPct ? deal.mgmtPct : (isStay ? 20 : D.tenant.commissionDefaults.rentalMgmtPct);
+    var gross = isStay ? Math.round(l.price * 30 * occ / 100) : l.price;
+    var fee = Math.round(gross * feePct / 100), net = gross - fee;
+    card.innerHTML =
+      '<div><h3 class="card-title">' + S.t('l.yield') + '</h3><p class="small muted" style="margin-top:var(--s-1)">' + S.t('l.yield.lead') + '</p></div>' +
+      (isStay ? '<label class="field"><span class="dz-range"><span class="label">' + S.t('l.occ') + '</span><b class="num">' + occ + ' %</b></span><input type="range" id="yOcc" min="30" max="90" step="1" value="' + occ + '"></label>' : '') +
+      '<ul class="dz-stmt"><li><span>' + S.t('l.gross') + (isStay ? ' <span class="xs muted">(' + D.fmtCOP(l.price) + ' × ' + Math.round(30 * occ / 100) + ' noches)</span>' : '') + '</span><span class="money">' + D.fmtCOP(gross) + '</span></li>' +
+      '<li><span>' + S.t('l.fee') + ' ' + feePct + ' %</span><span class="money">− ' + D.fmtCOP(fee) + '</span></li>' +
+      '<li><span>' + S.t('l.net') + '</span><span class="money">' + D.fmtCOP(net) + '</span></li></ul>' +
+      '<p class="xs muted">' + S.t('l.yield.note') + '</p>';
+    var r = card.querySelector('#yOcc'); if (r) r.oninput = function (e) { occ = +e.target.value; renderYield(); };
+  }
+
+  /* ---- similar ---- */
+  function renderSimilar() {
+    var pub = S.publicListings().filter(function (x) { return x.id !== l.id; });
+    var same = pub.filter(function (x) { return S.zoneOf(x) === S.zoneOf(l) || x.type === l.type; });
+    var pick = same.slice(0, 3); if (pick.length < 3) pick = pick.concat(pub.filter(function (x) { return pick.indexOf(x) < 0; })).slice(0, 3);
+    document.getElementById('similar').innerHTML = pick.map(S.listingCard).join('');
+  }
+
+  /* ---- share & syndication ---- */
+  function renderShare() {
+    var url = location.href.split('#')[0];
+    document.getElementById('share').innerHTML =
+      '<a class="btn btn-secondary btn-sm" target="_blank" rel="noopener" href="' + S.wa(l.title + ' · ' + D.fmtPrice(l) + ' · ' + url) + '">' + S.icon('chat') + ' WhatsApp</a>' +
+      '<a class="btn btn-secondary btn-sm" href="mailto:?subject=' + encodeURIComponent(l.title + ' · Dorum Lifestyle') + '&body=' + encodeURIComponent(url) + '">' + S.icon('mail') + ' Email</a>' +
+      '<button type="button" class="btn btn-secondary btn-sm" id="copyBtn">' + S.icon('copy') + ' ' + S.t('l.copy') + '</button>';
+    document.getElementById('copyBtn').onclick = function () {
+      var done = function () { D.toast(S.t('l.copied'), url, 'success'); };
+      if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, done); else done();
+    };
+    var s = l.syndication || {}, on = [];
+    if (s.fincaRaiz) on.push('Finca Raíz'); if (s.wasi) on.push('Wasi'); if (s.metrocuadrado) on.push('Metrocuadrado'); if (s.instagram) on.push('Instagram');
+    document.getElementById('synd').innerHTML = on.length ? '<span>' + S.t('l.synd') + '</span>' + on.map(function (p) { return '<span class="pill">' + p + '</span>'; }).join('') : '<span>' + S.t('l.synd.none') + '</span>';
+  }
+
+  /* ---- JSON-LD ---- */
+  (function () {
+    var ld = { '@context': 'https://schema.org', '@type': 'RealEstateListing', name: l.title, description: l.description, url: location.href.split('#')[0], image: imgs.map(function (i) { return i.url; }),
+      datePosted: D.generatedAt, offers: { '@type': 'Offer', price: l.price, priceCurrency: l.currency || 'COP', availability: l.status === 'activo' ? 'https://schema.org/InStock' : 'https://schema.org/LimitedAvailability', businessFunction: isRent ? 'http://purl.org/goodrelations/v1#LeaseOut' : 'http://purl.org/goodrelations/v1#Sell' },
+      about: { '@type': l.type === 'apartamento' || l.type === 'penthouse' ? 'Apartment' : l.type === 'lote' ? 'Place' : 'House', numberOfRooms: l.habitaciones || undefined, numberOfBathroomsTotal: l.banos || undefined, floorSize: l.area ? { '@type': 'QuantitativeValue', value: l.area, unitCode: 'MTK' } : undefined, yearBuilt: l.ano || undefined,
+        address: { '@type': 'PostalAddress', addressLocality: l.city, addressRegion: l.region, addressCountry: l.country || 'Colombia' } },
+      provider: { '@type': 'RealEstateAgent', name: D.tenant.name, parentOrganization: D.tenant.group } };
+    var sc = document.createElement('script'); sc.type = 'application/ld+json'; sc.textContent = JSON.stringify(ld); document.head.appendChild(sc);
+  })();
+
+  function renderAll() { renderTitle(); renderSpecs(); renderInvest(); renderMap(); renderAgent(); renderCalc(); renderYield(); renderSimilar(); renderShare(); }
+  document.addEventListener('dorum:lang', renderAll);
+  renderAll();
+})();
+</script>
+</body>
+</html>
