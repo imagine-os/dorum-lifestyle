@@ -132,116 +132,138 @@
 
   /* ---------------------------------------------------------------- listings */
   // stage ∈ pipeline stages: captacion | preparacion | publicado | visitas | oferta | cierre | arrendado | vendido
-  function img(slug, n) {
-    var arr = [];
-    for (var i = 1; i <= n; i++) {
-      arr.push({ file: slug + '-' + String(i).padStart(2, '0') + '.jpg', url: 'https://picsum.photos/seed/' + slug + i + '/1200/800',
-        aiTags: ['exterior', 'sala', 'cocina', 'habitación principal', 'vista al embalse', 'terraza', 'baño', 'zonas verdes'][(i - 1) % 8] , quality: 0.72 + ((i * 7) % 25) / 100, approved: i <= n - 1 });
-    }
-    return arr;
+  // Photos are hotlinked from Unsplash (photo IDs chosen per listing type: lake / finca /
+  // modern house / apartment / office). First entry of each set is the cover. If a hotlink
+  // 404s the global fallback at the bottom of this file swaps in the brand gradient.
+  function photo(id, w) { return 'https://images.unsplash.com/photo-' + id + '?auto=format&fit=crop&w=' + (w || 1400) + '&q=80'; }
+  D.photoUrl = photo;
+  var PHOTOS = {
+    'lote-embalse':     [['1500382017468-9049fed747ef', 'exterior'], ['1500530855697-b586d89ba3ee', 'vista al embalse'], ['1470770841072-f978cf4d019e', 'vista al embalse'], ['1499793983690-e29da59ef1c2', 'zonas verdes']],
+    'luxe-charlee':     [['1613977257363-707ba9348227', 'exterior'], ['1500530855697-b586d89ba3ee', 'vista al embalse'], ['1502672260266-1c1ef2d93688', 'sala'], ['1600607687939-ce8a6c25118c', 'cocina'], ['1505691938895-1758d7feb511', 'habitación principal'], ['1564013799919-ab600027ffc6', 'terraza']],
+    'casa-lago':        [['1470770841072-f978cf4d019e', 'exterior'], ['1501183638710-841dd1904471', 'sala'], ['1484154218962-a197022b5858', 'cocina'], ['1540518614846-7eded433c457', 'habitación principal'], ['1570129477492-45c003edd2be', 'terraza'], ['1499793983690-e29da59ef1c2', 'vista al embalse']],
+    'finca-sauces':     [['1449844908441-8829872d2607', 'exterior'], ['1605276374104-dee2a0ed3cd6', 'zonas verdes'], ['1523217582562-09d0def993a6', 'sala'], ['1556912172-45b7abe8b7e1', 'cocina'], ['1493809842364-78817add7ffb', 'habitación principal'], ['1576941089067-2de3c901e126', 'terraza']],
+    'casa-guayacanes':  [['1518780664697-55e3ad937233', 'exterior'], ['1522708323590-d24dbb6b0267', 'sala'], ['1460317442991-0ec209397118', 'cocina'], ['1512918728675-ed5a9ecdebfd', 'habitación principal'], ['1568605114967-8130f3a36994', 'zonas verdes']],
+    'finca-cafetera':   [['1416331108676-a22ccb276e35', 'exterior'], ['1523217582562-09d0def993a6', 'sala'], ['1556912172-45b7abe8b7e1', 'cocina'], ['1605276374104-dee2a0ed3cd6', 'zonas verdes']],
+    'casa-retiro':      [['1600596542815-ffad4c1539a9', 'exterior'], ['1600585154340-be6161a56a0c', 'sala'], ['1600607687939-ce8a6c25118c', 'cocina'], ['1600566753086-00f18fb6b3ea', 'habitación principal'], ['1580587771525-78b9dba3b914', 'terraza'], ['1576941089067-2de3c901e126', 'zonas verdes']],
+    'apto-provenza':    [['1560448204-e02f11c3d0e2', 'exterior'], ['1522708323590-d24dbb6b0267', 'sala'], ['1484154218962-a197022b5858', 'cocina'], ['1493809842364-78817add7ffb', 'habitación principal'], ['1564013799919-ab600027ffc6', 'terraza']],
+    'penthouse-balsos': [['1545324418-cc1a3fa10c00', 'exterior'], ['1502672260266-1c1ef2d93688', 'sala'], ['1460317442991-0ec209397118', 'cocina'], ['1540518614846-7eded433c457', 'habitación principal']],
+    'apto-laureles':    [['1502005229762-cf1b2da7c5d6', 'exterior'], ['1501183638710-841dd1904471', 'sala'], ['1556912172-45b7abe8b7e1', 'cocina'], ['1505691938895-1758d7feb511', 'habitación principal'], ['1502672260266-1c1ef2d93688', 'comedor']],
+    'apto-envigado':    [['1567767292278-a4f21aa2d36e', 'exterior'], ['1522708323590-d24dbb6b0267', 'sala'], ['1600607687939-ce8a6c25118c', 'cocina'], ['1512918728675-ed5a9ecdebfd', 'habitación principal'], ['1568605114967-8130f3a36994', 'zonas verdes']],
+    'casa-roble':       [['1499793983690-e29da59ef1c2', 'exterior'], ['1470770841072-f978cf4d019e', 'vista al embalse'], ['1600585154340-be6161a56a0c', 'sala'], ['1460317442991-0ec209397118', 'cocina'], ['1600566753086-00f18fb6b3ea', 'habitación principal'], ['1570129477492-45c003edd2be', 'terraza']],
+    'apto-bocagrande':  [['1512917774080-9991f1c4c750', 'exterior'], ['1502672260266-1c1ef2d93688', 'sala'], ['1484154218962-a197022b5858', 'cocina'], ['1512918728675-ed5a9ecdebfd', 'habitación principal'], ['1580587771525-78b9dba3b914', 'terraza']],
+    'villa-tulum':      [['1613490493576-7fde63acd811', 'exterior'], ['1564013799919-ab600027ffc6', 'terraza'], ['1501183638710-841dd1904471', 'sala'], ['1600607687939-ce8a6c25118c', 'cocina'], ['1540518614846-7eded433c457', 'habitación principal'], ['1576941089067-2de3c901e126', 'piscina']],
+    'oficina-milla':    [['1486406146926-c627a92ad1ab', 'exterior'], ['1497366216548-37526070297c', 'sala de juntas'], ['1497366754035-f200968a6e72', 'puestos de trabajo'], ['1441986300917-64674bd600d8', 'recepción']]
+  };
+  function coverOf(slug) { return photo(PHOTOS[slug][0][0]); }
+  function img(slug) {
+    var set = PHOTOS[slug], n = set.length;
+    return set.map(function (p, idx) {
+      var i = idx + 1;
+      return { file: slug + '-' + String(i).padStart(2, '0') + '.jpg', url: photo(p[0]), aiTags: p[1], quality: 0.72 + ((i * 7) % 25) / 100, approved: i <= n - 1 };
+    });
   }
   D.listings = [
-    { id: 'lst-001', slug: 'lote-embalse-tierra-prometida', title: 'Lote con vista al embalse · Tierra Prometida', type: 'lote', operacion: 'venta', price: 1450000000, currency: 'COP',
+    { id: 'lst-001', slug: 'lote-embalse-tierra-prometida', title: 'Lote con vista al embalse · Tierra Prometida', titleEn: 'Reservoir-view lot · Tierra Prometida', type: 'lote', operacion: 'venta', price: 1450000000, currency: 'COP',
       city: 'Guatapé', barrio: 'Tierra Prometida', region: 'Antioquia', area: 2800, areaLote: 2800, habitaciones: 0, banos: 0, parqueaderos: 0, estrato: null, administracion: 380000, ano: null,
       amenities: ['Vista 180° al embalse', 'Dentro del Parque Natural Paraíso Antioqueño', 'Servicios en frente', 'Acceso a muelle comunitario', 'Licencia de construcción aprobada'],
-      description: 'Terreno de 2.800 m² con frente al embalse de Guatapé, pendiente suave y orientación oriente. Ideal para casa de descanso o proyecto de renta turística bajo administración Dorum Lifestyle.',
+      description: 'Terreno de 2.800 m² con frente al embalse de Guatapé, pendiente suave y orientación oriente. Ideal para casa de descanso o proyecto de renta turística bajo administración Dorum Lifestyle.', descEn: '2,800 m² lot fronting the Guatapé reservoir, gentle slope and eastern orientation. Ideal for a weekend home or a vacation-rental project managed by Dorum Lifestyle.',
       listedBy: 'u-brk-1', ownerId: 'u-sel-2', status: 'activo', stage: 'visitas', daysOnMarket: 34, views: 2140, leads: 18, division: 'real-estate',
-      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: true }, cover: 'https://picsum.photos/seed/embalse1/800/600', images: img('lote-embalse', 8), featured: true },
-    { id: 'lst-002', slug: 'apto-luxe-charlee-guatape', title: 'Apartamento 183 m² · Luxe by The Charlee', type: 'apartamento', operacion: 'venta', price: 1980000000, currency: 'COP',
+      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: true }, cover: coverOf('lote-embalse'), images: img('lote-embalse'), featured: true },
+    { id: 'lst-002', slug: 'apto-luxe-charlee-guatape', title: 'Apartamento 183 m² · Luxe by The Charlee', titleEn: '183 m² apartment · Luxe by The Charlee', type: 'apartamento', operacion: 'venta', price: 1980000000, currency: 'COP',
       city: 'Guatapé', barrio: 'Tierra Prometida', region: 'Antioquia', area: 183, habitaciones: 2, banos: 2, parqueaderos: 2, estrato: null, administracion: 1650000, ano: 2025,
       amenities: ['Piscina infinita sobre el embalse', 'Spa & wellness', 'Restaurante The Charlee', 'Muelle privado', 'Renta turística administrada', 'Domótica'],
-      description: 'Unidad de dos alcobas con balcón corrido y vista frontal al embalse, dentro del desarrollo Luxe by The Charlee. Entrega amoblada, lista para programa de renta turística Dorum Lifestyle & Experiences.',
+      description: 'Unidad de dos alcobas con balcón corrido y vista frontal al embalse, dentro del desarrollo Luxe by The Charlee. Entrega amoblada, lista para programa de renta turística Dorum Lifestyle & Experiences.', descEn: 'Two-bedroom unit with a wraparound balcony and a front-on view of the reservoir, inside the Luxe by The Charlee development. Delivered furnished, ready for the Dorum Lifestyle & Experiences vacation-rental programme.',
       listedBy: 'u-brk-1', ownerId: null, status: 'activo', stage: 'visitas', daysOnMarket: 61, views: 5320, leads: 41, division: 'real-estate',
-      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: true }, cover: 'https://picsum.photos/seed/charlee2/800/600', images: img('luxe-charlee', 10), featured: true },
-    { id: 'lst-003', slug: 'casa-de-lago-guatape', title: 'Casa de lago con muelle privado', type: 'casa', operacion: 'venta', price: 3900000000, currency: 'COP',
+      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: true }, cover: coverOf('luxe-charlee'), images: img('luxe-charlee'), featured: true },
+    { id: 'lst-003', slug: 'casa-de-lago-guatape', title: 'Casa de lago con muelle privado', titleEn: 'Lake house with private dock', type: 'casa', operacion: 'venta', price: 3900000000, currency: 'COP',
       city: 'Guatapé', barrio: 'Vereda La Piedra', region: 'Antioquia', area: 420, areaLote: 4200, habitaciones: 4, banos: 5, parqueaderos: 4, estrato: null, administracion: 0, ano: 2019,
       amenities: ['Muelle privado con deck', 'Jacuzzi exterior', 'Cocina abierta en madera local', 'Paneles solares', 'Casa de huéspedes', 'Vista a La Piedra del Peñol'],
-      description: 'Casa de descanso de 420 m² sobre lote de 4.200 m² con frente de agua. Arquitectura en madera y piedra, cuatro alcobas con baño, casa de huéspedes independiente. Historial de renta turística verificable.',
+      description: 'Casa de descanso de 420 m² sobre lote de 4.200 m² con frente de agua. Arquitectura en madera y piedra, cuatro alcobas con baño, casa de huéspedes independiente. Historial de renta turística verificable.', descEn: '420 m² weekend home on a 4,200 m² waterfront lot. Timber-and-stone architecture, four en-suite bedrooms and a separate guest house. Verifiable vacation-rental history.',
       listedBy: 'u-brk-1', ownerId: null, status: 'bajo oferta', stage: 'oferta', daysOnMarket: 88, views: 7810, leads: 52, division: 'real-estate',
-      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: false, instagram: true }, cover: 'https://picsum.photos/seed/lago3/800/600', images: img('casa-lago', 12), featured: true },
-    { id: 'lst-004', slug: 'finca-llanogrande-los-sauces', title: 'Finca Los Sauces · Llanogrande', type: 'finca', operacion: 'venta', price: 3450000000, currency: 'COP',
+      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: false, instagram: true }, cover: coverOf('casa-lago'), images: img('casa-lago'), featured: true },
+    { id: 'lst-004', slug: 'finca-llanogrande-los-sauces', title: 'Finca Los Sauces · Llanogrande', titleEn: 'Finca Los Sauces · Llanogrande', type: 'finca', operacion: 'venta', price: 3450000000, currency: 'COP',
       city: 'Rionegro', barrio: 'Llanogrande', region: 'Antioquia', area: 480, areaLote: 8500, habitaciones: 4, banos: 4, parqueaderos: 6, estrato: 6, administracion: 0, ano: 2012,
       amenities: ['Lote de 8.500 m² con jardín maduro', 'Piscina climatizada', 'Casa de mayordomo', 'A 12 min del aeropuerto JMC', 'Kiosco con BBQ', 'Caballeriza'],
-      description: 'Finca de recreo en el corazón de Llanogrande: casa principal de 480 m² en un solo nivel, cuatro alcobas, piscina climatizada y jardín de 8.500 m² con guayacanes y sietecueros.',
+      description: 'Finca de recreo en el corazón de Llanogrande: casa principal de 480 m² en un solo nivel, cuatro alcobas, piscina climatizada y jardín de 8.500 m² con guayacanes y sietecueros.', descEn: 'Country estate in the heart of Llanogrande: 480 m² single-storey main house, four bedrooms, heated pool and an 8,500 m² garden of guayacán and sietecueros trees.',
       listedBy: 'u-brk-1', ownerId: 'u-sel-1', status: 'activo', stage: 'publicado', daysOnMarket: 12, views: 1560, leads: 9, division: 'real-estate',
-      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: false }, cover: 'https://picsum.photos/seed/sauces4/800/600', images: img('finca-sauces', 9), featured: false },
-    { id: 'lst-005', slug: 'casa-campestre-llanogrande-arriendo', title: 'Casa campestre amoblada · Llanogrande', type: 'casa', operacion: 'arriendo', price: 14000000, currency: 'COP', rentalType: 'vivienda',
+      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: false }, cover: coverOf('finca-sauces'), images: img('finca-sauces'), featured: false },
+    { id: 'lst-005', slug: 'casa-campestre-llanogrande-arriendo', title: 'Casa campestre amoblada · Llanogrande', titleEn: 'Furnished country house · Llanogrande', type: 'casa', operacion: 'arriendo', price: 14000000, currency: 'COP', rentalType: 'vivienda',
       city: 'Rionegro', barrio: 'Llanogrande · Parcelación Guayacanes', region: 'Antioquia', area: 360, areaLote: 2600, habitaciones: 4, banos: 4, parqueaderos: 3, estrato: 6, administracion: 950000, ano: 2016,
       amenities: ['Totalmente amoblada', 'Parcelación con portería 24h', 'Chimenea', 'Estudio', 'Zona de mascotas', 'Fibra óptica'],
-      description: 'Casa campestre amoblada en parcelación cerrada, ideal para familias reubicadas o estadías ejecutivas. Canon incluye mantenimiento de jardín.',
+      description: 'Casa campestre amoblada en parcelación cerrada, ideal para familias reubicadas o estadías ejecutivas. Canon incluye mantenimiento de jardín.', descEn: 'Furnished country house in a gated community, ideal for relocating families or executive stays. Rent includes garden upkeep.',
       listedBy: 'u-brk-1', ownerId: 'u-lan-2', status: 'activo', stage: 'visitas', daysOnMarket: 19, views: 980, leads: 7, division: 'lifestyle',
-      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: false, instagram: false }, cover: 'https://picsum.photos/seed/guayacan5/800/600', images: img('casa-guayacanes', 7), featured: false },
-    { id: 'lst-006', slug: 'finca-cafetera-guarne', title: 'Finca cafetera con casa restaurada', type: 'finca', operacion: 'venta', price: 2100000000, currency: 'COP',
+      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: false, instagram: false }, cover: coverOf('casa-guayacanes'), images: img('casa-guayacanes'), featured: false },
+    { id: 'lst-006', slug: 'finca-cafetera-guarne', title: 'Finca cafetera con casa restaurada', titleEn: 'Coffee finca with restored farmhouse', type: 'finca', operacion: 'venta', price: 2100000000, currency: 'COP',
       city: 'Guarne', barrio: 'Vereda San Ignacio', region: 'Antioquia', area: 310, areaLote: 32000, habitaciones: 5, banos: 3, parqueaderos: 4, estrato: null, administracion: 0, ano: 1948,
       amenities: ['3,2 ha con café y bosque nativo', 'Casa de bahareque restaurada', 'Nacimiento de agua propio', 'Beneficiadero', 'Apta para glamping', 'A 35 min de Medellín'],
-      description: 'Finca tradicional antioqueña restaurada con criterio patrimonial. Tres hectáreas con café en producción, bosque nativo y nacimiento de agua. Potencial para proyecto de experiencias Dorum.',
+      description: 'Finca tradicional antioqueña restaurada con criterio patrimonial. Tres hectáreas con café en producción, bosque nativo y nacimiento de agua. Potencial para proyecto de experiencias Dorum.', descEn: 'Traditional Antioquian finca restored with heritage criteria. Three hectares of producing coffee, native forest and its own spring. Potential for a Dorum experiences project.',
       listedBy: 'u-brk-1', ownerId: null, status: 'en preparación', stage: 'preparacion', daysOnMarket: 0, views: 0, leads: 0, division: 'real-estate',
-      syndication: { fincaRaiz: false, wasi: false, metrocuadrado: false, instagram: false }, cover: 'https://picsum.photos/seed/cafetal6/800/600', images: img('finca-cafetera', 4), featured: false },
-    { id: 'lst-007', slug: 'casa-el-retiro-fizebad', title: 'Casa moderna en El Retiro · sector Fizebad', type: 'casa', operacion: 'venta', price: 2650000000, currency: 'COP',
+      syndication: { fincaRaiz: false, wasi: false, metrocuadrado: false, instagram: false }, cover: coverOf('finca-cafetera'), images: img('finca-cafetera'), featured: false },
+    { id: 'lst-007', slug: 'casa-el-retiro-fizebad', title: 'Casa moderna en El Retiro · sector Fizebad', titleEn: 'Modern house in El Retiro · Fizebad', type: 'casa', operacion: 'venta', price: 2650000000, currency: 'COP',
       city: 'El Retiro', barrio: 'Fizebad', region: 'Antioquia', area: 390, areaLote: 3100, habitaciones: 4, banos: 5, parqueaderos: 4, estrato: 6, administracion: 720000, ano: 2021,
       amenities: ['Diseño Dorum Projects', 'Certificación sostenible', 'Recolección de aguas lluvias', 'Techo verde', 'Vista a la represa La Fe', 'Home office'],
-      description: 'Casa de arquitectura contemporánea firmada por Dorum Projects: concreto a la vista, madera y vidrio, con estrategias pasivas de climatización y vista a la represa La Fe.',
+      description: 'Casa de arquitectura contemporánea firmada por Dorum Projects: concreto a la vista, madera y vidrio, con estrategias pasivas de climatización y vista a la represa La Fe.', descEn: 'Contemporary house signed by Dorum Projects: exposed concrete, timber and glass, with passive climate strategies and a view of the La Fe reservoir.',
       listedBy: 'u-brk-2', ownerId: null, status: 'activo', stage: 'publicado', daysOnMarket: 7, views: 640, leads: 4, division: 'projects',
-      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: true }, cover: 'https://picsum.photos/seed/retiro7/800/600', images: img('casa-retiro', 8), featured: true },
-    { id: 'lst-008', slug: 'apto-provenza-el-poblado', title: 'Apartamento en Provenza con terraza', type: 'apartamento', operacion: 'venta', price: 1350000000, currency: 'COP',
+      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: true }, cover: coverOf('casa-retiro'), images: img('casa-retiro'), featured: true },
+    { id: 'lst-008', slug: 'apto-provenza-el-poblado', title: 'Apartamento en Provenza con terraza', titleEn: 'Provenza apartment with terrace', type: 'apartamento', operacion: 'venta', price: 1350000000, currency: 'COP',
       city: 'Medellín', barrio: 'El Poblado · Provenza', region: 'Antioquia', area: 165, habitaciones: 3, banos: 3, parqueaderos: 2, estrato: 6, administracion: 1180000, ano: 2017,
       amenities: ['Terraza de 28 m²', 'Piso 12 con vista a las montañas', 'Gimnasio y piscina', 'Cuarto útil', 'Portería 24h', 'A dos cuadras del Parque Lleras'],
-      description: 'Tres alcobas y terraza en el sector más caminable de El Poblado. Edificio de 2017 con amenidades completas. Ideal para vivienda o renta corporativa.',
+      description: 'Tres alcobas y terraza en el sector más caminable de El Poblado. Edificio de 2017 con amenidades completas. Ideal para vivienda o renta corporativa.', descEn: 'Three bedrooms and a terrace in the most walkable part of El Poblado. 2017 building with full amenities. Ideal as a home or for corporate rental.',
       listedBy: 'u-brk-2', ownerId: 'u-sel-1', status: 'activo', stage: 'visitas', daysOnMarket: 45, views: 3410, leads: 27, division: 'real-estate',
-      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: false }, cover: 'https://picsum.photos/seed/provenza8/800/600', images: img('apto-provenza', 10), featured: false },
-    { id: 'lst-009', slug: 'penthouse-los-balsos', title: 'Penthouse dúplex · Los Balsos', type: 'penthouse', operacion: 'venta', price: 3100000000, currency: 'COP',
+      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: false }, cover: coverOf('apto-provenza'), images: img('apto-provenza'), featured: false },
+    { id: 'lst-009', slug: 'penthouse-los-balsos', title: 'Penthouse dúplex · Los Balsos', titleEn: 'Duplex penthouse · Los Balsos', type: 'penthouse', operacion: 'venta', price: 3100000000, currency: 'COP',
       city: 'Medellín', barrio: 'El Poblado · Los Balsos', region: 'Antioquia', area: 340, habitaciones: 4, banos: 5, parqueaderos: 4, estrato: 6, administracion: 2400000, ano: 2020,
       amenities: ['Dúplex con jacuzzi en cubierta', 'Vista a todo el valle', 'Ascensor privado', 'Bodega de vinos', 'Cocina italiana', 'Sistema de sonido integrado'],
-      description: 'Penthouse dúplex de 340 m² con terraza-cubierta privada y jacuzzi. Cuatro alcobas con vestier, ascensor directo al apartamento.',
+      description: 'Penthouse dúplex de 340 m² con terraza-cubierta privada y jacuzzi. Cuatro alcobas con vestier, ascensor directo al apartamento.', descEn: '340 m² duplex penthouse with a private rooftop terrace and jacuzzi. Four bedrooms with walk-in closets, private elevator straight into the apartment.',
       listedBy: 'u-brk-2', ownerId: null, status: 'borrador', stage: 'captacion', daysOnMarket: 0, views: 0, leads: 0, division: 'real-estate',
-      syndication: { fincaRaiz: false, wasi: false, metrocuadrado: false, instagram: false }, cover: 'https://picsum.photos/seed/balsos9/800/600', images: img('penthouse-balsos', 3), featured: false },
-    { id: 'lst-010', slug: 'apto-laureles-arriendo', title: 'Apartamento luminoso en Laureles', type: 'apartamento', operacion: 'arriendo', price: 4500000, currency: 'COP', rentalType: 'vivienda',
+      syndication: { fincaRaiz: false, wasi: false, metrocuadrado: false, instagram: false }, cover: coverOf('penthouse-balsos'), images: img('penthouse-balsos'), featured: false },
+    { id: 'lst-010', slug: 'apto-laureles-arriendo', title: 'Apartamento luminoso en Laureles', titleEn: 'Bright apartment in Laureles', type: 'apartamento', operacion: 'arriendo', price: 4500000, currency: 'COP', rentalType: 'vivienda',
       city: 'Medellín', barrio: 'Laureles · Primer Parque', region: 'Antioquia', area: 98, habitaciones: 2, banos: 2, parqueaderos: 1, estrato: 5, administracion: 520000, ano: 2014,
       amenities: ['Balcón con vista al parque', 'Cocina integral', 'Zona de ropas', 'Edificio con gimnasio', 'A 5 min del Estadio', 'Pet friendly'],
-      description: 'Dos alcobas con balcón sobre el Primer Parque de Laureles. Edificio tranquilo, excelente iluminación natural, disponible desde el 1 de octubre.',
+      description: 'Dos alcobas con balcón sobre el Primer Parque de Laureles. Edificio tranquilo, excelente iluminación natural, disponible desde el 1 de octubre.', descEn: 'Two bedrooms with a balcony over Laureles\' Primer Parque. Quiet building, excellent natural light, available from 1 October.',
       listedBy: 'u-brk-2', ownerId: 'u-lan-1', status: 'arrendado', stage: 'arrendado', daysOnMarket: 16, views: 2210, leads: 33, division: 'lifestyle',
-      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: false }, cover: 'https://picsum.photos/seed/laureles10/800/600', images: img('apto-laureles', 8), featured: false },
-    { id: 'lst-011', slug: 'apto-envigado-esmeraldal', title: 'Apartamento familiar · Loma del Esmeraldal', type: 'apartamento', operacion: 'venta', price: 850000000, currency: 'COP',
+      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: false }, cover: coverOf('apto-laureles'), images: img('apto-laureles'), featured: false },
+    { id: 'lst-011', slug: 'apto-envigado-esmeraldal', title: 'Apartamento familiar · Loma del Esmeraldal', titleEn: 'Family apartment · Loma del Esmeraldal', type: 'apartamento', operacion: 'venta', price: 850000000, currency: 'COP',
       city: 'Envigado', barrio: 'Loma del Esmeraldal', region: 'Antioquia', area: 126, habitaciones: 3, banos: 3, parqueaderos: 2, estrato: 5, administracion: 690000, ano: 2019,
       amenities: ['Unidad cerrada con piscina', 'Salón social', 'Parque infantil', 'Vista a la reserva', 'Cuarto útil', 'Cerca a la Vía Las Palmas'],
-      description: 'Tres alcobas en unidad cerrada con zonas verdes y vista a la reserva El Romeral. Envigado tuvo la mayor valorización del Valle de Aburrá en 2025.',
+      description: 'Tres alcobas en unidad cerrada con zonas verdes y vista a la reserva El Romeral. Envigado tuvo la mayor valorización del Valle de Aburrá en 2025.', descEn: 'Three bedrooms in a gated complex with green areas and a view of the El Romeral reserve. Envigado saw the highest appreciation in the Aburrá Valley in 2025.',
       listedBy: 'u-brk-2', ownerId: null, status: 'activo', stage: 'oferta', daysOnMarket: 52, views: 2870, leads: 21, division: 'real-estate',
-      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: false }, cover: 'https://picsum.photos/seed/envigado11/800/600', images: img('apto-envigado', 7), featured: false },
-    { id: 'lst-012', slug: 'casa-descanso-guatape-vacacional', title: 'Casa de descanso frente al embalse · renta vacacional', type: 'casa', operacion: 'arriendo', price: 2400000, currency: 'COP', rentalType: 'vacacional', priceUnit: 'noche',
+      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: false }, cover: coverOf('apto-envigado'), images: img('apto-envigado'), featured: false },
+    { id: 'lst-012', slug: 'casa-descanso-guatape-vacacional', title: 'Casa de descanso frente al embalse · renta vacacional', titleEn: 'Weekend house on the reservoir · vacation rental', type: 'casa', operacion: 'arriendo', price: 2400000, currency: 'COP', rentalType: 'vacacional', priceUnit: 'noche',
       city: 'Guatapé', barrio: 'Vereda El Roble', region: 'Antioquia', area: 260, areaLote: 1900, habitaciones: 3, banos: 3, parqueaderos: 3, estrato: null, administracion: 0, ano: 2022,
       amenities: ['Hasta 8 huéspedes', 'Kayaks y paddle incluidos', 'Jacuzzi con vista', 'Chef bajo pedido (Lifestyle)', 'Check-in sin contacto', 'Ocupación 2025: 71%'],
-      description: 'Propiedad del programa Dorum Lifestyle & Experiences. Casa de tres alcobas frente al agua, administrada integralmente: reservas, limpieza, experiencias y liquidación mensual al propietario.',
+      description: 'Propiedad del programa Dorum Lifestyle & Experiences. Casa de tres alcobas frente al agua, administrada integralmente: reservas, limpieza, experiencias y liquidación mensual al propietario.', descEn: 'A Dorum Lifestyle & Experiences programme property. Three-bedroom waterfront house, fully managed: bookings, cleaning, experiences and a monthly owner statement.',
       listedBy: 'u-brk-1', ownerId: 'u-lan-2', status: 'activo', stage: 'arrendado', daysOnMarket: 210, views: 12400, leads: 96, division: 'lifestyle',
-      syndication: { fincaRaiz: false, wasi: false, metrocuadrado: false, instagram: true }, cover: 'https://picsum.photos/seed/roble12/800/600', images: img('casa-roble', 9), featured: true },
-    { id: 'lst-013', slug: 'apto-bocagrande-cartagena', title: 'Apartamento frente al mar · Bocagrande', type: 'apartamento', operacion: 'venta', price: 1650000000, currency: 'COP',
+      syndication: { fincaRaiz: false, wasi: false, metrocuadrado: false, instagram: true }, cover: coverOf('casa-roble'), images: img('casa-roble'), featured: true },
+    { id: 'lst-013', slug: 'apto-bocagrande-cartagena', title: 'Apartamento frente al mar · Bocagrande', titleEn: 'Beachfront apartment · Bocagrande', type: 'apartamento', operacion: 'venta', price: 1650000000, currency: 'COP',
       city: 'Cartagena', barrio: 'Bocagrande', region: 'Bolívar', area: 142, habitaciones: 3, banos: 3, parqueaderos: 1, estrato: 6, administracion: 1350000, ano: 2015,
       amenities: ['Vista frontal al mar Caribe', 'Piscina en piso 20', 'Amoblado', 'Renta turística permitida', 'A 10 min del Centro Histórico', 'Generador eléctrico'],
-      description: 'Tres alcobas con vista frontal al mar en Bocagrande. Edificio con reglamento que permite renta turística; historial de ocupación disponible.',
+      description: 'Tres alcobas con vista frontal al mar en Bocagrande. Edificio con reglamento que permite renta turística; historial de ocupación disponible.', descEn: 'Three bedrooms with a front-on view of the Caribbean in Bocagrande. Building rules allow short-term rental; occupancy history available.',
       listedBy: 'u-brk-3', ownerId: null, status: 'activo', stage: 'publicado', daysOnMarket: 23, views: 1890, leads: 12, division: 'real-estate',
-      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: true }, cover: 'https://picsum.photos/seed/bocagrande13/800/600', images: img('apto-bocagrande', 8), featured: false },
-    { id: 'lst-014', slug: 'villa-tulum-aldea-zama', title: 'Villa en la selva · Aldea Zamá, Tulum', type: 'casa', operacion: 'venta', price: 890000, currency: 'USD', international: true,
+      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: true }, cover: coverOf('apto-bocagrande'), images: img('apto-bocagrande'), featured: false },
+    { id: 'lst-014', slug: 'villa-tulum-aldea-zama', title: 'Villa en la selva · Aldea Zamá, Tulum', titleEn: 'Jungle villa · Aldea Zamá, Tulum', type: 'casa', operacion: 'venta', price: 890000, currency: 'USD', international: true,
       city: 'Tulum', barrio: 'Aldea Zamá', region: 'Quintana Roo', country: 'México', area: 310, areaLote: 800, habitaciones: 4, banos: 4, parqueaderos: 2, estrato: null, administracion: 0, ano: 2023,
       amenities: ['Piscina privada', 'Rooftop con vista a la selva', 'Cenote a 5 min', 'Renta vacacional activa', 'Diseño bioclimático', 'Fideicomiso listo'],
-      description: 'Villa de cuatro recámaras en Aldea Zamá con alberca privada y rooftop. Parte del portafolio internacional Dorum (Colombia · México · Dubái). Precio en USD.',
+      description: 'Villa de cuatro recámaras en Aldea Zamá con alberca privada y rooftop. Parte del portafolio internacional Dorum (Colombia · México · Dubái). Precio en USD.', descEn: 'Four-bedroom villa in Aldea Zamá with a private pool and rooftop. Part of the Dorum international portfolio (Colombia · Mexico · Dubai). Price in USD.',
       listedBy: 'u-brk-3', ownerId: null, status: 'activo', stage: 'publicado', daysOnMarket: 40, views: 2230, leads: 15, division: 'real-estate',
-      syndication: { fincaRaiz: false, wasi: false, metrocuadrado: false, instagram: true }, cover: 'https://picsum.photos/seed/tulum14/800/600', images: img('villa-tulum', 9), featured: true },
-    { id: 'lst-015', slug: 'oficina-milla-de-oro', title: 'Oficina en la Milla de Oro', type: 'oficina', operacion: 'arriendo', price: 9800000, currency: 'COP', rentalType: 'comercial',
+      syndication: { fincaRaiz: false, wasi: false, metrocuadrado: false, instagram: true }, cover: coverOf('villa-tulum'), images: img('villa-tulum'), featured: true },
+    { id: 'lst-015', slug: 'oficina-milla-de-oro', title: 'Oficina en la Milla de Oro', titleEn: 'Office on the Milla de Oro', type: 'oficina', operacion: 'arriendo', price: 9800000, currency: 'COP', rentalType: 'comercial',
       city: 'Medellín', barrio: 'El Poblado · Milla de Oro', region: 'Antioquia', area: 140, habitaciones: 0, banos: 2, parqueaderos: 3, estrato: null, administracion: 1900000, ano: 2018,
       amenities: ['Piso 9 con vista', 'Aire acondicionado central', 'Sala de juntas dotada', 'Recepción compartida', 'Bicicletero', 'Certificación LEED'],
-      description: 'Oficina abierta de 140 m² en edificio corporativo de la Milla de Oro. Entregada con cableado estructurado y sala de juntas.',
+      description: 'Oficina abierta de 140 m² en edificio corporativo de la Milla de Oro. Entregada con cableado estructurado y sala de juntas.', descEn: '140 m² open-plan office in a corporate building on the Milla de Oro. Delivered with structured cabling and a meeting room.',
       listedBy: 'u-brk-2', ownerId: 'u-lan-1', status: 'arrendado', stage: 'arrendado', daysOnMarket: 38, views: 760, leads: 6, division: 'real-estate',
-      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: false }, cover: 'https://picsum.photos/seed/oficina15/800/600', images: img('oficina-milla', 5), featured: false }
+      syndication: { fincaRaiz: true, wasi: true, metrocuadrado: true, instagram: false }, cover: coverOf('oficina-milla'), images: img('oficina-milla'), featured: false }
   ];
 
   D.pipelineStages = [
-    { id: 'captacion', label: 'Captación', pipeline: 'get' },
-    { id: 'preparacion', label: 'En preparación', pipeline: 'market' },
-    { id: 'publicado', label: 'Publicado', pipeline: 'market' },
-    { id: 'visitas', label: 'Visitas', pipeline: 'sell' },
-    { id: 'oferta', label: 'Bajo oferta', pipeline: 'sell' },
-    { id: 'cierre', label: 'Cierre', pipeline: 'close' },
-    { id: 'vendido', label: 'Vendido', pipeline: 'close' },
-    { id: 'arrendado', label: 'Arrendado', pipeline: 'rental' }
+    { id: 'captacion', label: 'Captación', labelEn: 'Acquisition', pipeline: 'get' },
+    { id: 'preparacion', label: 'En preparación', labelEn: 'In preparation', pipeline: 'market' },
+    { id: 'publicado', label: 'Publicado', labelEn: 'Published', pipeline: 'market' },
+    { id: 'visitas', label: 'Visitas', labelEn: 'Visits', pipeline: 'sell' },
+    { id: 'oferta', label: 'Bajo oferta', labelEn: 'Under offer', pipeline: 'sell' },
+    { id: 'cierre', label: 'Cierre', labelEn: 'Closing', pipeline: 'close' },
+    { id: 'vendido', label: 'Vendido', labelEn: 'Sold', pipeline: 'close' },
+    { id: 'arrendado', label: 'Arrendado', labelEn: 'Rented', pipeline: 'rental' }
   ];
 
   /* ---------------------------------------------------------- contacts/leads */
@@ -349,42 +371,42 @@
   /* ------------------------------------------------------------------- tasks */
   // status: pendiente | en curso | revisión | listo | bloqueado
   D.tasks = [
-    { id: 't-001', listingId: 'lst-006', title: 'Sesión de fotos, video y dron · Finca cafetera', assignee: 'u-photo', due: '2026-09-19', status: 'en curso', aiDrafted: false, kind: 'photography', order: { amount: 1850000, pkg: 'Premium: 40 fotos + video 90 s + dron' } },
-    { id: 't-002', listingId: 'lst-006', title: 'Redacción ES/EN · Finca cafetera', assignee: 'u-writer', due: '2026-09-22', status: 'revisión', aiDrafted: true, kind: 'writing', note: 'Borrador AI listo (320 palabras). Revisar tono "patrimonial".' },
-    { id: 't-003', listingId: 'lst-006', title: 'Comps & datos de mercado · Guarne / Oriente', assignee: 'u-writer', due: '2026-09-20', status: 'listo', aiDrafted: true, kind: 'research', note: '6 comparables en 12 km. Precio sugerido COP 2.050–2.200 M.' },
-    { id: 't-004', listingId: 'lst-006', title: 'Gráficos y video para pauta', assignee: 'u-adv', due: '2026-09-24', status: 'pendiente', aiDrafted: false, kind: 'creative' },
-    { id: 't-005', listingId: 'lst-006', title: 'Cotización restauración beneficiadero → glamping', assignee: 'u-constr', due: '2026-09-30', status: 'pendiente', aiDrafted: false, kind: 'construction', optional: true },
-    { id: 't-006', listingId: 'lst-006', title: 'Validar payload Finca Raíz / Wasi / Metrocuadrado', assignee: 'u-sadmin', due: '2026-09-25', status: 'bloqueado', aiDrafted: true, kind: 'publishing', note: 'Bloqueado por t-001 (fotos).' },
-    { id: 't-007', listingId: 'lst-004', title: 'Reel Instagram · Finca Los Sauces', assignee: 'u-adv', due: '2026-09-18', status: 'revisión', aiDrafted: true, kind: 'creative', note: 'AI seleccionó 9 clips; falta aprobar música.' },
-    { id: 't-008', listingId: 'lst-004', title: 'Abrir campaña Meta · COP 1.200.000 / 14 días', assignee: 'u-adv', due: '2026-09-19', status: 'pendiente', aiDrafted: true, kind: 'ads' },
-    { id: 't-009', listingId: 'lst-003', title: 'Redactar contraoferta a Emily Chen (COP 3.780 M)', assignee: 'u-brk-1', due: '2026-09-17', status: 'revisión', aiDrafted: true, kind: 'negotiation', note: 'AI propone 3.780 M con cierre en 45 días. Aprobar o editar.' },
-    { id: 't-010', listingId: 'lst-011', title: 'Preparar promesa de compraventa · Esmeraldal', assignee: 'u-lawyer', due: '2026-09-23', status: 'pendiente', aiDrafted: true, kind: 'contract' },
-    { id: 't-011', listingId: 'lst-010', title: 'Inventario de entrada · Laureles', assignee: 'u-radmin', due: '2026-09-25', status: 'pendiente', aiDrafted: false, kind: 'rental' },
-    { id: 't-012', listingId: 'lst-009', title: 'Visita de captación y firma acuerdo · Penthouse Los Balsos', assignee: 'u-brk-2', due: '2026-09-18', status: 'en curso', aiDrafted: false, kind: 'capture' },
-    { id: 't-013', listingId: 'lst-009', title: 'Sugerir precio de lista (comps El Poblado alto)', assignee: 'u-brk-2', due: '2026-09-18', status: 'listo', aiDrafted: true, kind: 'research', note: 'Rango AI: COP 2.950–3.250 M · 8,9 M/m².' },
-    { id: 't-014', listingId: 'lst-002', title: 'Traducir ficha y responder lead Austin (EN)', assignee: 'u-brk-3', due: '2026-09-17', status: 'revisión', aiDrafted: true, kind: 'followup' },
-    { id: 't-015', listingId: 'lst-012', title: 'Programar limpieza y chef · reserva 20–22 sep', assignee: 'u-radmin', due: '2026-09-19', status: 'en curso', aiDrafted: true, kind: 'lifestyle' },
-    { id: 't-016', listingId: 'lst-013', title: 'Recibir paz y salvo administración · Bocagrande', assignee: 'u-sadmin', due: '2026-09-26', status: 'pendiente', aiDrafted: false, kind: 'paperwork' },
-    { id: 't-017', listingId: null, title: 'Liquidación mensual propietarios Lifestyle · septiembre', assignee: 'u-acct', due: '2026-10-03', status: 'pendiente', aiDrafted: true, kind: 'money' },
-    { id: 't-018', listingId: 'lst-007', title: 'Revisar 3 redlines del comprador en acuerdo de reserva', assignee: 'u-lawyer', due: '2026-09-20', status: 'en curso', aiDrafted: false, kind: 'contract' }
+    { id: 't-001', listingId: 'lst-006', title: 'Sesión de fotos, video y dron · Finca cafetera', titleEn: 'Photo, video & drone shoot · Coffee finca', assignee: 'u-photo', due: '2026-09-19', status: 'en curso', aiDrafted: false, kind: 'photography', order: { amount: 1850000, pkg: 'Premium: 40 fotos + video 90 s + dron' } },
+    { id: 't-002', listingId: 'lst-006', title: 'Redacción ES/EN · Finca cafetera', titleEn: 'Write-up ES/EN · Coffee finca', assignee: 'u-writer', due: '2026-09-22', status: 'revisión', aiDrafted: true, kind: 'writing', note: 'Borrador AI listo (320 palabras). Revisar tono "patrimonial".' },
+    { id: 't-003', listingId: 'lst-006', title: 'Comps & datos de mercado · Guarne / Oriente', titleEn: 'Comps & market data · Guarne / Oriente', assignee: 'u-writer', due: '2026-09-20', status: 'listo', aiDrafted: true, kind: 'research', note: '6 comparables en 12 km. Precio sugerido COP 2.050–2.200 M.' },
+    { id: 't-004', listingId: 'lst-006', title: 'Gráficos y video para pauta', titleEn: 'Graphics & video for ads', assignee: 'u-adv', due: '2026-09-24', status: 'pendiente', aiDrafted: false, kind: 'creative' },
+    { id: 't-005', listingId: 'lst-006', title: 'Cotización restauración beneficiadero → glamping', titleEn: 'Quote: mill restoration → glamping', assignee: 'u-constr', due: '2026-09-30', status: 'pendiente', aiDrafted: false, kind: 'construction', optional: true },
+    { id: 't-006', listingId: 'lst-006', title: 'Validar payload Finca Raíz / Wasi / Metrocuadrado', titleEn: 'Validate Finca Raíz / Wasi / Metrocuadrado payload', assignee: 'u-sadmin', due: '2026-09-25', status: 'bloqueado', aiDrafted: true, kind: 'publishing', note: 'Bloqueado por t-001 (fotos).' },
+    { id: 't-007', listingId: 'lst-004', title: 'Reel Instagram · Finca Los Sauces', titleEn: 'Instagram reel · Finca Los Sauces', assignee: 'u-adv', due: '2026-09-18', status: 'revisión', aiDrafted: true, kind: 'creative', note: 'AI seleccionó 9 clips; falta aprobar música.' },
+    { id: 't-008', listingId: 'lst-004', title: 'Abrir campaña Meta · COP 1.200.000 / 14 días', titleEn: 'Open Meta campaign · COP 1.200.000 / 14 days', assignee: 'u-adv', due: '2026-09-19', status: 'pendiente', aiDrafted: true, kind: 'ads' },
+    { id: 't-009', listingId: 'lst-003', title: 'Redactar contraoferta a Emily Chen (COP 3.780 M)', titleEn: 'Draft counter-offer to Emily Chen (COP 3.780 M)', assignee: 'u-brk-1', due: '2026-09-17', status: 'revisión', aiDrafted: true, kind: 'negotiation', note: 'AI propone 3.780 M con cierre en 45 días. Aprobar o editar.' },
+    { id: 't-010', listingId: 'lst-011', title: 'Preparar promesa de compraventa · Esmeraldal', titleEn: 'Prepare purchase agreement · Esmeraldal', assignee: 'u-lawyer', due: '2026-09-23', status: 'pendiente', aiDrafted: true, kind: 'contract' },
+    { id: 't-011', listingId: 'lst-010', title: 'Inventario de entrada · Laureles', titleEn: 'Move-in inventory · Laureles', assignee: 'u-radmin', due: '2026-09-25', status: 'pendiente', aiDrafted: false, kind: 'rental' },
+    { id: 't-012', listingId: 'lst-009', title: 'Visita de captación y firma acuerdo · Penthouse Los Balsos', titleEn: 'Acquisition visit & agreement signing · Penthouse Los Balsos', assignee: 'u-brk-2', due: '2026-09-18', status: 'en curso', aiDrafted: false, kind: 'capture' },
+    { id: 't-013', listingId: 'lst-009', title: 'Sugerir precio de lista (comps El Poblado alto)', titleEn: 'Suggest list price (upper El Poblado comps)', assignee: 'u-brk-2', due: '2026-09-18', status: 'listo', aiDrafted: true, kind: 'research', note: 'Rango AI: COP 2.950–3.250 M · 8,9 M/m².' },
+    { id: 't-014', listingId: 'lst-002', title: 'Traducir ficha y responder lead Austin (EN)', titleEn: 'Translate listing & reply to Austin lead (EN)', assignee: 'u-brk-3', due: '2026-09-17', status: 'revisión', aiDrafted: true, kind: 'followup' },
+    { id: 't-015', listingId: 'lst-012', title: 'Programar limpieza y chef · reserva 20–22 sep', titleEn: 'Schedule cleaning & chef · booking 20–22 Sep', assignee: 'u-radmin', due: '2026-09-19', status: 'en curso', aiDrafted: true, kind: 'lifestyle' },
+    { id: 't-016', listingId: 'lst-013', title: 'Recibir paz y salvo administración · Bocagrande', titleEn: 'Receive HOA clearance · Bocagrande', assignee: 'u-sadmin', due: '2026-09-26', status: 'pendiente', aiDrafted: false, kind: 'paperwork' },
+    { id: 't-017', listingId: null, title: 'Liquidación mensual propietarios Lifestyle · septiembre', titleEn: 'Monthly Lifestyle owner payouts · September', assignee: 'u-acct', due: '2026-10-03', status: 'pendiente', aiDrafted: true, kind: 'money' },
+    { id: 't-018', listingId: 'lst-007', title: 'Revisar 3 redlines del comprador en acuerdo de reserva', titleEn: 'Review 3 buyer redlines on reservation agreement', assignee: 'u-lawyer', due: '2026-09-20', status: 'en curso', aiDrafted: false, kind: 'contract' }
   ];
 
   /* --------------------------------------------------------------- contracts */
   // signStatus per signer: pendiente | enviado | firmado
   D.contracts = [
-    { id: 'k-001', type: 'Acuerdo de corretaje · venta', dealId: 'd-001', listingId: 'lst-003', version: 3, redlines: 0, status: 'firmado', aiDrafted: true, lawyerApproved: true,
+    { id: 'k-001', type: 'Acuerdo de corretaje · venta', typeEn: 'Listing agreement · sale', dealId: 'd-001', listingId: 'lst-003', version: 3, redlines: 0, status: 'firmado', aiDrafted: true, lawyerApproved: true,
       signers: [{ userId: 'u-owner', status: 'firmado', at: '2026-06-20' }, { name: 'Propietario Casa de lago', status: 'firmado', at: '2026-06-20' }], updated: '2026-06-20', clauses: 14, exclusive: true, termMonths: 6 },
-    { id: 'k-002', type: 'Contraoferta', dealId: 'd-001', listingId: 'lst-003', version: 1, redlines: 2, status: 'borrador', aiDrafted: true, lawyerApproved: false,
+    { id: 'k-002', type: 'Contraoferta', typeEn: 'Counter-offer', dealId: 'd-001', listingId: 'lst-003', version: 1, redlines: 2, status: 'borrador', aiDrafted: true, lawyerApproved: false,
       signers: [{ userId: 'u-buy-1', status: 'pendiente' }], updated: '2026-09-16', clauses: 6, note: 'AI propone COP 3.780 M · entrega 45 días · muebles incluidos' },
-    { id: 'k-003', type: 'Promesa de compraventa', dealId: 'd-002', listingId: 'lst-011', version: 2, redlines: 4, status: 'en negociación', aiDrafted: true, lawyerApproved: false,
+    { id: 'k-003', type: 'Promesa de compraventa', typeEn: 'Purchase agreement (promesa)', dealId: 'd-002', listingId: 'lst-011', version: 2, redlines: 4, status: 'en negociación', aiDrafted: true, lawyerApproved: false,
       signers: [{ userId: 'u-buy-2', status: 'pendiente' }, { name: 'Propietario Esmeraldal', status: 'pendiente' }], updated: '2026-09-16', clauses: 18, note: 'Comprador pide arras 5 % en vez de 10 %; fecha escritura 30 nov.' },
-    { id: 'k-004', type: 'Contrato de arrendamiento · vivienda', dealId: 'd-004', listingId: 'lst-010', version: 2, redlines: 1, status: 'firmado', aiDrafted: true, lawyerApproved: true,
+    { id: 'k-004', type: 'Contrato de arrendamiento · vivienda', typeEn: 'Lease agreement · residential', dealId: 'd-004', listingId: 'lst-010', version: 2, redlines: 1, status: 'firmado', aiDrafted: true, lawyerApproved: true,
       signers: [{ userId: 'u-lan-1', status: 'firmado', at: '2026-09-08' }, { userId: 'u-ren-2', status: 'firmado', at: '2026-09-08' }, { name: 'Afianzadora El Libertador', status: 'firmado', at: '2026-09-09' }], updated: '2026-09-09', clauses: 22, termMonths: 12 },
-    { id: 'k-005', type: 'Inventario de entrada', dealId: 'd-004', listingId: 'lst-010', version: 1, redlines: 0, status: 'pendiente', aiDrafted: false, lawyerApproved: false,
+    { id: 'k-005', type: 'Inventario de entrada', typeEn: 'Move-in inventory', dealId: 'd-004', listingId: 'lst-010', version: 1, redlines: 0, status: 'pendiente', aiDrafted: false, lawyerApproved: false,
       signers: [{ userId: 'u-lan-1', status: 'pendiente' }, { userId: 'u-ren-2', status: 'pendiente' }], updated: '2026-09-16', clauses: 0, note: 'Se genera desde las fotos del recorrido del 25 sep.' },
-    { id: 'k-006', type: 'Acuerdo de corretaje · arriendo (Lifestyle)', dealId: 'd-005', listingId: 'lst-012', version: 1, redlines: 0, status: 'firmado', aiDrafted: true, lawyerApproved: true,
+    { id: 'k-006', type: 'Acuerdo de corretaje · arriendo (Lifestyle)', typeEn: 'Listing agreement · rental (Lifestyle)', dealId: 'd-005', listingId: 'lst-012', version: 1, redlines: 0, status: 'firmado', aiDrafted: true, lawyerApproved: true,
       signers: [{ userId: 'u-lan-2', status: 'firmado', at: '2026-02-14' }, { userId: 'u-owner', status: 'firmado', at: '2026-02-14' }], updated: '2026-02-14', clauses: 16, termMonths: 24 },
-    { id: 'k-007', type: 'Acuerdo de corretaje · venta', dealId: null, listingId: 'lst-009', version: 1, redlines: 0, status: 'enviado', aiDrafted: true, lawyerApproved: true,
+    { id: 'k-007', type: 'Acuerdo de corretaje · venta', typeEn: 'Listing agreement · sale', dealId: null, listingId: 'lst-009', version: 1, redlines: 0, status: 'enviado', aiDrafted: true, lawyerApproved: true,
       signers: [{ name: 'Propietario Penthouse Los Balsos', status: 'enviado' }, { userId: 'u-owner', status: 'pendiente' }], updated: '2026-09-16', clauses: 14, exclusive: true, termMonths: 6 }
   ];
 
@@ -436,31 +458,31 @@
 
   /* --------------------------------------------------------------- lifestyle */
   D.lifestyle = [
-    { id: 'ls-house', name: 'Housekeeping', nameEs: 'Aseo y mantenimiento', status: 'coming-soon', icon: '🧹', desc: 'Limpieza programada, lavandería y mantenimiento preventivo para casas de descanso y rentas.' },
-    { id: 'ls-food', name: 'Food delivery & chef', nameEs: 'Mercado, chef y delivery', status: 'coming-soon', icon: '🍽️', desc: 'Nevera llena al llegar, chef privado a la orilla del embalse, cenas de bienvenida.' },
-    { id: 'ls-act', name: 'Activities', nameEs: 'Experiencias', status: 'pilot', icon: '🚤', desc: 'Kayak al amanecer, La Piedra al atardecer, caminatas de bosque, yoga en muelle.' },
-    { id: 'ls-trans', name: 'Transportation', nameEs: 'Transporte', status: 'coming-soon', icon: '🚐', desc: 'Traslados aeropuerto JMC ↔ Guatapé, lancha privada, conductor por día.' },
-    { id: 'ls-conc', name: 'Concierge', nameEs: 'Concierge', status: 'coming-soon', icon: '🔑', desc: 'Un WhatsApp para todo: reservas, recomendaciones, emergencias, llaves.' },
-    { id: 'ls-remodel', name: 'Remodeling', nameEs: 'Remodelación', status: 'coming-soon', icon: '🪵', desc: 'Dorum Projects renueva cocinas, terrazas y muelles con materiales locales y criterio sostenible.' },
-    { id: 'ls-build', name: 'Construction from scratch', nameEs: 'Construcción desde cero', status: 'coming-soon', icon: '🏗️', desc: 'Del lote con vista al embalse a la casa terminada: diseño bioclimático, licencias y obra.' }
+    { id: 'ls-house', name: 'Housekeeping', nameEs: 'Aseo y mantenimiento', status: 'coming-soon', icon: '🧹', desc: 'Limpieza programada, lavandería y mantenimiento preventivo para casas de descanso y rentas.', descEn: 'Scheduled cleaning, laundry and preventive maintenance for weekend homes and rentals.' },
+    { id: 'ls-food', name: 'Food delivery & chef', nameEs: 'Mercado, chef y delivery', status: 'coming-soon', icon: '🍽️', desc: 'Nevera llena al llegar, chef privado a la orilla del embalse, cenas de bienvenida.', descEn: 'A full fridge on arrival, a private chef on the reservoir shore, welcome dinners.' },
+    { id: 'ls-act', name: 'Activities', nameEs: 'Experiencias', status: 'pilot', icon: '🚤', desc: 'Kayak al amanecer, La Piedra al atardecer, caminatas de bosque, yoga en muelle.', descEn: 'Sunrise kayaking, La Piedra at sunset, forest hikes, yoga on the dock.' },
+    { id: 'ls-trans', name: 'Transportation', nameEs: 'Transporte', status: 'coming-soon', icon: '🚐', desc: 'Traslados aeropuerto JMC ↔ Guatapé, lancha privada, conductor por día.', descEn: 'JMC airport ↔ Guatapé transfers, private boat, driver by the day.' },
+    { id: 'ls-conc', name: 'Concierge', nameEs: 'Concierge', status: 'coming-soon', icon: '🔑', desc: 'Un WhatsApp para todo: reservas, recomendaciones, emergencias, llaves.', descEn: 'One WhatsApp for everything: bookings, recommendations, emergencies, keys.' },
+    { id: 'ls-remodel', name: 'Remodeling', nameEs: 'Remodelación', status: 'coming-soon', icon: '🪵', desc: 'Dorum Projects renueva cocinas, terrazas y muelles con materiales locales y criterio sostenible.', descEn: 'Dorum Projects renovates kitchens, terraces and docks with local materials and sustainable criteria.' },
+    { id: 'ls-build', name: 'Construction from scratch', nameEs: 'Construcción desde cero', status: 'coming-soon', icon: '🏗️', desc: 'Del lote con vista al embalse a la casa terminada: diseño bioclimático, licencias y obra.', descEn: 'From the reservoir-view lot to the finished house: bioclimatic design, permits and construction.' }
   ];
 
   /* ------------------------------------------------------------ voice intents */
   D.voiceIntents = [
-    { intent: 'schedule_visit', say: 'Llave, agenda visita mañana a las diez en la casa de lago con Emily Chen.', does: 'Crea el evento, invita a la compradora por WhatsApp en inglés, bloquea la agenda de Mateo y avisa al propietario.', role: 'broker', confirm: false },
-    { intent: 'log_call', say: 'Llave, acabo de hablar con Hernán Vélez; quiere vender la finca en diciembre, precio alrededor de dos mil quinientos millones.', does: 'Registra la llamada en el CRM, extrae fecha objetivo y precio, mueve el lead a "visita" y propone la visita de captación.', role: 'broker', confirm: false },
-    { intent: 'listing_status', say: 'Llave, ¿cómo va el apartamento de Envigado?', does: 'Lee: 52 días publicado, 21 leads, oferta de COP 815 M pendiente, promesa en preparación.', role: 'owner', confirm: false },
-    { intent: 'price_update', say: 'Llave, baja el precio del lote de Tierra Prometida a mil trescientos noventa millones.', does: 'Prepara el cambio en Finca Raíz, Wasi y Metrocuadrado y pide "confirmar" antes de publicar.', role: 'broker', confirm: true },
-    { intent: 'send_followup', say: 'Llave, manda seguimiento a los leads del Charlee que no respondieron esta semana.', does: 'Redacta 11 mensajes personalizados (ES/EN) y los deja en la cola de aprobación.', role: 'broker', confirm: true },
-    { intent: 'order_service', say: 'Llave, pide fotos y dron para la finca cafetera para el viernes.', does: 'Crea la orden a Estudio Luz Verde, propone paquete Premium y fecha; el fotógrafo acepta desde su app.', role: 'sales_admin', confirm: false },
-    { intent: 'publish_listing', say: 'Llave, publica la casa de El Retiro en los tres portales pero no en Instagram.', does: 'Valida campos por portal, publica en Finca Raíz, Wasi y Metrocuadrado; deja Instagram sin marcar.', role: 'sales_admin', confirm: true },
-    { intent: 'read_pipeline', say: 'Llave, resumen de mi día.', does: 'Lee agenda, leads calientes, borradores AI por aprobar y comisiones proyectadas del mes.', role: 'broker', confirm: false },
-    { intent: 'capture_tour_feedback', say: 'Llave, feedback del tour: le encantó la vista pero la cocina le parece pequeña; le preocupa la administración.', does: 'Transcribe, resume y envía nota al vendedor; sugiere argumentos para la objeción de administración.', role: 'broker', confirm: false },
-    { intent: 'document_status', say: 'Llave, ¿qué documentos faltan para la promesa de Esmeraldal?', does: 'Lista: paz y salvo administración (vendedor), avalúo comercial (agencia). Ofrece enviar recordatorio.', role: 'lawyer', confirm: false },
-    { intent: 'approve_ai_draft', say: 'Llave, aprueba la contraoferta de la casa de lago y envíala.', does: 'Firma electrónica del borrador AI, envío a la compradora, registro en el expediente del negocio.', role: 'broker', confirm: true },
-    { intent: 'rent_status', say: 'Llave, ¿quién no ha pagado el arriendo este mes?', does: 'Lee la cartera: 1 canon atrasado 3 días; ofrece enviar recordatorio amable.', role: 'rental_admin', confirm: false },
-    { intent: 'payout_status', say: 'Llave, ¿cuánto tengo pendiente de comisión?', does: 'Lee comisiones aprobadas, en escrow y proyectadas para el mes.', role: 'broker', confirm: false },
-    { intent: 'maintenance_ticket', say: 'Llave, se dañó el calentador de la casa de Laureles.', does: 'Abre ticket, propone técnico, notifica a la propietaria y al arrendatario con ventana de visita.', role: 'renter', confirm: false }
+    { intent: 'schedule_visit', say: 'Llave, agenda visita mañana a las diez en la casa de lago con Emily Chen.', sayEn: 'Llave, schedule a visit tomorrow at ten at the lake house with Emily Chen.', does: 'Crea el evento, invita a la compradora por WhatsApp en inglés, bloquea la agenda de Mateo y avisa al propietario.', doesEn: 'Creates the event, invites the buyer via WhatsApp in English, blocks Mateo\'s calendar and notifies the owner.', role: 'broker', confirm: false },
+    { intent: 'log_call', say: 'Llave, acabo de hablar con Hernán Vélez; quiere vender la finca en diciembre, precio alrededor de dos mil quinientos millones.', sayEn: 'Llave, I just spoke with Hernán Vélez; he wants to sell the finca in December, price around two and a half billion.', does: 'Registra la llamada en el CRM, extrae fecha objetivo y precio, mueve el lead a "visita" y propone la visita de captación.', doesEn: 'Logs the call in the CRM, extracts target date and price, moves the lead to "visit" and drafts the follow-up.', role: 'broker', confirm: false },
+    { intent: 'listing_status', say: 'Llave, ¿cómo va el apartamento de Envigado?', sayEn: 'Llave, how is the Envigado apartment doing?', does: 'Lee: 52 días publicado, 21 leads, oferta de COP 815 M pendiente, promesa en preparación.', doesEn: 'Reads: 52 days listed, 21 leads, COP 815 M offer pending, purchase agreement in preparation.', role: 'owner', confirm: false },
+    { intent: 'price_update', say: 'Llave, baja el precio del lote de Tierra Prometida a mil trescientos noventa millones.', sayEn: 'Llave, lower the Tierra Prometida lot to one billion three hundred ninety million.', does: 'Prepara el cambio en Finca Raíz, Wasi y Metrocuadrado y pide "confirmar" antes de publicar.', doesEn: 'Prepares the change on Finca Raíz, Wasi and Metrocuadrado and asks for "confirm" before publishing.', role: 'broker', confirm: true },
+    { intent: 'send_followup', say: 'Llave, manda seguimiento a los leads del Charlee que no respondieron esta semana.', sayEn: 'Llave, send a follow-up to the Charlee leads who did not reply this week.', does: 'Redacta 11 mensajes personalizados (ES/EN) y los deja en la cola de aprobación.', doesEn: 'Drafts 11 personalised messages (ES/EN) and leaves them in the approval queue.', role: 'broker', confirm: true },
+    { intent: 'order_service', say: 'Llave, pide fotos y dron para la finca cafetera para el viernes.', sayEn: 'Llave, order photos and drone for the coffee finca for Friday.', does: 'Crea la orden a Estudio Luz Verde, propone paquete Premium y fecha; el fotógrafo acepta desde su app.', doesEn: 'Creates the order to Estudio Luz Verde, proposes the Premium package and a date; the photographer accepts from their app.', role: 'sales_admin', confirm: false },
+    { intent: 'publish_listing', say: 'Llave, publica la casa de El Retiro en los tres portales pero no en Instagram.', sayEn: 'Llave, publish the El Retiro house on the three portals but not on Instagram.', does: 'Valida campos por portal, publica en Finca Raíz, Wasi y Metrocuadrado; deja Instagram sin marcar.', doesEn: 'Validates fields per portal, publishes on Finca Raíz, Wasi and Metrocuadrado; leaves Instagram unticked.', role: 'sales_admin', confirm: true },
+    { intent: 'read_pipeline', say: 'Llave, resumen de mi día.', sayEn: 'Llave, summary of my day.', does: 'Lee agenda, leads calientes, borradores AI por aprobar y comisiones proyectadas del mes.', doesEn: 'Reads the agenda, hot leads, AI drafts to approve and projected commissions for the month.', role: 'broker', confirm: false },
+    { intent: 'capture_tour_feedback', say: 'Llave, feedback del tour: le encantó la vista pero la cocina le parece pequeña; le preocupa la administración.', sayEn: 'Llave, tour feedback: she loved the view but finds the kitchen small; she is worried about the HOA fee.', does: 'Transcribe, resume y envía nota al vendedor; sugiere argumentos para la objeción de administración.', doesEn: 'Transcribes, summarises and sends a note to the seller; suggests arguments for the HOA objection.', role: 'broker', confirm: false },
+    { intent: 'document_status', say: 'Llave, ¿qué documentos faltan para la promesa de Esmeraldal?', sayEn: 'Llave, which documents are missing for the Esmeraldal purchase agreement?', does: 'Lista: paz y salvo administración (vendedor), avalúo comercial (agencia). Ofrece enviar recordatorio.', doesEn: 'Lists: HOA clearance (seller), commercial appraisal (agency). Offers to send a reminder.', role: 'lawyer', confirm: false },
+    { intent: 'approve_ai_draft', say: 'Llave, aprueba la contraoferta de la casa de lago y envíala.', sayEn: 'Llave, approve the lake house counter-offer and send it.', does: 'Firma electrónica del borrador AI, envío a la compradora, registro en el expediente del negocio.', doesEn: 'E-signs the AI draft, sends it to the buyer, files it on the deal record.', role: 'broker', confirm: true },
+    { intent: 'rent_status', say: 'Llave, ¿quién no ha pagado el arriendo este mes?', sayEn: 'Llave, who has not paid rent this month?', does: 'Lee la cartera: 1 canon atrasado 3 días; ofrece enviar recordatorio amable.', doesEn: 'Reads the collections: 1 rent 3 days late; offers to send a friendly reminder.', role: 'rental_admin', confirm: false },
+    { intent: 'payout_status', say: 'Llave, ¿cuánto tengo pendiente de comisión?', sayEn: 'Llave, how much commission do I have pending?', does: 'Lee comisiones aprobadas, en escrow y proyectadas para el mes.', doesEn: 'Reads approved, in-escrow and projected commissions for the month.', role: 'broker', confirm: false },
+    { intent: 'maintenance_ticket', say: 'Llave, se dañó el calentador de la casa de Laureles.', sayEn: 'Llave, the water heater at the Laureles house broke.', does: 'Abre ticket, propone técnico, notifica a la propietaria y al arrendatario con ventana de visita.', doesEn: 'Opens a ticket, proposes a technician, notifies the landlord and the renter with a visit window.', role: 'renter', confirm: false }
   ];
 
   /* ----------------------------------------------------------- integrations */
@@ -485,6 +507,14 @@
   };
 
   /* --------------------------------------------------------------- helpers */
+  // Language helpers: the shared toggle lives in assets/i18n.js (window.I18N). Records carry *En fields
+  // (titleEn, descEn, sayEn, doesEn, typeEn, labelEn); D.tx() picks the right one for the current language.
+  D.lang = function () { return (window.I18N && window.I18N.lang) || 'es'; };
+  D.tx = function (obj, field, enField) {
+    if (!obj) return '';
+    enField = enField || (field + 'En');
+    return D.lang() === 'en' && obj[enField] != null ? obj[enField] : obj[field];
+  };
   D.fmtCOP = function (n, opts) {
     if (n == null || isNaN(n)) return '—';
     opts = opts || {};
@@ -502,17 +532,18 @@
   };
   D.fmtPrice = function (l) {
     var s = D.fmtMoney(l.price, l.currency);
-    if (l.operacion === 'arriendo') s += l.priceUnit === 'noche' ? ' / noche' : ' / mes';
+    if (l.operacion === 'arriendo') s += D.lang() === 'en' ? (l.priceUnit === 'noche' ? ' / night' : ' / month') : (l.priceUnit === 'noche' ? ' / noche' : ' / mes');
     return s;
   };
   D.fmtDate = function (iso, style) {
     if (!iso) return '—';
     var d = new Date(iso.length === 10 ? iso + 'T12:00:00' : iso);
     if (isNaN(d)) return iso;
-    if (style === 'short') return d.toLocaleDateString('es-CO', { day: 'numeric', month: 'short' });
-    if (style === 'long') return d.toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-    if (style === 'time') return d.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
-    return d.toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' });
+    var loc = D.lang() === 'en' ? 'en-GB' : 'es-CO';
+    if (style === 'short') return d.toLocaleDateString(loc, { day: 'numeric', month: 'short' });
+    if (style === 'long') return d.toLocaleDateString(loc, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    if (style === 'time') return d.toLocaleTimeString(loc, { hour: '2-digit', minute: '2-digit' });
+    return d.toLocaleDateString(loc, { day: 'numeric', month: 'short', year: 'numeric' });
   };
   D.fmtM2 = function (n) { return n == null ? '—' : n.toLocaleString('es-CO') + ' m²'; };
   D.fmtPct = function (n) { return n == null ? '—' : n.toLocaleString('es-CO', { maximumFractionDigits: 1 }) + ' %'; };
@@ -529,8 +560,14 @@
   D.dealsFor = function (userId) {
     return D.deals.filter(function (d) { var p = d.parties || {}; return Object.keys(p).some(function (k) { return p[k] === userId; }) || d.split.some(function (s) { return s.participant === userId; }); });
   };
-  D.statusLabel = function (s) { return ({ 'borrador': 'Borrador', 'en preparación': 'En preparación', 'activo': 'Activo', 'bajo oferta': 'Bajo oferta', 'arrendado': 'Arrendado', 'vendido': 'Vendido' })[s] || s; };
-  D.typeLabel = function (t) { return ({ apartamento: 'Apartamento', casa: 'Casa', finca: 'Finca', lote: 'Lote', penthouse: 'Penthouse', oficina: 'Oficina', local: 'Local comercial' })[t] || t; };
+  D.statusLabel = function (s) {
+    if (D.lang() === 'en') return ({ 'borrador': 'Draft', 'en preparación': 'In preparation', 'activo': 'Active', 'bajo oferta': 'Under offer', 'arrendado': 'Rented', 'vendido': 'Sold', 'pendiente': 'Pending', 'pagado': 'Paid', 'firmado': 'Signed', 'vencido': 'Expired', 'rechazado': 'Rejected', 'atrasado': 'Late', 'aprobado': 'Approved', 'recibido': 'Received', 'validado': 'Validated', 'enviado': 'Sent', 'en curso': 'In progress', 'revisión': 'Review', 'listo': 'Done', 'bloqueado': 'Blocked', 'retenido': 'Held', 'en negociación': 'In negotiation', 'activa': 'Live', 'pausada': 'Paused' })[s] || s;
+    return ({ 'borrador': 'Borrador', 'en preparación': 'En preparación', 'activo': 'Activo', 'bajo oferta': 'Bajo oferta', 'arrendado': 'Arrendado', 'vendido': 'Vendido' })[s] || s;
+  };
+  D.typeLabel = function (t) {
+    if (D.lang() === 'en') return ({ apartamento: 'Apartment', casa: 'House', finca: 'Finca', lote: 'Lot', penthouse: 'Penthouse', oficina: 'Office', local: 'Retail space' })[t] || t;
+    return ({ apartamento: 'Apartamento', casa: 'Casa', finca: 'Finca', lote: 'Lote', penthouse: 'Penthouse', oficina: 'Oficina', local: 'Local comercial' })[t] || t;
+  };
   D.sourceIcon = function (src) { return ({ 'Instagram': '📸', 'Finca Raíz': '🏠', 'Referido': '🤝', 'Website': '🌐', 'WhatsApp': '💬', 'Meta Ads': '📣' })[src] || '•'; };
 
   // Compute the payout table for a deal: returns [{participant, name, kind, stage, amount}]
@@ -600,6 +637,25 @@
     t.querySelector('b').textContent = title; t.querySelector('span').textContent = body || '';
     stack.appendChild(t); setTimeout(function () { t.remove(); }, 4200);
   };
+
+  /* --------------------------------------------------------- image fallback */
+  // Listing photos are hotlinked (Unsplash). A 404, a rate limit or an offline demo must
+  // degrade to the brand gradient (tokens.css `img.img-fallback`), never to a broken-image
+  // icon. One capturing `error` listener covers every <img> the app or the sites render later.
+  // A 1x1 transparent GIF replaces the failed src: it loads (no broken-image glyph, alt kept)
+  // and object-fit: cover stretches it over the gradient background.
+  var BLANK_GIF = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+  D.imgFallback = function (im) {
+    if (!im || im.tagName !== 'IMG' || im.classList.contains('img-fallback')) return;
+    im.classList.add('img-fallback');
+    im.removeAttribute('srcset'); im.src = BLANK_GIF;
+  };
+  if (typeof document !== 'undefined') {
+    document.addEventListener('error', function (e) { D.imgFallback(e.target); }, true);
+    // Images that already failed before this script ran (page heroes above the script tag).
+    var sweepImgs = function () { document.querySelectorAll('img[src]').forEach(function (im) { if (im.complete && im.naturalWidth === 0) D.imgFallback(im); }); };
+    window.addEventListener('load', sweepImgs); setTimeout(sweepImgs, 3000);
+  }
 
   window.DORUM = D;
 })();

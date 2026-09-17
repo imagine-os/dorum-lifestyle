@@ -16,9 +16,18 @@
       h.className = 'container site-header docs-header';
       h.innerHTML = '<a class="site-logo" href="index.html"><span class="mark">L</span> Llave OS <span class="muted" style="font-family:var(--font-ui);font-size:var(--fs-sm);font-weight:500">/ docs</span></a>' +
         '<nav class="site-nav" id="siteNav">' + links.map(function (l) { return '<a href="' + l[0] + '"' + (l[1] === active ? ' class="is-active"' : '') + '>' + l[1] + '</a>'; }).join('') +
+        (window.I18N ? window.I18N.toggleHtml() : '') +
         '<button type="button" class="btn btn-ghost btn-icon" aria-label="Toggle theme" onclick="DORUM.setTheme(document.documentElement.dataset.theme===\'dark\'?\'light\':\'dark\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></button></nav>' +
         '<button type="button" class="btn btn-ghost btn-icon" id="navBtn" aria-label="Menu" onclick="document.getElementById(\'siteNav\').classList.toggle(\'is-open\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" width="18" height="18" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>';
     }
+    // Docs are English-only: say so under the header whenever the shared toggle is set to Spanish.
+    function langNote() {
+      var n = document.getElementById('docsLangNote');
+      if (!n && h) { n = document.createElement('p'); n.id = 'docsLangNote'; n.className = 'container xs muted'; n.style.cssText = 'padding-top:var(--s-2);padding-bottom:0'; h.insertAdjacentElement('afterend', n); }
+      if (n) n.textContent = (window.I18N && window.I18N.lang === 'es') ? 'La documentación interna está solo en inglés · Docs are English-only.' : 'Docs are English-only · La documentación está solo en inglés.';
+    }
+    langNote();
+    if (window.I18N) window.I18N.onChange(langNote);
     var f = document.getElementById('siteFooter');
     if (f) {
       f.className = 'site-footer';

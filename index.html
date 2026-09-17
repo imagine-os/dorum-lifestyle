@@ -63,11 +63,12 @@
 <header class="container site-header" id="siteHeader">
   <a class="site-logo" href="index.html"><span class="mark">L</span> Llave OS</a>
   <nav class="site-nav" id="siteNav">
-    <a href="#pipeline">Pipeline</a><a href="#modules">Modules</a><a href="#roles">Roles</a><a href="#voice">Voice</a><a href="#devices">Screens</a><a href="#pricing">Pricing</a>
-    <a class="btn btn-primary btn-sm" href="app/index.html#/role/owner/home">Open the demo</a>
-    <button class="btn btn-ghost btn-icon" aria-label="Toggle theme" onclick="DORUM.setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark')"><svg width="18" height="18"><use href="#i-sun"/></svg></button>
+    <a href="#pipeline" data-i18n="s.nav.pipeline">Pipeline</a><a href="#modules" data-i18n="s.nav.modules"><span data-i18n="s.mod.eyebrow">Modules</span></a><a href="#roles" data-i18n="s.nav.roles">Roles</a><a href="#voice" data-i18n="s.nav.voice"><span data-i18n="s.mod.voice.t">Voice</span></a><a href="#devices" data-i18n="s.nav.screens">Screens</a><a href="#pricing" data-i18n="s.nav.pricing"><span data-i18n="s.price.eyebrow">Pricing</span></a>
+    <a class="btn btn-primary btn-sm" href="app/index.html#/role/owner/home" data-i18n="s.nav.demo">Open the demo</a>
+    <span data-lang-toggle></span>
+    <button class="btn btn-ghost btn-icon" aria-label="Toggle theme" data-i18n-label="s.aria.theme" onclick="DORUM.setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark')"><svg width="18" height="18"><use href="#i-sun"/></svg></button>
   </nav>
-  <button class="btn btn-ghost btn-icon" aria-label="Menu" aria-expanded="false" onclick="siteNav.classList.toggle('is-open');this.setAttribute('aria-expanded',siteNav.classList.contains('is-open'))" style="display:none" id="navBtn"><svg width="20" height="20"><use href="#i-menu"/></svg></button>
+  <button class="btn btn-ghost btn-icon" aria-label="Menu" data-i18n-label="s.aria.menu" aria-expanded="false" onclick="siteNav.classList.toggle('is-open');this.setAttribute('aria-expanded',siteNav.classList.contains('is-open'))" style="display:none" id="navBtn"><svg width="20" height="20"><use href="#i-menu"/></svg></button>
 </header>
 
 <main>
@@ -76,14 +77,14 @@
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow fade-up">The operating system for real-estate agencies</p>
-      <h1 class="display-hero fade-up delay-1">Run the whole agency from one <em>key.</em></h1>
-      <p class="lead fade-up delay-2">Llave replaces ChatGPT, Dropbox, Go High Level, Wasi and the Finca Raíz back office with one system. AI does the steps — the write-up, the follow-up, the contract draft, the payout split. Your people approve them in one tap.</p>
+      <p class="eyebrow fade-up" data-i18n="s.hero.eyebrow">The operating system for real-estate agencies</p>
+      <h1 class="display-hero fade-up delay-1" data-i18n="s.hero.title">Run the whole agency from one <em>key.</em></h1>
+      <p class="lead fade-up delay-2" data-i18n="s.hero.lead">Llave replaces ChatGPT, Dropbox, Go High Level, Wasi and the Finca Raíz back office with one system. AI does the steps — the write-up, the follow-up, the contract draft, the payout split. Your people approve them in one tap.</p>
       <div class="hero-ctas fade-up delay-3">
-        <a class="btn btn-accent btn-lg" href="app/index.html#/">Open the Dorum demo <svg><use href="#i-arrow"/></svg></a>
-        <a class="btn btn-secondary btn-lg" href="#devices">See it on every screen</a>
+        <a class="btn btn-accent btn-lg" href="app/index.html#/"><span data-i18n="s.hero.cta1">Open the Dorum demo</span> <svg><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-secondary btn-lg" href="#devices" data-i18n="s.hero.cta2">See it on every screen</a>
       </div>
-      <p class="hero-trust fade-up delay-3"><span class="mark">D</span> Built first with Dorum Lifestyle · Guatapé &amp; Medellín</p>
+      <p class="hero-trust fade-up delay-3"><span class="mark">D</span> <span data-i18n="s.hero.trust">Built first with Dorum Lifestyle · Guatapé &amp; Medellín</span></p>
     </div>
     <div class="hero-visual">
       <div class="hero-glow"></div>
@@ -101,15 +102,15 @@
 <section class="replaces" aria-label="What Llave replaces">
   <div class="container">
     <div class="replaces-row">
-      <span class="replaces-label">Replaces</span>
+      <span class="replaces-label" data-i18n="s.rep.label">Replaces</span>
       <div class="marquee" aria-hidden="true">
         <div>
-          <span>ChatGPT</span><span>Dropbox</span><span>Go High Level</span><span>Wasi</span><span>Spreadsheets</span><span>WhatsApp chaos</span><span>Canva folders</span><span>Paper checklists</span>
-          <span>ChatGPT</span><span>Dropbox</span><span>Go High Level</span><span>Wasi</span><span>Spreadsheets</span><span>WhatsApp chaos</span><span>Canva folders</span><span>Paper checklists</span>
+          <span>ChatGPT</span><span>Dropbox</span><span>Go High Level</span><span>Wasi</span><span data-i18n="s.rep.m1">Spreadsheets</span><span data-i18n="s.rep.m2">WhatsApp chaos</span><span data-i18n="s.rep.m3">Canva folders</span><span data-i18n="s.rep.m4">Paper checklists</span>
+          <span>ChatGPT</span><span>Dropbox</span><span>Go High Level</span><span>Wasi</span><span data-i18n="s.rep.m1">Spreadsheets</span><span data-i18n="s.rep.m2">WhatsApp chaos</span><span data-i18n="s.rep.m3">Canva folders</span><span data-i18n="s.rep.m4">Paper checklists</span>
         </div>
       </div>
     </div>
-    <p class="keeps"><b style="color:var(--text-2);font-weight:600">Keeps</b> <span class="pill pill-brand">Finca Raíz</span><span class="pill pill-brand">Metrocuadrado</span><span class="pill pill-brand">Wasi</span><span class="pill pill-brand">Instagram</span> as publishing targets — pushed from the listing record, only when you say so.</p>
+    <p class="keeps" data-i18n="s.rep.keeps"><b style="color:var(--text-2);font-weight:600">Keeps</b> <span class="pill pill-brand">Finca Raíz</span><span class="pill pill-brand">Metrocuadrado</span><span class="pill pill-brand">Wasi</span><span class="pill pill-brand">Instagram</span> as publishing targets — pushed from the listing record, only when you say so.</p>
   </div>
 </section>
 
@@ -117,28 +118,28 @@
 <section class="section" id="problem">
   <div class="container">
     <div class="section-head reveal">
-      <p class="eyebrow">Why agencies stall</p>
-      <h2 class="display">A boutique agency runs on five tools and a group chat.</h2>
-      <p class="lead">Dorum's team was writing listings in ChatGPT, storing drone footage in Dropbox, running ads in Go High Level, syndicating from Wasi and reconciling commissions in a spreadsheet. Every deal was a scavenger hunt.</p>
+      <p class="eyebrow" data-i18n="s.prob.eyebrow">Why agencies stall</p>
+      <h2 class="display" data-i18n="s.prob.title">A boutique agency runs on five tools and a group chat.</h2>
+      <p class="lead" data-i18n="s.prob.lead">Dorum's team was writing listings in ChatGPT, storing drone footage in Dropbox, running ads in Go High Level, syndicating from Wasi and reconciling commissions in a spreadsheet. Every deal was a scavenger hunt.</p>
     </div>
     <div class="grid grid-3">
       <article class="problem-card reveal">
         <div class="glyph"><svg><use href="#i-scatter"/></svg></div>
-        <h3>Every step lives in a different tool</h3>
-        <p>The photo order is in WhatsApp, the write-up in ChatGPT, the contract in email, the payment in the bank app. Nobody can see where a deal actually is.</p>
-        <div class="tools"><span>WhatsApp</span><span>ChatGPT</span><span>Dropbox</span><span>Gmail</span><span>Bancolombia</span></div>
+        <h3 data-i18n="s.prob.1.t">Every step lives in a different tool</h3>
+        <p data-i18n="s.prob.1.p">The photo order is in WhatsApp, the write-up in ChatGPT, the contract in email, the payment in the bank app. Nobody can see where a deal actually is.</p>
+        <div class="tools" data-i18n="s.prob.1.tools"><span>WhatsApp</span><span>ChatGPT</span><span>Dropbox</span><span>Gmail</span><span>Bancolombia</span></div>
       </article>
       <article class="problem-card reveal">
         <div class="glyph"><svg><use href="#i-copy"/></svg></div>
-        <h3>Nothing is templated</h3>
-        <p>Each listing restarts from zero: new folder, new prompt, new checklist from memory. The acuerdo de corretaje gets retyped, the paz y salvo gets forgotten, the Instagram post goes out with last month's price.</p>
-        <div class="tools"><span>No project template</span><span>No clause library</span><span>No checklist</span></div>
+        <h3 data-i18n="s.prob.2.t">Nothing is templated</h3>
+        <p data-i18n="s.prob.2.p">Each listing restarts from zero: new folder, new prompt, new checklist from memory. The acuerdo de corretaje gets retyped, the paz y salvo gets forgotten, the Instagram post goes out with last month's price.</p>
+        <div class="tools" data-i18n="s.prob.2.tools"><span>No project template</span><span>No clause library</span><span>No checklist</span></div>
       </article>
       <article class="problem-card reveal">
         <div class="glyph"><svg><use href="#i-eye-off"/></svg></div>
-        <h3>The owner can't see the whole business</h3>
-        <p>Pipeline value, escrow held, commissions owed, rent collected — spread across five logins and three people's heads. Month-end is a reconstruction, not a report.</p>
-        <div class="tools"><span>Spreadsheet</span><span>Memory</span><span>Month-end panic</span></div>
+        <h3 data-i18n="s.prob.3.t">The owner can't see the whole business</h3>
+        <p data-i18n="s.prob.3.p">Pipeline value, escrow held, commissions owed, rent collected — spread across five logins and three people's heads. Month-end is a reconstruction, not a report.</p>
+        <div class="tools" data-i18n="s.prob.3.tools"><span>Spreadsheet</span><span>Memory</span><span>Month-end panic</span></div>
       </article>
     </div>
   </div>
@@ -148,13 +149,13 @@
 <section class="section band-sand" id="pipeline">
   <div class="container">
     <div class="section-head reveal">
-      <p class="eyebrow">One pipeline, templated end to end</p>
-      <h2 class="display">From the first ad to the <em>keys</em>, every step already knows what comes next.</h2>
-      <p class="lead">Signing a listing agreement spawns the marketing project. Publishing opens the sell pipeline. An accepted offer opens the paperwork checklist and the escrow ledger. Click a step to see what Llave does on its own and where a person signs off.</p>
+      <p class="eyebrow" data-i18n="s.pipe.eyebrow">One pipeline, templated end to end</p>
+      <h2 class="display" data-i18n="s.pipe.title">From the first ad to the <em>keys</em>, every step already knows what comes next.</h2>
+      <p class="lead" data-i18n="s.pipe.lead">Signing a listing agreement spawns the marketing project. Publishing opens the sell pipeline. An accepted offer opens the paperwork checklist and the escrow ledger. Click a step to see what Llave does on its own and where a person signs off.</p>
     </div>
     <div class="pipe-legend reveal">
-      <span class="mark-ai"><svg width="10" height="10"><use href="#i-sparkle"/></svg> AI</span> Llave does it automatically
-      <span class="mark-human"><svg width="10" height="10"><use href="#i-check"/></svg> Human check</span> a named person approves
+      <span class="mark-ai"><svg width="10" height="10"><use href="#i-sparkle"/></svg> <span data-i18n="s.pipe.mark.ai">AI</span></span> <span data-i18n="s.pipe.legend.ai">Llave does it automatically</span>
+      <span class="mark-human"><svg width="10" height="10"><use href="#i-check"/></svg> <span data-i18n="s.pipe.mark.hu">Human check</span></span> <span data-i18n="s.pipe.legend.hu">a named person approves</span>
     </div>
     <div class="pipeline-wrap reveal">
       <div class="pipeline" id="pipeline-map" role="tablist" aria-label="Pipeline steps"></div>
@@ -167,23 +168,23 @@
 <section class="section" id="modules">
   <div class="container">
     <div class="section-head reveal">
-      <p class="eyebrow">Modules</p>
-      <h2 class="display">Fifteen modules. One record per property, person, deal and peso.</h2>
-      <p class="lead">Every module reads and writes the same objects, so a price change on the listing reaches the portals, the campaign, the seller's home screen and the commission forecast without anyone copying it.</p>
+      <p class="eyebrow" data-i18n="s.nav.modules"><span data-i18n="s.mod.eyebrow">Modules</span></p>
+      <h2 class="display" data-i18n="s.mod.title">Fifteen modules. One record per property, person, deal and peso.</h2>
+      <p class="lead" data-i18n="s.mod.lead">Every module reads and writes the same objects, so a price change on the listing reaches the portals, the campaign, the seller's home screen and the commission forecast without anyone copying it.</p>
     </div>
     <div class="module-grid">
-      <article class="module reveal"><div class="icon"><svg><use href="#i-globe"/></svg></div><h3>CMS &amp; listing sites</h3><p>Brand site editor, bilingual ES/EN. Every property record becomes its own listing page with lead forms wired to CRM.</p><span class="replaces-tag">Replaces <s>Wasi site</s>, <s>Wix</s></span></article>
-      <article class="module reveal"><div class="icon"><svg><use href="#i-users"/></svg></div><h3>CRM · get &amp; sell</h3><p>Two pipelines: sellers and landlords to win, buyers and renters to convert. WhatsApp threads, call summaries, AI follow-ups awaiting approval.</p><span class="replaces-tag">Replaces <s>Go High Level</s>, <s>Wasi CRM</s></span></article>
-      <article class="module reveal"><div class="icon"><svg><use href="#i-kanban"/></svg></div><h3>Projects with templates</h3><p>A project auto-spawns per listing with the marketing package: fotos, redacción, comps, gráficos, pauta. Vendors assigned, due dates set.</p><span class="replaces-tag">Replaces <s>Trello</s>, <s>WhatsApp groups</s></span></article>
-      <article class="module reveal"><div class="icon"><svg><use href="#i-contract"/></svg></div><h3>Contract negotiation</h3><p>Acuerdo de corretaje, promesa de compraventa, contrato de arrendamiento. Redlines tracked, e-signature, lawyer approval gate.</p><span class="replaces-tag">Replaces <s>Word + email</s></span></article>
-      <article class="module reveal"><div class="icon"><svg><use href="#i-files"/></svg></div><h3>Paperwork</h3><p>Checklists per deal type: cédula, certificado de tradición y libertad, paz y salvo, avalúo, predial. OCR checks names and expiry, nudges whoever owes.</p><span class="replaces-tag">Replaces <s>Dropbox</s>, <s>paper</s></span></article>
-      <article class="module reveal"><div class="icon"><svg><use href="#i-image"/></svg></div><h3>Image management</h3><p>Per-listing library, AI tagging by room and quality, auto-order for portals, watermarking, vendor delivery inbox for photo, video and drone.</p><span class="replaces-tag">Replaces <s>Dropbox</s>, <s>Google Photos</s></span></article>
-      <article class="module reveal"><div class="icon"><svg><use href="#i-broadcast"/></svg></div><h3>Publishing &amp; syndication</h3><p>One push to Finca Raíz, Wasi and Metrocuadrado with per-portal validation. Instagram only when flagged. Views and leads flow back.</p><span class="replaces-tag">Keeps portals as <b>targets</b></span></article>
-      <article class="module reveal"><div class="icon"><svg><use href="#i-megaphone"/></svg></div><h3>Social advertising</h3><p>Meta and Google campaigns per listing or brand, creative generated from listing media, budget pacing, CPL, leads routed straight into CRM.</p><span class="replaces-tag">Replaces <s>Go High Level</s></span></article>
-      <article class="module reveal"><div class="icon"><svg><use href="#i-split"/></svg></div><h3>Escrow · payouts · payroll</h3><p>Ledger per deal, split engine with variable rules, escrow holds with approval thresholds, bank batches, DIAN hooks, monthly payroll.</p><span class="replaces-tag">Replaces <s>the spreadsheet</s></span></article>
-      <article class="module reveal"><div class="icon"><svg><use href="#i-home-key"/></svg></div><h3>Rental ops &amp; Lifestyle</h3><p>Monthly collection, IPC increases, maintenance tickets, inventory check-in with photos, landlord statements. Vacation rentals liquidated monthly.</p><span class="replaces-tag">Replaces <s>Wasi</s>, <s>Excel</s></span></article>
-      <article class="module reveal"><div class="icon"><svg><use href="#i-chart"/></svg></div><h3>Reports</h3><p>Pipeline velocity, days on market, source attribution, spend vs. leads, commission forecast, rental arrears — live, not reconstructed.</p><span class="replaces-tag">Replaces <s>month-end</s></span></article>
-      <article class="module reveal"><div class="icon"><svg><use href="#i-mic"/></svg></div><h3>Voice</h3><p>Wake word "Llave". In-app, on the watch, in WhatsApp voice notes. Every intent returns a card; money and legal require a spoken "confirmar".</p><span class="replaces-tag">Replaces <s>typing in the car</s></span></article>
+      <article class="module reveal"><div class="icon"><svg><use href="#i-globe"/></svg></div><h3 data-i18n="s.mod.cms.t">CMS &amp; listing sites</h3><p data-i18n="s.mod.cms.p">Brand site editor, bilingual ES/EN. Every property record becomes its own listing page with lead forms wired to CRM.</p><span class="replaces-tag" data-i18n="s.mod.cms.r">Replaces <s>Wasi site</s>, <s>Wix</s></span></article>
+      <article class="module reveal"><div class="icon"><svg><use href="#i-users"/></svg></div><h3 data-i18n="s.mod.crm.t">CRM · get &amp; sell</h3><p data-i18n="s.mod.crm.p">Two pipelines: sellers and landlords to win, buyers and renters to convert. WhatsApp threads, call summaries, AI follow-ups awaiting approval.</p><span class="replaces-tag" data-i18n="s.mod.crm.r">Replaces <s>Go High Level</s>, <s>Wasi CRM</s></span></article>
+      <article class="module reveal"><div class="icon"><svg><use href="#i-kanban"/></svg></div><h3 data-i18n="s.mod.proj.t">Projects with templates</h3><p data-i18n="s.mod.proj.p">A project auto-spawns per listing with the marketing package: fotos, redacción, comps, gráficos, pauta. Vendors assigned, due dates set.</p><span class="replaces-tag" data-i18n="s.mod.proj.r">Replaces <s>Trello</s>, <s>WhatsApp groups</s></span></article>
+      <article class="module reveal"><div class="icon"><svg><use href="#i-contract"/></svg></div><h3 data-i18n="s.mod.contracts.t">Contract negotiation</h3><p data-i18n="s.mod.contracts.p">Acuerdo de corretaje, promesa de compraventa, contrato de arrendamiento. Redlines tracked, e-signature, lawyer approval gate.</p><span class="replaces-tag" data-i18n="s.mod.contracts.r">Replaces <s>Word + email</s></span></article>
+      <article class="module reveal"><div class="icon"><svg><use href="#i-files"/></svg></div><h3 data-i18n="s.mod.paper.t">Paperwork</h3><p data-i18n="s.mod.paper.p">Checklists per deal type: cédula, certificado de tradición y libertad, paz y salvo, avalúo, predial. OCR checks names and expiry, nudges whoever owes.</p><span class="replaces-tag" data-i18n="s.mod.paper.r">Replaces <s>Dropbox</s>, <s>paper</s></span></article>
+      <article class="module reveal"><div class="icon"><svg><use href="#i-image"/></svg></div><h3 data-i18n="s.mod.media.t">Image management</h3><p data-i18n="s.mod.media.p">Per-listing library, AI tagging by room and quality, auto-order for portals, watermarking, vendor delivery inbox for photo, video and drone.</p><span class="replaces-tag" data-i18n="s.mod.media.r">Replaces <s>Dropbox</s>, <s>Google Photos</s></span></article>
+      <article class="module reveal"><div class="icon"><svg><use href="#i-broadcast"/></svg></div><h3 data-i18n="s.mod.pub.t">Publishing &amp; syndication</h3><p data-i18n="s.mod.pub.p">One push to Finca Raíz, Wasi and Metrocuadrado with per-portal validation. Instagram only when flagged. Views and leads flow back.</p><span class="replaces-tag" data-i18n="s.mod.pub.r">Keeps portals as <b>targets</b></span></article>
+      <article class="module reveal"><div class="icon"><svg><use href="#i-megaphone"/></svg></div><h3 data-i18n="s.mod.ads.t">Social advertising</h3><p data-i18n="s.mod.ads.p">Meta and Google campaigns per listing or brand, creative generated from listing media, budget pacing, CPL, leads routed straight into CRM.</p><span class="replaces-tag" data-i18n="s.mod.ads.r">Replaces <s>Go High Level</s></span></article>
+      <article class="module reveal"><div class="icon"><svg><use href="#i-split"/></svg></div><h3 data-i18n="s.mod.money.t">Escrow · payouts · payroll</h3><p data-i18n="s.mod.money.p">Ledger per deal, split engine with variable rules, escrow holds with approval thresholds, bank batches, DIAN hooks, monthly payroll.</p><span class="replaces-tag" data-i18n="s.mod.money.r">Replaces <s>the spreadsheet</s></span></article>
+      <article class="module reveal"><div class="icon"><svg><use href="#i-home-key"/></svg></div><h3 data-i18n="s.mod.rent.t">Rental ops &amp; Lifestyle</h3><p data-i18n="s.mod.rent.p">Monthly collection, IPC increases, maintenance tickets, inventory check-in with photos, landlord statements. Vacation rentals liquidated monthly.</p><span class="replaces-tag" data-i18n="s.mod.rent.r">Replaces <s>Wasi</s>, <s>Excel</s></span></article>
+      <article class="module reveal"><div class="icon"><svg><use href="#i-chart"/></svg></div><h3 data-i18n="s.mod.reports.t">Reports</h3><p data-i18n="s.mod.reports.p">Pipeline velocity, days on market, source attribution, spend vs. leads, commission forecast, rental arrears — live, not reconstructed.</p><span class="replaces-tag" data-i18n="s.mod.reports.r">Replaces <s>month-end</s></span></article>
+      <article class="module reveal"><div class="icon"><svg><use href="#i-mic"/></svg></div><h3 data-i18n="s.nav.voice"><span data-i18n="s.mod.voice.t">Voice</span></h3><p data-i18n="s.mod.voice.p">Wake word "Llave". In-app, on the watch, in WhatsApp voice notes. Every intent returns a card; money and legal require a spoken "confirmar".</p><span class="replaces-tag" data-i18n="s.mod.voice.r">Replaces <s>typing in the car</s></span></article>
     </div>
   </div>
 </section>
@@ -192,9 +193,9 @@
 <section class="section band-sand" id="roles">
   <div class="container">
     <div class="section-head reveal">
-      <p class="eyebrow">Every role gets its own OS</p>
-      <h2 class="display">A seller, a photographer and an accountant open the same link and see three different products.</h2>
-      <p class="lead">Roles are data, not code: permission set, navigation and home widgets. Rename "Broker" to "Asesor", add a marketing lead, scope a vendor to their orders only.</p>
+      <p class="eyebrow" data-i18n="s.roles.eyebrow">Every role gets its own OS</p>
+      <h2 class="display" data-i18n="s.roles.title">A seller, a photographer and an accountant open the same link and see three different products.</h2>
+      <p class="lead" data-i18n="s.roles.lead">Roles are data, not code: permission set, navigation and home widgets. Rename "Broker" to "Asesor", add a marketing lead, scope a vendor to their orders only.</p>
     </div>
     <div class="roles-tabs reveal" id="roles-tabs" role="tablist" aria-label="Roles"></div>
     <div class="roles-panel reveal" id="roles-panel">
@@ -204,7 +205,7 @@
           <div class="device-screen"><iframe id="roles-frame" src="app/index.html?mode=phone#/role/owner/home" title="Role home on phone" loading="lazy"></iframe></div>
         </div>
         <p class="device-caption" id="roles-caption">Owner · phone</p>
-        <p class="device-open"><a id="roles-open" href="app/index.html#/role/owner/home">Open live <svg width="12" height="12"><use href="#i-external"/></svg></a></p>
+        <p class="device-open"><a id="roles-open" href="app/index.html#/role/owner/home"><span data-i18n="s.roles.open">Open live</span> <svg width="12" height="12"><use href="#i-external"/></svg></a></p>
       </div>
     </div>
   </div>
@@ -214,17 +215,17 @@
 <section class="section" id="money">
   <div class="container">
     <div class="section-head reveal">
-      <p class="eyebrow">Escrow, payouts, payroll</p>
-      <h2 class="display">Money that <em>splits itself.</em></h2>
-      <p class="lead">Every deal carries ordered split rules. When money lands — arras at the promesa, the balance at escritura, rent on the fifth — the ledger applies them and the accountant releases one batch.</p>
+      <p class="eyebrow" data-i18n="s.money.eyebrow">Escrow, payouts, payroll</p>
+      <h2 class="display" data-i18n="s.money.title">Money that <em>splits itself.</em></h2>
+      <p class="lead" data-i18n="s.money.lead">Every deal carries ordered split rules. When money lands — arras at the promesa, the balance at escritura, rent on the fifth — the ledger applies them and the accountant releases one batch.</p>
     </div>
     <div class="money-grid">
       <div class="money-kinds reveal">
-        <div class="money-kind" style="--k:var(--brand-3)"><i></i><div><b>Straight payment</b><span>One participant, one amount. The photographer's COP 1.850.000 package, paid from the marketing budget at listing.</span></div></div>
-        <div class="money-kind" style="--k:var(--brand)"><i></i><div><b>Shared commission</b><span>Several rules summing to 100 % of the agency's gross: listing broker, selling broker, agency, lawyer. Paid from escrow at close.</span></div></div>
-        <div class="money-kind" style="--k:var(--accent)"><i></i><div><b>Referral fee</b><span>A % or fixed amount to whoever referred, deducted before commission rules apply.</span></div></div>
-        <div class="money-kind" style="--k:var(--ai)"><i></i><div><b>Staged splits</b><span>The same person twice: 10 % at listing as a marketing advance, 30 % at close. Rental admin fee and salaries run monthly.</span></div></div>
-        <div class="escrow-note"><svg><use href="#i-vault"/></svg><span>Client funds sit in a segregated escrow ledger. Releases need the accountant; anything over COP 50.000.000 also needs the owner.</span></div>
+        <div class="money-kind" style="--k:var(--brand-3)"><i></i><div><b data-i18n="s.money.k1.b">Straight payment</b><span data-i18n="s.money.k1.s">One participant, one amount. The photographer's COP 1.850.000 package, paid from the marketing budget at listing.</span></div></div>
+        <div class="money-kind" style="--k:var(--brand)"><i></i><div><b data-i18n="s.money.k2.b">Shared commission</b><span data-i18n="s.money.k2.s">Several rules summing to 100 % of the agency's gross: listing broker, selling broker, agency, lawyer. Paid from escrow at close.</span></div></div>
+        <div class="money-kind" style="--k:var(--accent)"><i></i><div><b data-i18n="s.money.k3.b">Referral fee</b><span data-i18n="s.money.k3.s">A % or fixed amount to whoever referred, deducted before commission rules apply.</span></div></div>
+        <div class="money-kind" style="--k:var(--ai)"><i></i><div><b data-i18n="s.money.k4.b">Staged splits</b><span data-i18n="s.money.k4.s">The same person twice: 10 % at listing as a marketing advance, 30 % at close. Rental admin fee and salaries run monthly.</span></div></div>
+        <div class="escrow-note"><svg><use href="#i-vault"/></svg><span data-i18n="s.money.note">Client funds sit in a segregated escrow ledger. Releases need the accountant; anything over COP 50.000.000 also needs the owner.</span></div>
       </div>
       <div class="split-card reveal" id="split-card"></div>
     </div>
@@ -235,9 +236,9 @@
 <section class="section voice-section" id="voice">
   <div class="container">
     <div class="section-head reveal">
-      <p class="eyebrow">Voice layer</p>
-      <h2 class="display-hero" style="font-size:clamp(2.2rem,5vw,4rem)">Say it. Llave does it. <em>You approve.</em></h2>
-      <p class="lead">Wake word "Llave". Works in the app, on the watch and as a WhatsApp voice note from the car between Guatapé and El Poblado. Anything that touches money, contracts or a portal waits for a spoken "confirmar".</p>
+      <p class="eyebrow" data-i18n="s.voice.eyebrow">Voice layer</p>
+      <h2 class="display-hero" style="font-size:clamp(2.2rem,5vw,4rem)" data-i18n="s.voice.title">Say it. Llave does it. <em>You approve.</em></h2>
+      <p class="lead" data-i18n="s.voice.lead">Wake word "Llave". Works in the app, on the watch and as a WhatsApp voice note from the car between Guatapé and El Poblado. Anything that touches money, contracts or a portal waits for a spoken "confirmar".</p>
     </div>
     <div class="voice-grid">
       <div class="voice-chat reveal" id="voice-chat"></div>
@@ -248,8 +249,8 @@
             <span class="crown"></span>
             <div class="device-screen"><iframe src="app/index.html?mode=watch#/role/broker/home" title="Llave on the watch" loading="lazy"></iframe></div>
           </div>
-          <p class="device-caption">Watch · voice first</p>
-          <p class="device-open"><a href="app/index.html?mode=watch#/role/broker/home">Open live <svg width="12" height="12"><use href="#i-external"/></svg></a></p>
+          <p class="device-caption" data-i18n="s.voice.watchcap">Watch · voice first</p>
+          <p class="device-open"><a href="app/index.html?mode=watch#/role/broker/home"><span data-i18n="s.roles.open">Open live</span> <svg width="12" height="12"><use href="#i-external"/></svg></a></p>
         </div>
       </div>
     </div>
@@ -261,17 +262,17 @@
 <section class="section" id="devices">
   <div class="container">
     <div class="section-head is-center reveal">
-      <p class="eyebrow">On every screen</p>
-      <h2 class="display">The owner's wall, the admin's desk, the broker's pocket.</h2>
-      <p class="lead">Same data, five surfaces. These frames are the live demo app, not screenshots — scroll inside them.</p>
+      <p class="eyebrow" data-i18n="s.dev.eyebrow">On every screen</p>
+      <h2 class="display" data-i18n="s.dev.title">The owner's wall, the admin's desk, the broker's pocket.</h2>
+      <p class="lead" data-i18n="s.dev.lead">Same data, five surfaces. These frames are the live demo app, not screenshots — scroll inside them.</p>
     </div>
     <div class="devices-hero reveal">
       <div class="device-block">
         <div class="device device-desktop">
           <div class="device-screen"><iframe src="app/index.html#/role/owner/home" title="Owner dashboard · desktop" loading="lazy"></iframe></div>
         </div>
-        <p class="device-caption">Owner · desktop · everything, approvals first</p>
-        <p class="device-open"><a href="app/index.html#/role/owner/home">Open live <svg width="12" height="12"><use href="#i-external"/></svg></a></p>
+        <p class="device-caption" data-i18n="s.dev.c1">Owner · desktop · everything, approvals first</p>
+        <p class="device-open"><a href="app/index.html#/role/owner/home"><span data-i18n="s.roles.open">Open live</span> <svg width="12" height="12"><use href="#i-external"/></svg></a></p>
       </div>
     </div>
     <div class="devices-row reveal">
@@ -279,15 +280,15 @@
         <div class="device device-tablet">
           <div class="device-screen"><iframe src="app/index.html#/role/sales_admin/projects" title="Sales admin · projects · tablet" loading="lazy"></iframe></div>
         </div>
-        <p class="device-caption">Sales admin · tablet · project board per listing</p>
-        <p class="device-open"><a href="app/index.html#/role/sales_admin/projects">Open live <svg width="12" height="12"><use href="#i-external"/></svg></a></p>
+        <p class="device-caption" data-i18n="s.dev.c2">Sales admin · tablet · project board per listing</p>
+        <p class="device-open"><a href="app/index.html#/role/sales_admin/projects"><span data-i18n="s.roles.open">Open live</span> <svg width="12" height="12"><use href="#i-external"/></svg></a></p>
       </div>
       <div class="device-block">
         <div class="device device-phone">
           <div class="device-screen"><iframe src="app/index.html?mode=phone#/role/broker/home" title="Broker · phone" loading="lazy"></iframe></div>
         </div>
-        <p class="device-caption">Broker · phone · Realtor OS</p>
-        <p class="device-open"><a href="app/index.html?mode=phone#/role/broker/home">Open live <svg width="12" height="12"><use href="#i-external"/></svg></a></p>
+        <p class="device-caption" data-i18n="s.dev.c3">Broker · phone · Realtor OS</p>
+        <p class="device-open"><a href="app/index.html?mode=phone#/role/broker/home"><span data-i18n="s.roles.open">Open live</span> <svg width="12" height="12"><use href="#i-external"/></svg></a></p>
       </div>
     </div>
     <div class="devices-row-2 reveal">
@@ -295,19 +296,19 @@
         <div class="device device-tv">
           <div class="device-screen"><iframe src="app/index.html?mode=tv#/role/owner/home" title="Office wallboard · TV" loading="lazy"></iframe></div>
         </div>
-        <p class="device-caption">Office wallboard · TV · pipeline, escrow, today's tours</p>
-        <p class="device-open"><a href="app/index.html?mode=tv#/role/owner/home">Open live <svg width="12" height="12"><use href="#i-external"/></svg></a></p>
+        <p class="device-caption" data-i18n="s.dev.c4">Office wallboard · TV · pipeline, escrow, today's tours</p>
+        <p class="device-open"><a href="app/index.html?mode=tv#/role/owner/home"><span data-i18n="s.roles.open">Open live</span> <svg width="12" height="12"><use href="#i-external"/></svg></a></p>
       </div>
       <div class="device-block">
         <div class="device device-watch">
           <span class="crown"></span>
           <div class="device-screen"><iframe src="app/index.html?mode=watch#/role/broker/home" title="Broker · watch" loading="lazy"></iframe></div>
         </div>
-        <p class="device-caption">Watch · next visit, say "Llave"</p>
-        <p class="device-open"><a href="app/index.html?mode=watch#/role/broker/home">Open live <svg width="12" height="12"><use href="#i-external"/></svg></a></p>
+        <p class="device-caption" data-i18n="s.dev.c5">Watch · next visit, say "Llave"</p>
+        <p class="device-open"><a href="app/index.html?mode=watch#/role/broker/home"><span data-i18n="s.roles.open">Open live</span> <svg width="12" height="12"><use href="#i-external"/></svg></a></p>
       </div>
     </div>
-    <p class="row reveal" style="justify-content:center;margin-top:var(--s-10)"><a class="btn btn-secondary" href="mockups/index.html">Browse the full device gallery <svg><use href="#i-arrow"/></svg></a></p>
+    <p class="row reveal" style="justify-content:center;margin-top:var(--s-10)"><a class="btn btn-secondary" href="mockups/index.html"><span data-i18n="s.dev.gallery">Browse the full device gallery</span> <svg><use href="#i-arrow"/></svg></a></p>
   </div>
 </section>
 
@@ -315,35 +316,35 @@
 <section class="section band-sand" id="tenants">
   <div class="container">
     <div class="section-head reveal">
-      <p class="eyebrow">Multi-tenant</p>
-      <h2 class="display">One platform, <em>many agencies.</em></h2>
-      <p class="lead">Each agency gets its own brand, domain, legal pack, roles and integrations on shared infrastructure. Dorum Lifestyle is tenant one; the next two seats are open.</p>
+      <p class="eyebrow" data-i18n="s.ten.eyebrow">Multi-tenant</p>
+      <h2 class="display" data-i18n="s.ten.title">One platform, <em>many agencies.</em></h2>
+      <p class="lead" data-i18n="s.ten.lead">Each agency gets its own brand, domain, legal pack, roles and integrations on shared infrastructure. Dorum Lifestyle is tenant one; the next two seats are open.</p>
     </div>
     <div class="tenant-grid">
       <article class="tenant reveal" id="tenant-dorum">
         <div class="tenant-head"><span class="mark" style="background:var(--accent)">D</span><div><h3 id="tenant-name">Dorum Lifestyle</h3><p class="tenant-meta" id="tenant-meta">Guatapé · Medellín · Oriente · Cartagena</p></div></div>
         <p class="small" style="color:var(--text-2)" id="tenant-pos">Boutique agency for homes immersed in nature. Curated luxury homes, fincas and reservoir-view lots, plus rental management that turns purchases into productive assets.</p>
         <div class="tenant-stats" id="tenant-stats"></div>
-        <span class="badge badge-success" style="align-self:flex-start">Live · demo tenant</span>
+        <span class="badge badge-success" style="align-self:flex-start" data-i18n="s.ten.live">Live · demo tenant</span>
       </article>
       <article class="tenant is-ghost reveal">
-        <div class="tenant-head"><span class="mark">?</span><div><h3>Your agency in Bogotá</h3><p class="tenant-meta">Chicó · Usaquén · La Calera</p></div></div>
-        <p class="small muted">Urban apartments, estrato 5–6, corporate rentals. Same modules, your clause library, your commission defaults.</p>
-        <div class="tenant-stats"><div><b>48</b><span>listings</span></div><div><b>14</b><span>people</span></div><div><b>3</b><span>offices</span></div></div>
-        <span class="badge" style="align-self:flex-start">Seat open</span>
+        <div class="tenant-head"><span class="mark">?</span><div><h3 data-i18n="s.ten.2.t">Your agency in Bogotá</h3><p class="tenant-meta">Chicó · Usaquén · La Calera</p></div></div>
+        <p class="small muted" data-i18n="s.ten.2.p">Urban apartments, estrato 5–6, corporate rentals. Same modules, your clause library, your commission defaults.</p>
+        <div class="tenant-stats"><div><b>48</b><span data-i18n="s.ten.stat.listings">listings</span></div><div><b>14</b><span data-i18n="s.ten.stat.people">people</span></div><div><b>3</b><span data-i18n="s.ten.stat.offices">offices</span></div></div>
+        <span class="badge" style="align-self:flex-start" data-i18n="s.ten.seat">Seat open</span>
       </article>
       <article class="tenant is-ghost reveal">
-        <div class="tenant-head"><span class="mark">?</span><div><h3>Your agency on the coast</h3><p class="tenant-meta">Cartagena · Barú · Santa Marta</p></div></div>
-        <p class="small muted">Vacation rentals and international buyers. USD listings, nightly rates, monthly owner liquidations, concierge built in.</p>
-        <div class="tenant-stats"><div><b>32</b><span>listings</span></div><div><b>9</b><span>people</span></div><div><b>2</b><span>offices</span></div></div>
-        <span class="badge" style="align-self:flex-start">Seat open</span>
+        <div class="tenant-head"><span class="mark">?</span><div><h3 data-i18n="s.ten.3.t">Your agency on the coast</h3><p class="tenant-meta">Cartagena · Barú · Santa Marta</p></div></div>
+        <p class="small muted" data-i18n="s.ten.3.p">Vacation rentals and international buyers. USD listings, nightly rates, monthly owner liquidations, concierge built in.</p>
+        <div class="tenant-stats"><div><b>32</b><span data-i18n="s.ten.stat.listings">listings</span></div><div><b>9</b><span data-i18n="s.ten.stat.people">people</span></div><div><b>2</b><span data-i18n="s.ten.stat.offices">offices</span></div></div>
+        <span class="badge" style="align-self:flex-start" data-i18n="s.ten.seat">Seat open</span>
       </article>
     </div>
     <div class="tenant-features reveal">
-      <div class="tenant-feature"><svg><use href="#i-palette"/></svg><div><b>White-label</b>Your logo, colors and domain on the brokerage site, listing pages, emails and the app.</div></div>
-      <div class="tenant-feature"><svg><use href="#i-users"/></svg><div><b>Per-tenant roles</b>Rename roles, add new ones, change what each sees — configuration, never a deploy.</div></div>
-      <div class="tenant-feature"><svg><use href="#i-lock"/></svg><div><b>Data isolation</b>Documents, ledgers and conversations scoped per tenant, with a data-residency option.</div></div>
-      <div class="tenant-feature"><svg><use href="#i-plug"/></svg><div><b>Per-tenant integrations</b>Your Finca Raíz profile, your WhatsApp Business line, your Bancolombia escrow accounts, your DIAN.</div></div>
+      <div class="tenant-feature"><svg><use href="#i-palette"/></svg><div data-i18n="s.ten.f1"><b data-i18n="s.price.3.pill">White-label</b>Your logo, colors and domain on the brokerage site, listing pages, emails and the app.</div></div>
+      <div class="tenant-feature"><svg><use href="#i-users"/></svg><div data-i18n="s.ten.f2"><b>Per-tenant roles</b>Rename roles, add new ones, change what each sees — configuration, never a deploy.</div></div>
+      <div class="tenant-feature"><svg><use href="#i-lock"/></svg><div data-i18n="s.ten.f3"><b>Data isolation</b>Documents, ledgers and conversations scoped per tenant, with a data-residency option.</div></div>
+      <div class="tenant-feature"><svg><use href="#i-plug"/></svg><div data-i18n="s.ten.f4"><b>Per-tenant integrations</b>Your Finca Raíz profile, your WhatsApp Business line, your Bancolombia escrow accounts, your DIAN.</div></div>
     </div>
   </div>
 </section>
@@ -352,17 +353,17 @@
 <section class="section" id="roadmap">
   <div class="container">
     <div class="section-head reveal">
-      <p class="eyebrow">Coming soon</p>
-      <h2 class="display">From selling the house to running the <em>life</em> inside it.</h2>
-      <p class="lead">Dorum's Lifestyle &amp; Experiences division already turns purchases into productive assets. Llave's roadmap follows the same arc: rental ops first, then the services a guest or renter books from their home screen, then Dorum Projects' remodeling and build-from-scratch.</p>
+      <p class="eyebrow" data-i18n="s.road.eyebrow">Coming soon</p>
+      <h2 class="display" data-i18n="s.road.title">From selling the house to running the <em>life</em> inside it.</h2>
+      <p class="lead" data-i18n="s.road.lead">Dorum's Lifestyle &amp; Experiences division already turns purchases into productive assets. Llave's roadmap follows the same arc: rental ops first, then the services a guest or renter books from their home screen, then Dorum Projects' remodeling and build-from-scratch.</p>
     </div>
     <div class="roadmap reveal">
-      <div class="phase is-now"><span class="ph-when">Phase 0 · now</span><h3>Demo</h3><p>Sales site, tenant app with role homes, Dorum brokerage site, device mockups.</p><span class="ph-out">Sell the vision to Dorum and the next tenants</span></div>
-      <div class="phase"><span class="ph-when">Phase 1 · 0–3 mo</span><h3>Core</h3><p>Auth + roles, Listings, Media, both CRM pipelines, Projects, Website CMS, Finca Raíz + Wasi push.</p><span class="ph-out">Dorum leaves Wasi and Dropbox</span></div>
-      <div class="phase"><span class="ph-when">Phase 2 · 3–6 mo</span><h3>Money &amp; Law</h3><p>Contracts + e-sign, Paperwork with AI validation, Escrow &amp; split engine, Payouts, Payroll.</p><span class="ph-out">Dorum closes deals end-to-end in Llave</span></div>
-      <div class="phase"><span class="ph-when">Phase 3 · 6–9 mo</span><h3>Growth</h3><p>Advertising, WhatsApp automation, Voice layer, Rental Ops, Reports.</p><span class="ph-out">Dorum leaves Go High Level and ChatGPT</span></div>
-      <div class="phase"><span class="ph-when">Phase 4 · 9–12 mo</span><h3>Platform</h3><p>Multi-tenant onboarding, tenant themes, legal packs by country, vendor marketplace, Lifestyle services.</p><span class="ph-out">Second and third agencies onboard</span></div>
-      <div class="phase"><span class="ph-when">Phase 5 · 12 mo+</span><h3>Build</h3><p>Remodeling and construction-from-scratch project management, lender network.</p><span class="ph-out">Dorum Group vertical integration</span></div>
+      <div class="phase is-now"><span class="ph-when" data-i18n="s.road.0.w">Phase 0 · now</span><h3 data-i18n="s.road.0.t">Demo</h3><p data-i18n="s.road.0.p">Sales site, tenant app with role homes, Dorum brokerage site, device mockups.</p><span class="ph-out" data-i18n="s.road.0.o">Sell the vision to Dorum and the next tenants</span></div>
+      <div class="phase"><span class="ph-when" data-i18n="s.road.1.w">Phase 1 · 0–3 mo</span><h3 data-i18n="s.road.1.t">Core</h3><p data-i18n="s.road.1.p">Auth + roles, Listings, Media, both CRM pipelines, Projects, Website CMS, Finca Raíz + Wasi push.</p><span class="ph-out" data-i18n="s.road.1.o">Dorum leaves Wasi and Dropbox</span></div>
+      <div class="phase"><span class="ph-when" data-i18n="s.road.2.w">Phase 2 · 3–6 mo</span><h3 data-i18n="s.road.2.t">Money &amp; Law</h3><p data-i18n="s.road.2.p">Contracts + e-sign, Paperwork with AI validation, Escrow &amp; split engine, Payouts, Payroll.</p><span class="ph-out" data-i18n="s.road.2.o">Dorum closes deals end-to-end in Llave</span></div>
+      <div class="phase"><span class="ph-when" data-i18n="s.road.3.w">Phase 3 · 6–9 mo</span><h3 data-i18n="s.road.3.t">Growth</h3><p data-i18n="s.road.3.p">Advertising, WhatsApp automation, Voice layer, Rental Ops, Reports.</p><span class="ph-out" data-i18n="s.road.3.o">Dorum leaves Go High Level and ChatGPT</span></div>
+      <div class="phase"><span class="ph-when" data-i18n="s.road.4.w">Phase 4 · 9–12 mo</span><h3 data-i18n="s.road.4.t">Platform</h3><p data-i18n="s.road.4.p">Multi-tenant onboarding, tenant themes, legal packs by country, vendor marketplace, Lifestyle services.</p><span class="ph-out" data-i18n="s.road.4.o">Second and third agencies onboard</span></div>
+      <div class="phase"><span class="ph-when" data-i18n="s.road.5.w">Phase 5 · 12 mo+</span><h3 data-i18n="s.road.5.t">Build</h3><p data-i18n="s.road.5.p">Remodeling and construction-from-scratch project management, lender network.</p><span class="ph-out" data-i18n="s.road.5.o">Dorum Group vertical integration</span></div>
     </div>
     <div class="lifestyle-grid reveal" id="lifestyle-grid"></div>
   </div>
@@ -372,62 +373,62 @@
 <section class="section band-sand" id="pricing">
   <div class="container">
     <div class="section-head is-center reveal">
-      <p class="eyebrow">Pricing</p>
-      <h2 class="display">Priced per agency, not per portal.</h2>
-      <p class="lead">Billed in USD, shown with a COP reference. Vendors and customers are always free — a photographer or a buyer never counts as a seat.</p>
+      <p class="eyebrow" data-i18n="s.nav.pricing"><span data-i18n="s.price.eyebrow">Pricing</span></p>
+      <h2 class="display" data-i18n="s.price.title">Priced per agency, not per portal.</h2>
+      <p class="lead" data-i18n="s.price.lead">Billed in USD, shown with a COP reference. Vendors and customers are always free — a photographer or a buyer never counts as a seat.</p>
     </div>
     <div class="pricing-grid">
       <article class="price-card reveal">
-        <div class="price-tier"><h3>Agent</h3><span class="pill">Solo realtor</span></div>
-        <div><div class="price-amount"><span class="display"><small>US$</small>49</span><span class="price-unit">/ month</span></div><p class="price-cop">≈ COP 200.000 / mes</p></div>
+        <div class="price-tier"><h3 data-i18n="s.price.1.t">Agent</h3><span class="pill" data-i18n="s.price.1.pill">Solo realtor</span></div>
+        <div><div class="price-amount"><span class="display"><small>US$</small>49</span><span class="price-unit" data-i18n="s.price.unit">/ month</span></div><p class="price-cop">≈ COP 200.000 / mes</p></div>
         <ul class="price-features">
-          <li><svg><use href="#i-check"/></svg>Realtor OS: listings, both CRM pipelines, calendar</li>
-          <li><svg><use href="#i-check"/></svg>Publishing to Finca Raíz, Wasi, Metrocuadrado</li>
-          <li><svg><use href="#i-check"/></svg>AI write-ups, follow-ups and comps with approval</li>
-          <li><svg><use href="#i-check"/></svg>Voice on phone and watch</li>
-          <li><svg><use href="#i-check"/></svg>Up to 25 active listings</li>
+          <li><svg><use href="#i-check"/></svg><span data-i18n="s.price.1.f1">Realtor OS: listings, both CRM pipelines, calendar</span></li>
+          <li><svg><use href="#i-check"/></svg><span data-i18n="s.price.1.f2">Publishing to Finca Raíz, Wasi, Metrocuadrado</span></li>
+          <li><svg><use href="#i-check"/></svg><span data-i18n="s.price.1.f3">AI write-ups, follow-ups and comps with approval</span></li>
+          <li><svg><use href="#i-check"/></svg><span data-i18n="s.price.1.f4">Voice on phone and watch</span></li>
+          <li><svg><use href="#i-check"/></svg><span data-i18n="s.price.1.f5">Up to 25 active listings</span></li>
         </ul>
-        <a class="btn btn-secondary btn-block" href="app/index.html?mode=phone#/role/broker/home">Try the Realtor OS</a>
+        <a class="btn btn-secondary btn-block" href="app/index.html?mode=phone#/role/broker/home" data-i18n="s.price.1.cta">Try the Realtor OS</a>
       </article>
       <article class="price-card is-featured reveal">
-        <div class="price-tier"><h3>Agency</h3><span class="pill" style="background:rgb(255 252 245 / 0.14);color:var(--brand-ink)">Most agencies</span></div>
-        <div><div class="price-amount"><span class="display"><small>US$</small>390</span><span class="price-unit muted">/ month</span></div><p class="price-cop">≈ COP 1.600.000 / mes · 10 staff seats included, US$29 per extra seat</p></div>
+        <div class="price-tier"><h3 data-i18n="s.price.2.t">Agency</h3><span class="pill" style="background:rgb(255 252 245 / 0.14);color:var(--brand-ink)" data-i18n="s.price.2.pill">Most agencies</span></div>
+        <div><div class="price-amount"><span class="display"><small>US$</small>390</span><span class="price-unit muted" data-i18n="s.price.unit">/ month</span></div><p class="price-cop" data-i18n="s.price.2.cop">≈ COP 1.600.000 / mes · 10 staff seats included, US$29 per extra seat</p></div>
         <ul class="price-features">
-          <li><svg><use href="#i-check"/></svg>Everything in Agent for the whole team</li>
-          <li><svg><use href="#i-check"/></svg>Brand site + CMS on your domain, bilingual</li>
-          <li><svg><use href="#i-check"/></svg>Projects with templates, vendor roles, media inbox</li>
-          <li><svg><use href="#i-check"/></svg>Contracts, e-signature, paperwork with AI validation</li>
-          <li><svg><use href="#i-check"/></svg>Escrow, split engine, payouts, payroll, DIAN hooks</li>
-          <li><svg><use href="#i-check"/></svg>Rental ops, advertising, reports, WhatsApp automation</li>
+          <li><svg><use href="#i-check"/></svg><span data-i18n="s.price.2.f1">Everything in Agent for the whole team</span></li>
+          <li><svg><use href="#i-check"/></svg><span data-i18n="s.price.2.f2">Brand site + CMS on your domain, bilingual</span></li>
+          <li><svg><use href="#i-check"/></svg><span data-i18n="s.price.2.f3">Projects with templates, vendor roles, media inbox</span></li>
+          <li><svg><use href="#i-check"/></svg><span data-i18n="s.price.2.f4">Contracts, e-signature, paperwork with AI validation</span></li>
+          <li><svg><use href="#i-check"/></svg><span data-i18n="s.price.2.f5">Escrow, split engine, payouts, payroll, DIAN hooks</span></li>
+          <li><svg><use href="#i-check"/></svg><span data-i18n="s.price.2.f6">Rental ops, advertising, reports, WhatsApp automation</span></li>
         </ul>
-        <a class="btn btn-primary btn-block" href="app/index.html#/role/owner/home">Start with your agency</a>
+        <a class="btn btn-primary btn-block" href="app/index.html#/role/owner/home" data-i18n="s.price.2.cta">Start with your agency</a>
       </article>
       <article class="price-card reveal">
-        <div class="price-tier"><h3>Enterprise</h3><span class="pill">White-label</span></div>
-        <div><div class="price-amount"><span class="display"><small>from US$</small>1.900</span><span class="price-unit">/ month</span></div><p class="price-cop">≈ COP 7.800.000 / mes · multi-office, multi-country</p></div>
+        <div class="price-tier"><h3 data-i18n="s.price.3.t">Enterprise</h3><span class="pill" data-i18n="s.price.3.pill">White-label</span></div>
+        <div><div class="price-amount"><span class="display"><small data-i18n="s.price.3.from">from US$</small>1.900</span><span class="price-unit" data-i18n="s.price.unit">/ month</span></div><p class="price-cop" data-i18n="s.price.3.cop">≈ COP 7.800.000 / mes · multi-office, multi-country</p></div>
         <ul class="price-features">
-          <li><svg><use href="#i-check"/></svg>Your brand on everything, including the app</li>
-          <li><svg><use href="#i-check"/></svg>Legal packs per country (Colombia, México, UAE)</li>
-          <li><svg><use href="#i-check"/></svg>Custom roles, approval thresholds, audit exports</li>
-          <li><svg><use href="#i-check"/></svg>Data residency, SSO, dedicated escrow integrations</li>
-          <li><svg><use href="#i-check"/></svg>Lifestyle services marketplace when it ships</li>
+          <li><svg><use href="#i-check"/></svg><span data-i18n="s.price.3.f1">Your brand on everything, including the app</span></li>
+          <li><svg><use href="#i-check"/></svg><span data-i18n="s.price.3.f2">Legal packs per country (Colombia, México, UAE)</span></li>
+          <li><svg><use href="#i-check"/></svg><span data-i18n="s.price.3.f3">Custom roles, approval thresholds, audit exports</span></li>
+          <li><svg><use href="#i-check"/></svg><span data-i18n="s.price.3.f4">Data residency, SSO, dedicated escrow integrations</span></li>
+          <li><svg><use href="#i-check"/></svg><span data-i18n="s.price.3.f5">Lifestyle services marketplace when it ships</span></li>
         </ul>
-        <a class="btn btn-secondary btn-block" href="docs/index.html">Read the product plan</a>
+        <a class="btn btn-secondary btn-block" href="docs/index.html" data-i18n="s.price.3.cta">Read the product plan</a>
       </article>
     </div>
-    <p class="pricing-foot reveal">Demo pricing. These figures are placeholders for the pitch and will be set with the first tenants; COP references use roughly 4.100 COP per USD and exclude IVA. Portal fees (Finca Raíz, Metrocuadrado) and ad spend are paid to those platforms directly.</p>
+    <p class="pricing-foot reveal" data-i18n="s.price.foot">Demo pricing. These figures are placeholders for the pitch and will be set with the first tenants; COP references use roughly 4.100 COP per USD and exclude IVA. Portal fees (Finca Raíz, Metrocuadrado) and ad spend are paid to those platforms directly.</p>
   </div>
 </section>
 
 <!-- 13 · FINAL CTA -->
 <section class="cta-band" id="cta">
   <div class="container">
-    <p class="eyebrow reveal">Ready when you are</p>
-    <h2 class="display-hero reveal">Give every person in the agency the same <em>key.</em></h2>
-    <p class="lead reveal" style="margin-top:var(--s-5)">Open the Dorum demo as the owner, switch to a broker, then to a seller. Then imagine it with your logo.</p>
+    <p class="eyebrow reveal" data-i18n="s.cta.eyebrow">Ready when you are</p>
+    <h2 class="display-hero reveal" data-i18n="s.cta.title">Give every person in the agency the same <em>key.</em></h2>
+    <p class="lead reveal" style="margin-top:var(--s-5)" data-i18n="s.cta.lead">Open the Dorum demo as the owner, switch to a broker, then to a seller. Then imagine it with your logo.</p>
     <div class="row reveal">
-      <a class="btn btn-accent btn-lg" href="app/index.html#/role/owner/home">Open the Dorum demo <svg><use href="#i-arrow"/></svg></a>
-      <a class="btn btn-secondary btn-lg" href="dorum/index.html">See Dorum's brokerage site</a>
+      <a class="btn btn-accent btn-lg" href="app/index.html#/role/owner/home"><span data-i18n="s.hero.cta1">Open the Dorum demo</span> <svg><use href="#i-arrow"/></svg></a>
+      <a class="btn btn-secondary btn-lg" href="dorum/index.html" data-i18n="s.cta.2">See Dorum's brokerage site</a>
     </div>
   </div>
 </section>
@@ -436,16 +437,17 @@
 
 <footer class="site-footer">
   <div class="container grid grid-4">
-    <div><a class="site-logo" href="index.html"><span class="mark">L</span> Llave OS</a><p class="small" style="margin-top:var(--s-3)">The operating system for real-estate agencies. Built first for Dorum Lifestyle, Medellín.</p></div>
-    <div><h4>Product</h4><a href="index.html#modules">Modules</a><a href="index.html#roles">Roles</a><a href="app/index.html">Tenant app</a><a href="mockups/">Mockups</a></div>
-    <div><h4>Dorum</h4><a href="dorum/index.html">Brokerage site</a><a href="dorum/index.html#lifestyle">Lifestyle</a><a href="dorum/index.html#nosotros">About</a></div>
-    <div><h4>Docs</h4><a href="docs/">Product plan</a><a href="docs/#conventions">Conventions</a><span class="xs" style="display:block;margin-top:var(--s-3)">Demo data. Placeholder names except the owner. © 2026 Llave</span></div>
+    <div><a class="site-logo" href="index.html"><span class="mark">L</span> Llave OS</a><p class="small" style="margin-top:var(--s-3)" data-i18n="s.foot.tag">The operating system for real-estate agencies. Built first for Dorum Lifestyle, Medellín.</p></div>
+    <div><h4 data-i18n="s.foot.product">Product</h4><a href="index.html#modules" data-i18n="s.nav.modules"><span data-i18n="s.mod.eyebrow">Modules</span></a><a href="index.html#roles" data-i18n="s.nav.roles">Roles</a><a href="app/index.html" data-i18n="s.foot.app">Tenant app</a><a href="mockups/" data-i18n="s.foot.mockups">Mockups</a></div>
+    <div><h4>Dorum</h4><a href="dorum/index.html" data-i18n="s.foot.site">Brokerage site</a><a href="dorum/index.html#lifestyle">Lifestyle</a><a href="dorum/index.html#nosotros" data-i18n="s.foot.about">About</a></div>
+    <div><h4 data-i18n="s.foot.docs">Docs</h4><a href="docs/" data-i18n="s.foot.plan">Product plan</a><a href="docs/#conventions" data-i18n="s.foot.conv">Conventions</a><span class="xs" style="display:block;margin-top:var(--s-3)" data-i18n="s.foot.legal">Demo data. Placeholder names except the owner. © 2026 Llave</span></div>
   </div>
 </footer>
 
-<a class="demo-pill" id="demoPill" href="app/index.html#/role/owner/home">Open demo <svg width="16" height="16"><use href="#i-arrow"/></svg></a>
+<a class="demo-pill" id="demoPill" href="app/index.html#/role/owner/home"><span data-i18n="s.pill.demo">Open demo</span> <svg width="16" height="16"><use href="#i-arrow"/></svg></a>
 
 <script src="assets/data.js"></script>
+<script src="assets/i18n.js"></script>
 <script src="assets/site.js"></script>
 </body>
 </html>

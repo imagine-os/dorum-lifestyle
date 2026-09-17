@@ -19,7 +19,7 @@
 
 <!-- Hero -->
 <section class="dz-hero" id="inicio">
-  <img class="dz-hero-img" src="https://picsum.photos/seed/guatape-embalse/1800/1000" alt="Embalse de Guatapé al amanecer, con niebla entre las montañas" fetchpriority="high">
+  <img class="dz-hero-img" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2000&q=80" alt="Embalse de Guatapé al amanecer, con niebla entre las montañas" fetchpriority="high">
   <svg class="dz-hero-topo" viewBox="0 0 600 400" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
     <path d="M40 300c80-60 140-20 220-60s120-100 200-90 120 40 140 80"/>
     <path d="M20 340c90-70 160-30 240-70s130-110 210-100 130 50 150 90"/>
@@ -176,6 +176,7 @@
 <footer id="siteFooter"></footer>
 
 <script src="../assets/data.js"></script>
+<script src="../assets/i18n.js"></script>
 <script src="site.js"></script>
 <script>
 (function () {
@@ -276,7 +277,8 @@
   /* ---- lifestyle teaser ---- */
   function renderLifestyle() {
     document.getElementById('lsServices').innerHTML = D.lifestyle.slice(0, 6).map(function (s) {
-      return '<div class="dz-service">' + S.icon(S.iconFor[s.id] || 'leaf') + '<div><b>' + S.esc(S.lang === 'en' ? s.name : s.nameEs) + '</b><p>' + S.esc(s.desc) + '</p></div><span class="pill ' + (s.status === 'pilot' ? 'pill-success' : 'pill-accent') + '">' + S.t(s.status === 'pilot' ? 'ls.pilot' : 'ls.soon') + '</span></div>';
+      var t = S.ls(s);
+      return '<div class="dz-service">' + S.icon(S.iconFor[s.id] || 'leaf') + '<div><b>' + S.esc(t.name) + '</b><p>' + S.esc(t.desc) + '</p></div><span class="pill ' + (s.status === 'pilot' ? 'pill-success' : 'pill-accent') + '">' + S.t(s.status === 'pilot' ? 'ls.pilot' : 'ls.soon') + '</span></div>';
     }).join('');
   }
 
@@ -303,7 +305,7 @@
       '<span class="avatar avatar-accent">' + S.esc(owner.initials || S.initials(D.OWNER_NAME)) + '</span>' +
       '<div><p class="eyebrow">' + S.t('team.owner') + ' · ' + S.esc(owner.title || '') + '</p><h3 class="display" style="font-size:var(--fs-2xl);margin-top:var(--s-1)">' + S.esc(D.OWNER_NAME) + '</h3></div>' +
       '<blockquote>“' + S.esc(S.lang === 'en' ? D.tenant.tagline : D.tenant.taglineEs) + '.” <span class="muted" style="font-style:normal;font-family:var(--font-ui);font-size:var(--fs-sm)">— ' + S.esc(D.tenant.instagramLine) + '</span></blockquote>' +
-      '<p class="small muted">' + S.esc(D.tenant.positioningEs) + '</p>';
+      '<p class="small muted">' + S.esc(S.lang === 'en' ? D.tenant.positioning : D.tenant.positioningEs) + '</p>';
     document.getElementById('brokers').innerHTML = D.usersByRole('broker').map(function (u) {
       return '<div class="dz-broker"><span class="avatar">' + S.esc(u.initials) + '</span><div><b>' + S.esc(u.name) + '</b><small>' + S.esc(u.title) + '</small><small>' + S.esc(u.city) + ' · ' + u.langs.map(function (x) { return x.toUpperCase(); }).join(' / ') + '</small></div>' +
         '<div class="row"><a class="btn btn-secondary btn-sm" href="' + S.wa('Hola ' + u.name.split(' ')[0] + ', quiero información sobre inmuebles Dorum.', u.phone) + '" target="_blank" rel="noopener">' + S.icon('chat') + ' WhatsApp</a></div></div>';
@@ -314,13 +316,14 @@
 
   /* ---- testimonials (invented, marked demo) ---- */
   var TESTI = [
-    { q: 'Compramos el lote pensando en descansar y terminamos con una casa que se paga sola. El extracto mensual llega puntual y la casa siempre está impecable.', n: 'Familia inversionista · Medellín', s: 'Programa Lifestyle · Guatapé' },
-    { q: 'We closed from Toronto without a single surprise. Every document was ready before we asked, and the team spoke our language — literally.', n: 'International buyer · Toronto', s: 'Casa de lago · Guatapé' },
-    { q: 'Dorum entendió que no vendíamos una finca, sino la memoria de tres generaciones. La presentaron con el respeto que merecía y se vendió en seis semanas.', n: 'Vendedores · Llanogrande', s: 'Finca en el Oriente Antioqueño' }
+    { q: 'Compramos el lote pensando en descansar y terminamos con una casa que se paga sola. El extracto mensual llega puntual y la casa siempre está impecable.', qEn: 'We bought the lot to unwind and ended up with a house that pays for itself. The monthly statement arrives on time and the house is always spotless.', n: 'Familia inversionista · Medellín', nEn: 'Investor family · Medellín', s: 'Programa Lifestyle · Guatapé', sEn: 'Lifestyle programme · Guatapé' },
+    { q: 'Cerramos desde Toronto sin una sola sorpresa. Cada documento estaba listo antes de pedirlo y el equipo hablaba nuestro idioma, literalmente.', qEn: 'We closed from Toronto without a single surprise. Every document was ready before we asked, and the team spoke our language — literally.', n: 'Compradora internacional · Toronto', nEn: 'International buyer · Toronto', s: 'Casa de lago · Guatapé', sEn: 'Lake house · Guatapé' },
+    { q: 'Dorum entendió que no vendíamos una finca, sino la memoria de tres generaciones. La presentaron con el respeto que merecía y se vendió en seis semanas.', qEn: 'Dorum understood we were not selling a finca but the memory of three generations. They presented it with the respect it deserved and it sold in six weeks.', n: 'Vendedores · Llanogrande', nEn: 'Sellers · Llanogrande', s: 'Finca en el Oriente Antioqueño', sEn: 'Finca in the Oriente Antioqueño' }
   ];
   function renderTesti() {
+    var en = S.lang === 'en';
     document.getElementById('testimonials').innerHTML = TESTI.map(function (t, i) {
-      return '<figure class="dz-testimonial"><span class="pill">' + S.t('lf.demo') + '</span>' + S.icon('quote') + '<p>' + S.esc(t.q) + '</p><footer><span class="avatar avatar-sand avatar-sm">' + (i + 1) + '</span><div>' + S.esc(t.n) + '<small>' + S.esc(t.s) + '</small></div></footer></figure>';
+      return '<figure class="dz-testimonial"><span class="pill">' + S.t('lf.demo') + '</span>' + S.icon('quote') + '<p>' + S.esc(en ? t.qEn : t.q) + '</p><footer><span class="avatar avatar-sand avatar-sm">' + (i + 1) + '</span><div>' + S.esc(en ? t.nEn : t.n) + '<small>' + S.esc(en ? t.sEn : t.s) + '</small></div></footer></figure>';
     }).join('');
   }
 

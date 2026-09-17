@@ -56,7 +56,7 @@ Read this before building any page. Everything here exists so five people can bu
 /docs/                      PLAN.md + CONVENTIONS.md rendered or copied here; docs/index.html links them.
 /assets/tokens.css          Design system (do not edit without telling the architect).
 /assets/data.js             Demo data + helpers (edit only to fix facts; keep the shape).
-/assets/img/                Static images if any (prefer picsum seeds from data.js).
+/assets/img/                Static images if any (prefer the Unsplash hotlinks in data.js).
 ```
 
 Route ids for `/app`: roles come from `DORUM.roles[].id` (`owner`, `broker`, `sales_admin`, `rental_admin`, `accountant`, `lawyer`, `photographer`, `advertiser`, `writer`, `construction`, `lender`, `seller`, `buyer`, `landlord`, `renter`). Modules come from `DORUM.roles[].navItems`. Unknown route → `#/role/owner/home`. Use `DORUM.parseRoute()` and `DORUM.routeTo(role, module, id)`.
@@ -268,11 +268,12 @@ Money is an integer in COP unless the object carries `currency: 'USD'`. Dates ar
 3. Reads all content from `DORUM`; the owner's name appears only via `DORUM.OWNER_NAME`.
 4. Works at 400px and 1440px, light and dark.
 5. Every AI-generated item is visibly marked and has an approve action.
-6. No lorem, no placeholder images other than the picsum seeds in data.
+6. No lorem, no placeholder images other than the Unsplash hotlinks in data (gradient fallback on 404).
 
 </script>
 
 <script src="../assets/data.js"></script>
+<script src="../assets/i18n.js"></script>
 <script src="docs.js"></script>
 <script>
 (function () {

@@ -124,6 +124,38 @@
   var NAV_LABEL = { home: 'Inicio', listings: 'Inmuebles', 'crm-get': 'Captación', 'crm-sell': 'Ventas & arriendos', calendar: 'Agenda', projects: 'Proyectos', contracts: 'Contratos', paperwork: 'Documentos', media: 'Fotos & video', publishing: 'Publicación', ads: 'Pauta', money: 'Dinero', 'my-money': 'Mis pagos', payroll: 'Nómina', rentals: 'Arriendos', lifestyle: 'Lifestyle', reports: 'Reportes', website: 'Sitio web', settings: 'Configuración', orders: 'Órdenes', referrals: 'Referidos', 'my-listing': 'Mi inmueble', visits: 'Visitas', offers: 'Ofertas', documents: 'Documentos', messages: 'Mensajes', search: 'Buscar', shortlist: 'Favoritos', tours: 'Recorridos', 'my-property': 'Mi propiedad', statements: 'Extractos', maintenance: 'Mantenimiento', 'my-home': 'Mi hogar', payments: 'Pagos', roles: 'Roles' };
   var NAV_ICON = { home: 'home', listings: 'building', 'crm-get': 'handshake', 'crm-sell': 'users', calendar: 'calendar', projects: 'kanban', contracts: 'file-text', paperwork: 'files', media: 'image', publishing: 'upload-cloud', ads: 'megaphone', money: 'wallet', 'my-money': 'banknote', payroll: 'briefcase', rentals: 'key', lifestyle: 'sparkles', reports: 'bar-chart', website: 'globe', settings: 'settings', orders: 'clipboard-list', referrals: 'handshake', 'my-listing': 'building', visits: 'calendar', offers: 'file-text', documents: 'files', messages: 'message-circle', search: 'search', shortlist: 'heart', tours: 'map-pin', 'my-property': 'building', statements: 'receipt', maintenance: 'wrench', 'my-home': 'home', payments: 'banknote' };
 
+  /* ------------------------------------------------------------- language */
+  // Shared toggle lives in ../assets/i18n.js (window.I18N). ES is the app's source language; EN comes
+  // from *En fields in data.js, these helpers, and the I18N.dict.ui text pass on rendered nodes.
+  function isEn() { return !!(window.I18N && window.I18N.lang === 'en'); }
+  function tx(es, en) { return isEn() ? en : es; }
+  var NAV_LABEL_EN = { home: 'Home', listings: 'Listings', 'crm-get': 'Acquisition', 'crm-sell': 'Sales & rentals', calendar: 'Calendar', projects: 'Projects', contracts: 'Contracts', paperwork: 'Paperwork', media: 'Photos & video', publishing: 'Publishing', ads: 'Ads', money: 'Money', 'my-money': 'My payouts', payroll: 'Payroll', rentals: 'Rentals', lifestyle: 'Lifestyle', reports: 'Reports', website: 'Website', settings: 'Settings', orders: 'Orders', referrals: 'Referrals', 'my-listing': 'My listing', visits: 'Visits', offers: 'Offers', documents: 'Documents', messages: 'Messages', search: 'Search', shortlist: 'Shortlist', tours: 'Tours', 'my-property': 'My property', statements: 'Statements', maintenance: 'Maintenance', 'my-home': 'My home', payments: 'Payments', roles: 'Roles' };
+  function navLabel(id) { return (isEn() ? NAV_LABEL_EN[id] : NAV_LABEL[id]) || id; }
+  function roleLabel(r) { return r ? (isEn() ? (r.label || r.labelEs) : (r.labelEs || r.label)) : ''; }
+  // Module defs carry title (EN) + titleEs (ES); some core modules use the ES word for both.
+  function modTitle(def, id) {
+    if (isEn()) return NAV_LABEL_EN[id] || (def && def.title) || id;
+    return (def && (def.titleEs || def.title)) || NAV_LABEL[id] || id;
+  }
+  function langToggle(opts) { return window.I18N ? window.I18N.toggleHtml(opts) : ''; }
+
+  var ROLE_DESC_EN = {
+    owner: 'The whole business on one screen: pipeline, money in escrow, team, ads and the decisions Llave left ready for your approval.',
+    broker: 'Your day from the car: agenda, hot leads, follow-ups drafted by Llave and your projected commissions.',
+    sales_admin: 'The operations board: sales pipeline, vendor orders, paperwork and the portal publishing queue.',
+    rental_admin: 'Rental portfolio, maintenance, inventories and the Lifestyle vacation-rental calendar.',
+    accountant: 'Escrow, pending releases, payout batches, payroll and DIAN e-invoicing with traceable approvals.',
+    lawyer: 'Contracts to review, open redlines, title checks and pending signatures with the clause library.',
+    photographer: 'Photo, video and drone orders; shoot calendar and direct upload into the listing.',
+    advertiser: 'Live campaigns, creative requests, CPL trend and per-job payouts.',
+    writer: 'Bilingual write-up queue, comps requested and AI drafts to polish.',
+    construction: 'Quotes requested, active builds and scheduled site visits.',
+    lender: 'New referrals, pre-approvals in progress and upcoming closings.',
+    seller: 'How the sale of your property is going: visits, feedback, offers and missing documents.',
+    buyer: 'Your shortlist, the next tour, your offer status and the mortgage.',
+    landlord: 'Rent status, monthly statement, occupancy and maintenance of your property.',
+    renter: 'Your home: this month\'s rent, receipts, maintenance and Lifestyle services one tap away.'
+  };
   var ROLE_DESC = {
     owner: 'Todo el negocio en una pantalla: pipeline, dinero en escrow, equipo, pauta y las decisiones que Llave dejó listas para tu aprobación.',
     broker: 'Tu día desde el carro: agenda, leads calientes, seguimientos redactados por Llave y tus comisiones proyectadas.',
@@ -141,8 +173,13 @@
     landlord: 'Estado del arriendo, extracto mensual, ocupación y mantenimiento de tu propiedad.',
     renter: 'Tu hogar: canon del mes, recibos, mantenimiento y servicios Lifestyle a un toque.'
   };
-  var GROUP_LABEL = { staff: 'Equipo Dorum', vendor: 'Aliados y proveedores', customer: 'Clientes' };
-  var GROUP_SUB = { staff: 'Operan la agencia todos los días', vendor: 'Reciben órdenes y cobran por servicio', customer: 'Ven solo lo suyo, en su idioma' };
+  var GROUP_LABEL_ES = { staff: 'Equipo Dorum', vendor: 'Aliados y proveedores', customer: 'Clientes' };
+  var GROUP_LABEL_EN = { staff: 'Dorum team', vendor: 'Partners & vendors', customer: 'Clients' };
+  var GROUP_SUB_ES = { staff: 'Operan la agencia todos los días', vendor: 'Reciben órdenes y cobran por servicio', customer: 'Ven solo lo suyo, en su idioma' };
+  var GROUP_SUB_EN = { staff: 'Run the agency every day', vendor: 'Receive orders and get paid per job', customer: 'See only their own, in their language' };
+  function groupLabel(g) { return isEn() ? GROUP_LABEL_EN[g] : GROUP_LABEL_ES[g]; }
+  function groupSub(g) { return isEn() ? GROUP_SUB_EN[g] : GROUP_SUB_ES[g]; }
+  function roleDesc(id) { return (isEn() ? ROLE_DESC_EN[id] : ROLE_DESC[id]) || ''; }
 
   /* ----------------------------------------------- augment in-memory data */
   // Unified inbox threads (not in data.js). Kept here so the approvals inbox can count them.
@@ -341,7 +378,7 @@
     esc: esc, icon: icon, chart: chart,
     ctx: function () { return ctx(); },
     // Extras (beyond the base contract) — shared helpers for modules
-    util: { approvals: approvalsFor, allApprovals: allApprovals, events: events, navLabel: function (id) { return NAV_LABEL[id] || id; }, navIcon: function (id) { return NAV_ICON[id] || 'layout-grid'; }, relDay: relDay, addDays: addDays, today: todayISO, firstName: firstName, capFirst: capFirst, channelLabel: channelLabel, placeholder: placeholder, listingMini: listingMini },
+    util: { approvals: approvalsFor, allApprovals: allApprovals, events: events, navLabel: navLabel, navLabelEs: function (id) { return NAV_LABEL[id] || id; }, tx: tx, isEn: isEn, roleLabel: roleLabel, navIcon: function (id) { return NAV_ICON[id] || 'layout-grid'; }, relDay: relDay, addDays: addDays, today: todayISO, firstName: firstName, capFirst: capFirst, channelLabel: channelLabel, placeholder: placeholder, listingMini: listingMini },
     openVoice: openVoice, openSearch: openPalette, openApprovals: openApprovals,
     state: state
   };
@@ -390,9 +427,9 @@
 
   /* --------------------------------------------------- placeholder / mini */
   function placeholder(id, small) {
-    var label = NAV_LABEL[id] || (L.widgets[id] && L.widgets[id].title) || id.replace(/-/g, ' ');
+    var label = (isEn() ? NAV_LABEL_EN[id] : NAV_LABEL[id]) || (L.widgets[id] && L.widgets[id].title) || id.replace(/-/g, ' ');
     var ico = NAV_ICON[id] || 'layers';
-    return '<div class="wip"><div class="wip-icon">' + icon(ico) + '</div><h3>' + esc(label) + '</h3><p>Módulo en construcción. Otro equipo lo está armando sobre este mismo sistema; aparecerá aquí cuando lo registren.</p>' + (small ? '' : '<div class="row"><a class="btn btn-secondary btn-sm" href="' + D.routeTo(state.roleId, 'home') + '">' + icon('home') + ' Ir a Inicio</a><button class="btn btn-ghost btn-sm" data-action="open-voice">' + icon('mic') + ' Pedírselo a Llave</button></div>') + '</div>';
+    return '<div class="wip"><div class="wip-icon">' + icon(ico) + '</div><h3>' + esc(label) + '</h3><p>Módulo en construcción. Otro equipo lo está armando sobre este mismo sistema; aparecerá aquí cuando lo registren.</p>' + (small ? '' : '<div class="row"><a class="btn btn-secondary btn-sm" href="' + D.routeTo(state.roleId, 'home') + '">' + icon('home') + tx(' Ir a Inicio', ' Go to Home') + '</a><button class="btn btn-ghost btn-sm" data-action="open-voice">' + icon('mic') + tx(' Pedírselo a Llave', ' Ask Llave') + '</button></div>') + '</div>';
   }
   function listingMini(l, opts) {
     if (!l) return '';
@@ -405,23 +442,23 @@
     title: 'Inicio', icon: icon('home'),
     render: function (c) {
       var hour = new Date().getHours();
-      var greet = hour < 12 ? 'Buenos días' : hour < 19 ? 'Buenas tardes' : 'Buenas noches';
+      var greet = hour < 12 ? tx('Buenos días', 'Good morning') : hour < 19 ? tx('Buenas tardes', 'Good afternoon') : tx('Buenas noches', 'Good evening');
       var apps = approvalsFor(c).length;
       var evs = events(c).filter(function (e) { return e.date === todayISO(); }).length;
       var sub = D.fmtDate(todayISO(), 'long');
       sub = sub.charAt(0).toUpperCase() + sub.slice(1);
       var meta = [];
-      if (evs) meta.push(evs + (evs === 1 ? ' evento hoy' : ' eventos hoy'));
-      if (apps) meta.push('<button class="pending-pill" data-action="open-approvals">' + icon('sparkles', 'ico-sm') + apps + ' por aprobar</button>');
-      var html = '<div class="home-hello"><div><h1>' + greet + ', <em>' + esc(firstName(c.user.name)) + '</em>.</h1><div class="sub">' + esc(sub) + ' · ' + esc(c.role.labelEs) + (meta.length ? ' · ' + meta.join(' · ') : '') + '</div></div><div class="page-actions"><button class="btn btn-secondary btn-sm" data-action="open-search">' + icon('search') + ' Buscar <span class="kbd-hint">⌘K</span></button><button class="btn btn-primary btn-sm" data-action="open-voice">' + icon('mic') + ' Hablar con Llave</button></div></div>';
+      if (evs) meta.push(evs + (evs === 1 ? tx(' evento hoy', ' event today') : tx(' eventos hoy', ' events today')));
+      if (apps) meta.push('<button class="pending-pill" data-action="open-approvals">' + icon('sparkles', 'ico-sm') + apps + tx(' por aprobar', ' to approve') + '</button>');
+      var html = '<div class="home-hello"><div><h1>' + greet + ', <em>' + esc(firstName(c.user.name)) + '</em>.</h1><div class="sub">' + esc(sub) + ' · ' + esc(roleLabel(c.role)) + (meta.length ? ' · ' + meta.join(' · ') : '') + '</div></div><div class="page-actions"><button class="btn btn-secondary btn-sm" data-action="open-search">' + icon('search') + tx(' Buscar ', ' Search ') + '<span class="kbd-hint">⌘K</span></button><button class="btn btn-primary btn-sm" data-action="open-voice">' + icon('mic') + tx(' Hablar con Llave', ' Talk to Llave') + '</button></div></div>';
       html += '<div class="home-grid">';
       (c.role.homeWidgets || []).forEach(function (wid) {
         var w = L.widgets[wid];
         var size = w ? (w.size || 'md') : 'md';
-        var title = w ? (w.titleEs || w.title) : (NAV_LABEL[wid] || wid.replace(/-/g, ' '));
+        var title = w ? (isEn() ? (w.titleEn || w.title) : (w.titleEs || w.title)) : ((isEn() ? NAV_LABEL_EN[wid] : NAV_LABEL[wid]) || wid.replace(/-/g, ' '));
         var body;
         try { body = w ? w.render(c) : placeholder(wid, true); } catch (err) { console.error('widget ' + wid, err); body = '<div class="callout callout-warn">' + icon('alert-triangle') + ' Este widget no pudo renderizarse.</div>'; }
-        html += '<section class="card widget-card w-' + size + '" data-widget="' + esc(wid) + '"><div class="card-header"><span class="card-title">' + esc(title) + '</span>' + (w && w.link ? '<a class="card-link" href="' + D.routeTo(c.roleId, w.link) + '">Ver todo ' + icon('chevron-right') + '</a>' : '') + '</div><div class="widget-body">' + body + '</div></section>';
+        html += '<section class="card widget-card w-' + size + '" data-widget="' + esc(wid) + '"><div class="card-header"><span class="card-title">' + esc(title) + '</span>' + (w && w.link ? '<a class="card-link" href="' + D.routeTo(c.roleId, w.link) + '">' + tx('Ver todo ', 'View all ') + icon('chevron-right') + '</a>' : '') + '</div><div class="widget-body">' + body + '</div></section>';
       });
       html += '</div>';
       return html;
@@ -443,21 +480,21 @@
   }
   function renderPicker() {
     var groups = ['staff', 'vendor', 'customer'];
-    var html = '<div class="picker"><header class="picker-head"><div class="picker-brand"><div class="logo">L</div><div><strong>Llave OS</strong><small>' + esc(D.tenant.name) + ' · ' + esc(D.tenant.plan) + '</small></div></div>' + tenantSwitcher() + '<div class="row"><button class="btn btn-ghost btn-icon" data-action="toggle-theme" aria-label="Cambiar tema">' + icon(document.documentElement.dataset.theme === 'dark' ? 'sun' : 'moon') + '</button></div></header>';
-    html += '<section class="picker-hero"><p class="eyebrow">Demo · ' + esc(D.tenant.group) + ' · ' + esc(D.tenant.hq.city) + ', ' + esc(D.tenant.hq.country) + '</p><h1>¿Quién eres <em>hoy</em>?</h1><p class="lead">Un solo sistema, quince experiencias. Llave muestra a cada persona exactamente lo suyo: la propietaria ve toda la agencia, el asesor ve su día, el comprador ve su próximo recorrido. La IA redacta; una persona aprueba.</p></section>';
+    var html = '<div class="picker"><header class="picker-head"><div class="picker-brand"><div class="logo">L</div><div><strong>Llave OS</strong><small>' + esc(D.tenant.name) + ' · ' + esc(D.tenant.plan) + '</small></div></div>' + tenantSwitcher() + '<div class="row">' + langToggle() + '<button class="btn btn-ghost btn-icon" data-action="toggle-theme" aria-label="' + tx('Cambiar tema', 'Toggle theme') + '">' + icon(document.documentElement.dataset.theme === 'dark' ? 'sun' : 'moon') + '</button></div></header>';
+    html += '<section class="picker-hero"><p class="eyebrow">Demo · ' + esc(D.tenant.group) + ' · ' + esc(D.tenant.hq.city) + ', ' + esc(D.tenant.hq.country) + '</p><h1>' + tx('¿Quién eres <em>hoy</em>?', 'Who are you <em>today</em>?') + '</h1><p class="lead">' + tx('Un solo sistema, quince experiencias. Llave muestra a cada persona exactamente lo suyo: la propietaria ve toda la agencia, el asesor ve su día, el comprador ve su próximo recorrido. La IA redacta; una persona aprueba.', 'One system, fifteen experiences. Llave shows each person exactly what is theirs: the owner sees the whole agency, the broker sees her day, the buyer sees his next tour. AI drafts; a person approves.') + '</p></section>';
     html += '<div class="picker-groups">';
     groups.forEach(function (g) {
       var roles = D.roles.filter(function (r) { return r.group === g; });
-      html += '<section class="picker-group"><h2>' + esc(GROUP_LABEL[g]) + ' <span>' + esc(GROUP_SUB[g]) + '</span></h2><div class="role-grid">';
+      html += '<section class="picker-group"><h2>' + esc(groupLabel(g)) + ' <span>' + esc(groupSub(g)) + '</span></h2><div class="role-grid">';
       roles.forEach(function (r) {
         var users = D.usersByRole(r.id);
         var u = r.id === 'owner' ? users.filter(function (x) { return x.name === D.OWNER_NAME; })[0] || users[0] : users[0];
         var avCls = g === 'vendor' ? ' avatar-sand' : g === 'customer' ? ' avatar-accent' : '';
-        html += '<a class="role-card' + (r.id === 'owner' ? ' is-owner' : '') + '" href="' + D.routeTo(r.id, 'home') + '"><span class="role-go">' + icon('arrow-right') + '</span><div class="role-top"><span class="avatar' + avCls + '">' + esc(u ? u.initials : '?') + '</span><div><div class="role-name">' + esc(r.labelEs) + '</div><div class="role-user">' + esc(u ? u.name : '') + (u && u.title ? ' · ' + esc(u.title) : '') + '</div></div></div><p class="role-desc">' + esc(ROLE_DESC[r.id] || '') + '</p><div class="role-tags">' + r.navItems.slice(1, 5).map(function (n) { return '<span class="pill">' + esc(NAV_LABEL[n] || n) + '</span>'; }).join('') + (r.navItems.length > 5 ? '<span class="pill">+' + (r.navItems.length - 5) + '</span>' : '') + '</div></a>';
+        html += '<a class="role-card' + (r.id === 'owner' ? ' is-owner' : '') + '" href="' + D.routeTo(r.id, 'home') + '"><span class="role-go">' + icon('arrow-right') + '</span><div class="role-top"><span class="avatar' + avCls + '">' + esc(u ? u.initials : '?') + '</span><div><div class="role-name">' + esc(roleLabel(r)) + '</div><div class="role-user">' + esc(u ? u.name : '') + (u && u.title ? ' · ' + esc(u.title) : '') + '</div></div></div><p class="role-desc">' + esc(roleDesc(r.id)) + '</p><div class="role-tags">' + r.navItems.slice(1, 5).map(function (n) { return '<span class="pill">' + esc(navLabel(n)) + '</span>'; }).join('') + (r.navItems.length > 5 ? '<span class="pill">+' + (r.navItems.length - 5) + '</span>' : '') + '</div></a>';
       });
       html += '</div></section>';
     });
-    html += '</div><footer class="picker-foot"><span>' + esc(D.tenant.legalName) + ' · Datos de demostración; nombres ficticios salvo la propietaria.</span><div class="row"><a href="index.html?mode=tv#/role/owner/home" target="_blank" rel="noopener">' + icon('tv', 'ico-sm') + ' Modo TV</a><a href="index.html?mode=watch#/role/broker/home" target="_blank" rel="noopener">' + icon('watch', 'ico-sm') + ' Modo reloj</a><a href="../dorum/index.html">Sitio público Dorum</a><a href="../index.html">Llave OS</a></div></footer></div>';
+    html += '</div><footer class="picker-foot"><span>' + esc(D.tenant.legalName) + tx(' · Datos de demostración; nombres ficticios salvo la propietaria.', ' · Demo data; fictional names except the owner.') + '</span><div class="row"><a href="index.html?mode=tv#/role/owner/home" target="_blank" rel="noopener">' + icon('tv', 'ico-sm') + tx(' Modo TV', ' TV mode') + '</a><a href="index.html?mode=watch#/role/broker/home" target="_blank" rel="noopener">' + icon('watch', 'ico-sm') + tx(' Modo reloj', ' Watch mode') + '</a><a href="../dorum/index.html">' + tx('Sitio público Dorum', 'Dorum public site') + '</a><a href="../index.html">Llave OS</a></div></footer></div>';
     return html;
   }
 
@@ -468,7 +505,7 @@
       '<button class="btn btn-ghost btn-icon" id="searchBtn" data-action="open-search" aria-label="Buscar" style="display:none">' + icon('search') + '</button>' +
       '<div class="role-switch"><span class="avatar avatar-sm" id="meAvatar">—</span><select class="select input-sm" id="roleSelect" aria-label="Cambiar rol (demo)"></select></div>' +
       '<button class="btn btn-ghost btn-icon" id="bellBtn" data-action="open-approvals" aria-label="Aprobaciones pendientes">' + icon('bell') + '<span class="badge-dot" id="bellCount" hidden>0</span></button>' +
-      '<button class="btn btn-ghost btn-icon" id="themeBtn" data-action="toggle-theme" aria-label="Tema">' + icon('moon') + '</button></header><main class="page" id="page"></main></div></div>' +
+      langToggle({ size: 'sm', cls: 'topbar-lang' }) + '<button class="btn btn-ghost btn-icon" id="themeBtn" data-action="toggle-theme" aria-label="Tema">' + icon('moon') + '</button></header><main class="page" id="page"></main></div></div>' +
       '<nav class="tabbar" id="tabbar" aria-label="Navegación"></nav>' +
       '<button class="voice-orb voice-orb-fab" id="voiceFab" data-action="open-voice" aria-label="Hablar con Llave">' + icon('mic') + '</button>';
   }
@@ -488,33 +525,35 @@
     var footer = items.filter(function (i) { return footIds.indexOf(i) >= 0; });
     if (c.roleId !== 'owner' && footer.indexOf('settings') < 0) footer.push('settings');
     function link(id) {
-      var def = L.modules[id]; var label = def ? (def.titleEs || def.title) : (NAV_LABEL[id] || id);
+      var def = L.modules[id]; var label = modTitle(def, id);
       var count = id === 'messages' ? D.messages.filter(function (m) { return m.unread && (c.roleId === 'owner' || m.owner === c.user.id); }).length : 0;
       return '<a class="nav-item' + (c.module === id ? ' is-active' : '') + '" href="' + D.routeTo(c.roleId, id) + '">' + moduleIcon(def, id) + '<span>' + esc(label) + '</span>' + (count ? '<span class="count">' + count + '</span>' : '') + '</a>';
     }
     nav.innerHTML = main.map(link).join('');
     foot.innerHTML = footer.map(link).join('');
-    $('#navSection').textContent = c.role.group === 'staff' ? 'Realtor OS' : c.role.group === 'vendor' ? 'Portal de aliados' : 'Portal de clientes';
-    $('#sidebarUser').innerHTML = '<span class="avatar avatar-sm">' + esc(c.user.initials) + '</span><div class="flex-1"><b class="truncate">' + esc(c.user.name) + '</b><small>' + esc(c.role.labelEs) + ' · cambiar</small></div>' + icon('chevron-right');
+    $('#navSection').textContent = c.role.group === 'staff' ? 'Realtor OS' : c.role.group === 'vendor' ? tx('Portal de aliados', 'Partner portal') : tx('Portal de clientes', 'Client portal');
+    $('#sidebarUser').innerHTML = '<span class="avatar avatar-sm">' + esc(c.user.initials) + '</span><div class="flex-1"><b class="truncate">' + esc(c.user.name) + '</b><small>' + esc(roleLabel(c.role)) + tx(' · cambiar', ' · switch') + '</small></div>' + icon('chevron-right');
     // role select
     var sel = $('#roleSelect');
-    if (!sel.options.length) {
+    var lang = isEn() ? 'en' : 'es';
+    if (!sel.options.length || sel.dataset.lang !== lang) {
+      sel.innerHTML = ''; sel.dataset.lang = lang;
       ['staff', 'vendor', 'customer'].forEach(function (g) {
-        var og = document.createElement('optgroup'); og.label = GROUP_LABEL[g];
-        D.roles.filter(function (r) { return r.group === g; }).forEach(function (r) { var o = document.createElement('option'); o.value = r.id; o.textContent = r.labelEs; og.appendChild(o); });
+        var og = document.createElement('optgroup'); og.label = groupLabel(g);
+        D.roles.filter(function (r) { return r.group === g; }).forEach(function (r) { var o = document.createElement('option'); o.value = r.id; o.textContent = roleLabel(r); og.appendChild(o); });
         sel.appendChild(og);
       });
-      sel.addEventListener('change', function () { L.navigate(sel.value, 'home'); });
+      if (!sel.dataset.bound) { sel.dataset.bound = '1'; sel.addEventListener('change', function () { L.navigate(sel.value, 'home'); }); }
     }
     sel.value = c.roleId;
     $('#meAvatar').textContent = c.user.initials;
     var def = L.modules[c.module];
-    $('#crumb').textContent = def ? (def.titleEs || def.title) : (NAV_LABEL[c.module] || c.module);
+    $('#crumb').textContent = modTitle(def, c.module);
     document.title = 'Llave OS · ' + D.tenant.name + ' · ' + $('#crumb').textContent;
     updateBell(c);
     // tabbar (phone)
     var first = main.slice(0, 4);
-    $('#tabbar').innerHTML = first.map(function (id) { return '<a href="' + D.routeTo(c.roleId, id) + '" class="' + (c.module === id ? 'is-active' : '') + '">' + icon(NAV_ICON[id] || 'layout-grid') + '<span>' + esc(NAV_LABEL[id] || id) + '</span></a>'; }).join('') + '<button data-action="open-more" aria-label="Más">' + icon('more-horizontal') + '<span>Más</span></button>';
+    $('#tabbar').innerHTML = first.map(function (id) { return '<a href="' + D.routeTo(c.roleId, id) + '" class="' + (c.module === id ? 'is-active' : '') + '">' + icon(NAV_ICON[id] || 'layout-grid') + '<span>' + esc(navLabel(id)) + '</span></a>'; }).join('') + '<button data-action="open-more" aria-label="' + tx('Más', 'More') + '">' + icon('more-horizontal') + '<span>' + tx('Más', 'More') + '</span></button>';
     $('#themeBtn').innerHTML = icon(document.documentElement.dataset.theme === 'dark' ? 'sun' : 'moon');
   }
   function updateBell(c) {
@@ -532,7 +571,7 @@
     if (state.mode === 'watch') return renderWatch();
     var root = $('#root');
     if (isPicker) {
-      if (lastView !== 'picker') { root.innerHTML = renderPicker(); lastView = 'picker'; document.title = 'Llave OS · ' + D.tenant.name + ' · ¿Quién eres hoy?'; window.scrollTo(0, 0); }
+      if (lastView !== 'picker') { root.innerHTML = renderPicker(); lastView = 'picker'; document.title = 'Llave OS · ' + D.tenant.name + ' · ' + tx('¿Quién eres hoy?', 'Who are you today?'); window.scrollTo(0, 0); }
       else root.innerHTML = renderPicker();
       return;
     }
@@ -545,12 +584,13 @@
     var page = $('#page');
     var def = L.modules[c.module];
     var html;
-    try { html = def ? def.render(c) : '<div class="page-header"><div><h1>' + esc(NAV_LABEL[c.module] || c.module) + '</h1></div></div>' + placeholder(c.module); }
+    try { html = def ? def.render(c) : '<div class="page-header"><div><h1>' + esc(navLabel(c.module)) + '</h1></div></div>' + placeholder(c.module); }
     catch (err) { console.error('module ' + c.module, err); html = '<div class="callout callout-warn">' + icon('alert-triangle') + ' El módulo no pudo renderizarse: ' + esc(err.message) + '</div>'; }
     page.innerHTML = html;
     if (def && def.mount) { try { def.mount(page, c); } catch (err) { console.error('mount ' + c.module, err); } }
     $('#sidebar').classList.remove('is-open'); var sb = $('.sidebar-backdrop'); if (sb) sb.remove();
     closeSheet();
+    if (window.I18N) window.I18N.apply(root);
     if (!state._keepScroll) window.scrollTo(0, 0);
     state._keepScroll = false;
   }
@@ -631,7 +671,7 @@
     var c = ctx();
     var items = c.role.navItems.slice(4); if (items.indexOf('settings') < 0) items.push('settings');
     var back = el('<div class="sheet-backdrop" data-action="close-sheet"></div>');
-    var sheet = el('<div class="sheet" role="dialog" aria-label="Más módulos"><div class="sheet-grid">' + items.map(function (id) { return '<a href="' + D.routeTo(c.roleId, id) + '" class="' + (c.module === id ? 'is-active' : '') + '"><span class="ico-box">' + icon(NAV_ICON[id] || 'layout-grid') + '</span>' + esc(NAV_LABEL[id] || id) + '</a>'; }).join('') + '<a href="#/roles"><span class="ico-box">' + icon('users') + '</span>Cambiar rol</a></div></div>');
+    var sheet = el('<div class="sheet" role="dialog" aria-label="Más módulos"><div class="sheet-grid">' + items.map(function (id) { return '<a href="' + D.routeTo(c.roleId, id) + '" class="' + (c.module === id ? 'is-active' : '') + '"><span class="ico-box">' + icon(NAV_ICON[id] || 'layout-grid') + '</span>' + esc(navLabel(id)) + '</a>'; }).join('') + '<a href="#/roles"><span class="ico-box">' + icon('users') + '</span>' + tx('Cambiar rol', 'Switch role') + '</a></div></div>');
     pushOverlay(back, 'sheet'); pushOverlay(sheet, 'sheet');
   });
   L.action('open-listing', function (d) {
@@ -757,7 +797,7 @@
   }
   function renderVoiceChips(list, current) {
     var ch = $('#voiceChips'); if (!ch) return;
-    ch.innerHTML = list.filter(function (x) { return x !== current; }).slice(0, 5).map(function (x) { return '<button class="chip" data-action="voice-say" data-intent="' + esc(x.intent) + '">' + icon('mic', 'ico-sm') + '<span>' + esc(x.say.replace(/^Llave,\s*/i, '').slice(0, 58)) + (x.say.length > 62 ? '…' : '') + '</span></button>'; }).join('');
+    ch.innerHTML = list.filter(function (x) { return x !== current; }).slice(0, 5).map(function (x) { return '<button class="chip" data-action="voice-say" data-intent="' + esc(x.intent) + '">' + icon('mic', 'ico-sm') + '<span>' + esc(D.tx(x, 'say').replace(/^Llave,\s*/i, '').slice(0, 58)) + (D.tx(x, 'say').length > 62 ? '…' : '') + '</span></button>'; }).join('');
   }
   function simulateUtterance(v) {
     clearTimeout(voice.timer); voice.intent = v; voice.phase = 'listening';
@@ -860,7 +900,7 @@
     document.documentElement.classList.add('mode-tv');
     var root = $('#root'); var c = ctx();
     var panels = tvPanels(c);
-    root.innerHTML = '<div class="tv"><header class="tv-bar"><div class="logo">D</div><div class="brand"><strong>' + esc(D.tenant.name) + '</strong><small>' + esc(D.tenant.instagramLine) + ' · Llave OS</small></div><div class="spacer"></div><div class="tv-dots" id="tvDots">' + panels.map(function (_, i) { return '<i class="' + (i === tv.idx ? 'is-active' : '') + '"></i>'; }).join('') + '</div><div class="spacer"></div><div style="text-align:right"><div class="tv-clock" id="tvClock">--:--</div><div class="tv-date">' + esc(capFirst(D.fmtDate(todayISO(), 'long'))) + '</div></div></header><div class="tv-stage">' + panels.map(function (p, i) { return '<section class="tv-panel' + (i === tv.idx ? ' is-active' : '') + '">' + p + '</section>'; }).join('') + '</div><footer class="tv-foot"><span>' + esc(D.tenant.taglineEs) + '</span><span class="tv-cta"><span class="voice-orb"></span> «Llave, ¿cómo va el apartamento de Envigado?»</span><span>' + esc(D.tenant.offices.map(function (o) { return o.city; }).join(' · ')) + '</span></footer></div>';
+    root.innerHTML = '<div class="tv"><header class="tv-bar"><div class="logo">D</div><div class="brand"><strong>' + esc(D.tenant.name) + '</strong><small>' + esc(D.tenant.instagramLine) + ' · Llave OS</small></div><div class="spacer"></div><div class="tv-dots" id="tvDots">' + panels.map(function (_, i) { return '<i class="' + (i === tv.idx ? 'is-active' : '') + '"></i>'; }).join('') + '</div><div class="spacer"></div><div style="text-align:right"><div class="tv-clock" id="tvClock">--:--</div><div class="tv-date">' + esc(capFirst(D.fmtDate(todayISO(), 'long'))) + '</div></div>' + langToggle({ size: 'sm', dark: true, cls: 'tv-lang' }) + '</header><div class="tv-stage">' + panels.map(function (p, i) { return '<section class="tv-panel' + (i === tv.idx ? ' is-active' : '') + '">' + p + '</section>'; }).join('') + '</div><footer class="tv-foot"><span>' + esc(tx(D.tenant.taglineEs, D.tenant.tagline)) + '</span><span class="tv-cta"><span class="voice-orb"></span> «Llave, ¿cómo va el apartamento de Envigado?»</span><span>' + esc(D.tenant.offices.map(function (o) { return o.city; }).join(' · ')) + '</span></footer></div>';
     function tick() { var d = new Date(); var e = $('#tvClock'); if (e) e.textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
     tick(); clearInterval(tv.clock); tv.clock = setInterval(tick, 10000);
     clearInterval(tv.timer);
@@ -892,17 +932,17 @@
     var c = ctx(); var g = watchGlance(c);
     var cmds = intentsFor(c.roleId).slice(0, 3);
     var d = new Date(); var time = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
-    $('#root').innerHTML = '<div class="watch"><div class="watch-top"><span>' + esc(firstName(c.user.name)) + '</span><b>' + time + '</b></div><div class="watch-orb-row"><button class="voice-orb" id="wOrb" data-action="watch-listen" aria-label="Hablar con Llave">' + icon('mic') + '</button></div><div class="watch-line" id="wLine">Toca y habla con Llave</div><div class="watch-card ' + g.cls + '" id="wCard"><span class="k">' + esc(g.k) + '</span><span class="v' + (g.sm ? ' sm' : '') + '">' + esc(g.v) + '</span><span class="m">' + esc(g.m) + '</span></div><div class="watch-cmds" id="wCmds">' + cmds.map(function (v) { return '<button data-action="watch-say" data-intent="' + esc(v.intent) + '">' + icon('mic') + '<span>' + esc(v.say.replace(/^Llave,\s*/i, '')) + '</span></button>'; }).join('') + '</div></div>';
+    $('#root').innerHTML = '<div class="watch"><div class="watch-top"><span>' + esc(firstName(c.user.name)) + '</span>' + langToggle({ size: 'xs', cls: 'watch-lang' }) + '<b>' + time + '</b></div><div class="watch-orb-row"><button class="voice-orb" id="wOrb" data-action="watch-listen" aria-label="Hablar con Llave">' + icon('mic') + '</button></div><div class="watch-line" id="wLine">Toca y habla con Llave</div><div class="watch-card ' + g.cls + '" id="wCard"><span class="k">' + esc(g.k) + '</span><span class="v' + (g.sm ? ' sm' : '') + '">' + esc(g.v) + '</span><span class="m">' + esc(g.m) + '</span></div><div class="watch-cmds" id="wCmds">' + cmds.map(function (v) { return '<button data-action="watch-say" data-intent="' + esc(v.intent) + '">' + icon('mic') + '<span>' + esc(D.tx(v, 'say').replace(/^Llave,\s*/i, '')) + '</span></button>'; }).join('') + '</div></div>';
   }
   function watchSay(v) {
     clearTimeout(watch.timer);
     var orb = $('#wOrb'), line = $('#wLine'), card = $('#wCard'), cmds = $('#wCmds'); if (!orb) return;
     orb.classList.add('is-listening'); line.classList.add('is-live'); line.textContent = '';
-    var s = v.say.replace(/^Llave,\s*/i, ''), i = 0;
+    var s = D.tx(v, 'say').replace(/^Llave,\s*/i, ''), i = 0;
     function step() { i = Math.min(s.length, i + 3); line.textContent = s.slice(0, i); if (i < s.length) watch.timer = setTimeout(step, 30); else watch.timer = setTimeout(done, 400); }
     function done() {
       orb.classList.remove('is-listening'); line.classList.remove('is-live'); line.textContent = v.confirm ? 'Necesita confirmación' : 'Entendido';
-      card.className = 'watch-card is-ai'; card.innerHTML = '<span class="k">Llave hará</span><span class="v sm">' + esc(v.does.length > 110 ? v.does.slice(0, 108) + '…' : v.does) + '</span>';
+      card.className = 'watch-card is-ai'; var vd = D.tx(v, 'does'); card.innerHTML = '<span class="k">' + tx('Llave hará', 'Llave will') + '</span><span class="v sm">' + esc(vd.length > 110 ? vd.slice(0, 108) + '…' : vd) + '</span>';
       cmds.innerHTML = v.confirm ? '<div class="watch-actions" style="flex:1 0 100%"><button class="is-primary" data-action="watch-confirm">Confirmar</button><button data-action="watch-reset">Cancelar</button></div>' : '<div class="watch-actions" style="flex:1 0 100%"><button class="is-primary" data-action="watch-reset">Listo</button></div>';
     }
     watch.timer = setTimeout(step, 200);
@@ -942,6 +982,7 @@
     if (!$('#root')) { var rt = document.createElement('div'); rt.id = 'root'; document.body.prepend(rt); }
     render();
   }
+  if (window.I18N) window.I18N.onChange(function () { closeDrawer(); closeModal(); closeSheet(); if ($('.cmdk-backdrop')) closePalette(); L.rerender(); });
   L.boot = boot;
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { if (!L._booted) { L._booted = true; boot(); } });
   else { L._booted = true; boot(); }

@@ -18,7 +18,7 @@
 <header id="siteHeader"></header>
 
 <section class="dz-lf-hero">
-  <img class="dz-hero-img" src="https://picsum.photos/seed/dorum-lifestyle/1800/1000" alt="Muelle de madera sobre el embalse de Guatapé al atardecer">
+  <img class="dz-hero-img" src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=2000&q=80" alt="Muelle de madera sobre el embalse de Guatapé al atardecer">
   <div class="container dz-hero-inner">
     <p class="eyebrow" data-i18n="lf.eyebrow"></p>
     <h1 class="display-hero" data-i18n="lf.title"></h1>
@@ -89,6 +89,7 @@
 <footer id="siteFooter"></footer>
 
 <script src="../assets/data.js"></script>
+<script src="../assets/i18n.js"></script>
 <script src="site.js"></script>
 <script>
 (function () {
@@ -105,7 +106,7 @@
   function renderStats() {
     var items = [
       [en() ? 'Programme properties' : 'Propiedades en el programa', progUnits.length, en() ? 'reservoir · Oriente · Medellín' : 'embalse · Oriente · Medellín'],
-      [en() ? 'Occupancy 2025' : 'Ocupación 2025', deal ? deal.occupancyPct + ' %' : '—', unit ? unit.title.split(' · ')[0] : ''],
+      [en() ? 'Occupancy 2025' : 'Ocupación 2025', deal ? deal.occupancyPct + ' %' : '—', unit ? S.title(unit).split(' · ')[0] : ''],
       [en() ? 'Nightly rate' : 'Tarifa por noche', unit ? D.fmtCOP(unit.price) : '—', en() ? 'up to 8 guests' : 'hasta 8 huéspedes'],
       [en() ? 'Full management fee' : 'Fee de administración integral', deal ? deal.mgmtPct + ' %' : '—', en() ? 'bookings, cleaning, statement' : 'reservas, limpieza, extracto']
     ];
@@ -129,7 +130,7 @@
     var feeRow = split.rows.filter(function (r) { return r.participant !== deal.parties.landlord; })[0];
     var nights = Math.round(30 * deal.occupancyPct / 100);
     document.getElementById('stmtLead').textContent = en()
-      ? 'A real example from the programme: ' + unit.title + '. Nightly rate, occupancy and management fee come straight from the property record in Llave.'
+      ? 'A real example from the programme: ' + S.title(unit) + '. Nightly rate, occupancy and management fee come straight from the property record in Llave.'
       : 'Un ejemplo real del programa: ' + unit.title + '. Tarifa por noche, ocupación y fee salen directo del registro de la propiedad en Llave.';
     document.getElementById('stmtFacts').innerHTML = [
       [en() ? 'Guest payments collected up front into escrow' : 'Los huéspedes pagan por adelantado a una cuenta escrow', 'shield'],
@@ -137,7 +138,7 @@
       [en() ? 'Statement approved by the accountant before payout' : 'Extracto aprobado por la contadora antes del giro', 'check']
     ].map(function (f) { return '<li>' + S.icon(f[1]) + f[0] + '</li>'; }).join('');
     document.getElementById('stmtCard').innerHTML =
-      '<div class="card-header"><div><p class="eyebrow">' + S.t('lf.stmt') + ' · ' + (en() ? 'September 2026' : 'Septiembre 2026') + '</p><h3 class="card-title" style="margin-top:var(--s-1)">' + S.esc(unit.title) + '</h3><p class="small muted">' + S.esc(owner.name || '') + ' · ' + S.esc(owner.city || '') + '</p></div><span class="badge badge-status" data-status="pendiente">' + (en() ? 'Payout 30 Sep' : 'Giro 30 sep') + '</span></div>' +
+      '<div class="card-header"><div><p class="eyebrow">' + S.t('lf.stmt') + ' · ' + (en() ? 'September 2026' : 'Septiembre 2026') + '</p><h3 class="card-title" style="margin-top:var(--s-1)">' + S.esc(S.title(unit)) + '</h3><p class="small muted">' + S.esc(owner.name || '') + ' · ' + S.esc(owner.city || '') + '</p></div><span class="badge badge-status" data-status="pendiente">' + (en() ? 'Payout 30 Sep' : 'Giro 30 sep') + '</span></div>' +
       '<ul class="dz-stmt">' +
         '<li><span>' + (en() ? 'Nights booked' : 'Noches reservadas') + ' <span class="xs muted">(' + deal.occupancyPct + ' % ' + (en() ? 'occupancy' : 'ocupación') + ')</span></span><span class="num">' + nights + '</span></li>' +
         '<li><span>' + (en() ? 'Gross income' : 'Ingreso bruto') + ' <span class="xs muted">' + D.fmtCOP(unit.price) + ' × ' + nights + '</span></span><span class="money">' + D.fmtCOP(split.gross) + '</span></li>' +
@@ -151,19 +152,20 @@
   function renderServices() {
     document.getElementById('services').innerHTML = D.lifestyle.filter(function (s) { return s.id !== 'ls-remodel' && s.id !== 'ls-build'; }).map(function (s) {
       var pilot = s.status === 'pilot';
-      return '<div class="dz-service-card">' + S.icon(S.iconFor[s.id] || 'leaf') + '<h3>' + S.esc(en() ? s.name : s.nameEs) + '</h3><p>' + S.esc(s.desc) + '</p>' +
+      var t = S.ls(s);
+      return '<div class="dz-service-card">' + S.icon(S.iconFor[s.id] || 'leaf') + '<h3>' + S.esc(t.name) + '</h3><p>' + S.esc(t.desc) + '</p>' +
         '<div class="row"><span class="pill ' + (pilot ? 'pill-success' : 'pill-accent') + '">' + S.t(pilot ? 'ls.pilot' : 'ls.soon') + '</span><small>' + (pilot ? (en() ? 'Guatapé · book via concierge' : 'Guatapé · reserva vía concierge') : (en() ? 'Q1 2027' : 'Primer trimestre 2027')) + '</small></div></div>';
     }).join('');
   }
 
   var EXPS = [
-    { seed: 'lancha-atardecer', es: ['Lancha al atardecer', 'Dos horas por el embalse con capitán local, parada en La Piedra y vino de la casa. Hasta 8 personas.'], en: ['Sunset boat ride', 'Two hours across the reservoir with a local captain, a stop at La Piedra and house wine. Up to 8 people.'], price: 480000, unit: ['por grupo', 'per group'], icon: 'boat' },
-    { seed: 'sendero-bosque', es: ['Senderismo de niebla', 'Caminata guiada al amanecer por bosque de niebla hasta un mirador privado. Desayuno campesino incluido.'], en: ['Cloud-forest hike', 'Guided sunrise walk through cloud forest to a private lookout. Farm breakfast included.'], price: 160000, unit: ['por persona', 'per person'], icon: 'mountain' },
-    { seed: 'chef-embalse', es: ['Cena de embalse', 'Chef privado en tu muelle: trucha del Peñol, vegetales de Guarne y postre de café. Menú de cinco tiempos.'], en: ['Reservoir dinner', 'Private chef on your dock: Peñol trout, Guarne vegetables and a coffee dessert. Five courses.'], price: 320000, unit: ['por persona', 'per person'], icon: 'utensils' }
+    { photo: '1499793983690-e29da59ef1c2', es: ['Lancha al atardecer', 'Dos horas por el embalse con capitán local, parada en La Piedra y vino de la casa. Hasta 8 personas.'], en: ['Sunset boat ride', 'Two hours across the reservoir with a local captain, a stop at La Piedra and house wine. Up to 8 people.'], price: 480000, unit: ['por grupo', 'per group'], icon: 'boat' },
+    { photo: '1416331108676-a22ccb276e35', es: ['Senderismo de niebla', 'Caminata guiada al amanecer por bosque de niebla hasta un mirador privado. Desayuno campesino incluido.'], en: ['Cloud-forest hike', 'Guided sunrise walk through cloud forest to a private lookout. Farm breakfast included.'], price: 160000, unit: ['por persona', 'per person'], icon: 'mountain' },
+    { photo: '1500382017468-9049fed747ef', es: ['Cena de embalse', 'Chef privado en tu muelle: trucha del Peñol, vegetales de Guarne y postre de café. Menú de cinco tiempos.'], en: ['Reservoir dinner', 'Private chef on your dock: Peñol trout, Guarne vegetables and a coffee dessert. Five courses.'], price: 320000, unit: ['por persona', 'per person'], icon: 'utensils' }
   ];
   function renderExps() {
     document.getElementById('exps').innerHTML = EXPS.map(function (x) { var t = x[S.lang];
-      return '<article class="dz-exp"><div class="listing-media"><img src="https://picsum.photos/seed/' + x.seed + '/900/600" alt="' + S.esc(t[0]) + '" loading="lazy"><span class="pill">' + S.t('lf.demo') + '</span></div>' +
+      return '<article class="dz-exp"><div class="listing-media"><img src="https://images.unsplash.com/photo-' + x.photo + '?auto=format&fit=crop&w=900&q=80" alt="' + S.esc(t[0]) + '" loading="lazy"><span class="pill">' + S.t('lf.demo') + '</span></div>' +
         '<div class="dz-exp-body"><h3>' + t[0] + '</h3><p>' + t[1] + '</p><div class="row"><span class="money">' + D.fmtCOP(x.price) + ' <span class="xs muted">' + x.unit[en() ? 1 : 0] + '</span></span><button type="button" class="btn btn-secondary btn-sm dz-book">' + S.icon(x.icon) + ' ' + S.t('lf.book') + '</button></div></div></article>';
     }).join('');
     document.querySelectorAll('.dz-book').forEach(function (b) { b.onclick = function () { D.toast(S.t('lf.book.toast'), S.t('lf.book.body'), 'success'); }; });
@@ -173,7 +175,8 @@
     var items = D.lifestyle.filter(function (s) { return s.id === 'ls-remodel' || s.id === 'ls-build'; });
     var constr = D.usersByRole('construction')[0];
     document.getElementById('projects').innerHTML = items.map(function (s) {
-      return '<div class="dz-project"><div class="dz-project-ico">' + S.icon(S.iconFor[s.id]) + '</div><div><div class="row" style="gap:var(--s-2)"><h3>' + S.esc(en() ? s.name : s.nameEs) + '</h3><span class="pill pill-accent">' + S.t('ls.soon') + '</span></div><p>' + S.esc(s.desc) + '</p>' +
+      var t = S.ls(s);
+      return '<div class="dz-project"><div class="dz-project-ico">' + S.icon(S.iconFor[s.id]) + '</div><div><div class="row" style="gap:var(--s-2)"><h3>' + S.esc(t.name) + '</h3><span class="pill pill-accent">' + S.t('ls.soon') + '</span></div><p>' + S.esc(t.desc) + '</p>' +
         '<p class="xs muted" style="margin-top:var(--s-2)">' + (en() ? 'Partner builder: ' : 'Constructor aliado: ') + S.esc(constr ? constr.title : 'Dorum Projects') + '</p>' +
         '<div class="row"><button type="button" class="btn btn-primary dz-quote">' + S.icon('hammer') + ' ' + S.t('lf.quote') + '</button></div></div></div>';
     }).join('');

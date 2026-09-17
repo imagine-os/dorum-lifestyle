@@ -139,8 +139,9 @@
     'lf.form.title': ['Cuéntanos de tu propiedad', 'Tell us about your property'], 'lf.form.prop': ['¿Qué propiedad tienes?', 'What property do you own?'], 'lf.form.zone': ['Zona', 'Area'], 'lf.form.send': ['Quiero una propuesta', 'Send me a proposal'],
     'lf.demo': ['Demo', 'Demo'], 'lf.book': ['Reservar', 'Book'], 'lf.book.toast': ['Solicitud enviada', 'Request sent'], 'lf.book.body': ['Concierge Lifestyle te confirma por WhatsApp.', 'Lifestyle concierge confirms on WhatsApp.']
   };
-  S.lang = 'es';
-  try { S.lang = localStorage.getItem('dorum-lang') === 'en' ? 'en' : 'es'; } catch (e) {}
+  // Language is owned by the shared toggle (../assets/i18n.js → window.I18N, localStorage 'llave-lang').
+  // S.lang stays as a read-only view of it so the page scripts keep working unchanged.
+  Object.defineProperty(S, 'lang', { get: function () { return (window.I18N && window.I18N.lang) || 'es'; } });
   S.t = function (key) { var v = S.T[key]; return v ? v[S.lang === 'en' ? 1 : 0] : key; };
   S.applyLang = function (root) {
     root = root || document;
@@ -148,14 +149,14 @@
     root.querySelectorAll('[data-i18n]').forEach(function (el) { el.innerHTML = S.t(el.getAttribute('data-i18n')); });
     root.querySelectorAll('[data-i18n-ph]').forEach(function (el) { el.placeholder = S.t(el.getAttribute('data-i18n-ph')); });
     root.querySelectorAll('[data-i18n-label]').forEach(function (el) { el.setAttribute('aria-label', S.t(el.getAttribute('data-i18n-label'))); });
-    root.querySelectorAll('.dz-lang b').forEach(function (b) { b.classList.toggle('is-on', b.dataset.lang === S.lang); });
     document.dispatchEvent(new CustomEvent('dorum:lang', { detail: S.lang }));
   };
-  S.setLang = function (lang) {
-    S.lang = lang === 'en' ? 'en' : 'es';
-    try { localStorage.setItem('dorum-lang', S.lang); } catch (e) {}
-    S.applyLang();
-  };
+  S.setLang = function (lang) { if (window.I18N) window.I18N.set(lang); else S.applyLang(); };
+  if (window.I18N) window.I18N.onChange(function () { S.applyLang(); });
+  // Listing copy helpers (titleEn / descEn live in data.js)
+  S.title = function (l) { return D.tx ? D.tx(l, 'title') : l.title; };
+  S.desc = function (l) { return D.tx ? D.tx(l, 'description', 'descEn') : l.description; };
+  S.ls = function (svc) { return { name: S.lang === 'en' ? svc.name : svc.nameEs, desc: S.lang === 'en' && svc.descEn ? svc.descEn : svc.desc }; };
 
   /* ------------------------------------------------------------- data views */
   S.WA = 'https://wa.me/573100000000'; // demo placeholder number
@@ -185,23 +186,24 @@
   S.featured = function () { return S.publicListings().filter(function (l) { return l.featured; }); };
 
   S.specs = function (l) {
-    var out = [];
+    var out = [], en = S.lang === 'en';
     if (l.area) out.push(D.fmtM2(l.area));
-    if (l.habitaciones) out.push(l.habitaciones + ' hab');
-    if (l.banos) out.push(l.banos + (l.banos === 1 ? ' baño' : ' baños'));
-    if (l.parqueaderos) out.push(l.parqueaderos + ' parq');
-    if (l.type === 'lote' && l.areaLote) out = [D.fmtM2(l.areaLote) + ' lote'];
+    if (l.habitaciones) out.push(l.habitaciones + (en ? ' bd' : ' hab'));
+    if (l.banos) out.push(l.banos + (en ? (l.banos === 1 ? ' bath' : ' baths') : (l.banos === 1 ? ' baño' : ' baños')));
+    if (l.parqueaderos) out.push(l.parqueaderos + (en ? ' parking' : ' parq'));
+    if (l.type === 'lote' && l.areaLote) out = [D.fmtM2(l.areaLote) + (en ? ' lot' : ' lote')];
     return out;
   };
   S.listingCard = function (l) {
     var badge = '<span class="badge badge-status" data-status="' + l.status + '">' + D.statusLabel(l.status) + '</span>';
-    var intl = l.currency === 'USD' ? '<span class="pill pill-accent dz-pill-right">Internacional</span>' : '';
-    var unit = l.operacion === 'venta' ? 'venta' : (l.priceUnit === 'noche' ? 'vacacional' : 'arriendo');
+    var en = S.lang === 'en';
+    var intl = l.currency === 'USD' ? '<span class="pill pill-accent dz-pill-right">' + (en ? 'International' : 'Internacional') + '</span>' : '';
+    var unit = l.operacion === 'venta' ? (en ? 'for sale' : 'venta') : (l.priceUnit === 'noche' ? (en ? 'vacation' : 'vacacional') : (en ? 'for rent' : 'arriendo'));
     return '<a class="listing-card" href="listing.html?id=' + l.id + '">' +
-      '<div class="listing-media"><img src="' + l.cover + '" alt="' + S.esc(l.title + ', ' + l.city) + '" loading="lazy">' + badge + intl + '</div>' +
+      '<div class="listing-media"><img src="' + l.cover + '" alt="' + S.esc(S.title(l) + ', ' + l.city) + '" loading="lazy">' + badge + intl + '</div>' +
       '<div class="listing-body">' +
         '<div class="listing-price">' + D.fmtPrice(l) + ' <small>' + unit + '</small></div>' +
-        '<div class="listing-title">' + S.esc(l.title) + '</div>' +
+        '<div class="listing-title">' + S.esc(S.title(l)) + '</div>' +
         '<div class="listing-loc">' + S.esc(l.barrio + ' · ' + l.city) + '</div>' +
         '<div class="listing-specs">' + S.specs(l).map(function (s) { return '<span>' + s + '</span>'; }).join('') + '</div>' +
       '</div></a>';
@@ -221,12 +223,11 @@
         '<a class="site-logo" href="index.html"><span class="mark dz-mark">D</span> ' + S.esc(D.tenant.name) + '</a>' +
         '<nav class="site-nav" id="siteNav">' +
           nav.map(function (n) { return '<a href="' + n[1] + '" data-i18n="nav.' + n[0] + '"' + (opts.active === n[0] ? ' class="is-active"' : '') + '></a>'; }).join('') +
-          '<button type="button" class="dz-lang" id="langBtn" aria-label="Español / English"><b data-lang="es">ES</b><span>/</span><b data-lang="en">EN</b></button>' +
+          (window.I18N ? window.I18N.toggleHtml() : '') +
           '<a class="btn btn-accent btn-sm" href="' + S.wa('Hola Dorum, quiero información sobre un inmueble.') + '" target="_blank" rel="noopener">' + S.icon('chat') + '<span data-i18n="nav.whatsapp"></span></a>' +
           '<button type="button" class="btn btn-ghost btn-icon dz-theme" id="themeBtn" data-i18n-label="nav.theme">' + S.icon('sun', 'dz-sun') + S.icon('moon', 'dz-moon') + '</button>' +
         '</nav>' +
         '<button type="button" class="btn btn-ghost btn-icon" id="navBtn" data-i18n-label="nav.menu">' + S.icon('menu') + '</button>';
-      header.querySelector('#langBtn').addEventListener('click', function () { S.setLang(S.lang === 'es' ? 'en' : 'es'); });
       header.querySelector('#themeBtn').addEventListener('click', function () { D.setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'); });
       header.querySelector('#navBtn').addEventListener('click', function () { document.getElementById('siteNav').classList.toggle('is-open'); });
     }

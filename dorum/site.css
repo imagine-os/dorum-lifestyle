@@ -274,3 +274,6 @@
 /* utilities */
 .dz-band { padding-block: var(--s-16); }
 @media (max-width: 600px) { .dz-band { padding-block: var(--s-10); } }
+
+/* Lightbox photo that failed to load: keep a photo-shaped gradient box instead of a 1:1 square. */
+.dz-lightbox img.img-fallback { aspect-ratio: 3 / 2; width: min(720px, 100%); }

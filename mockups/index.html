@@ -29,6 +29,7 @@
   <nav class="site-nav" id="siteNav">
     <a href="../index.html#modules">Modules</a><a href="../index.html#roles">Roles</a><a href="../index.html#voice">Voice</a><a href="../index.html#pricing">Pricing</a>
     <a class="btn btn-primary btn-sm" href="../app/index.html#/role/owner/home">Open the demo</a>
+    <span data-lang-toggle></span>
     <button class="btn btn-ghost btn-icon" aria-label="Toggle theme" onclick="DORUM.setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark')"><svg width="18" height="18"><use href="#i-sun"/></svg></button>
   </nav>
   <button class="btn btn-ghost btn-icon" aria-label="Menu" aria-expanded="false" onclick="siteNav.classList.toggle('is-open');this.setAttribute('aria-expanded',siteNav.classList.contains('is-open'))" style="display:none" id="navBtn"><svg width="20" height="20"><use href="#i-menu"/></svg></button>
@@ -99,6 +100,7 @@
 </footer>
 
 <script src="../assets/data.js"></script>
+<script src="../assets/i18n.js"></script>
 <script>
 (function () {
   'use strict';

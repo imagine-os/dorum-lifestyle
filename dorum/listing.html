@@ -72,6 +72,7 @@
 <footer id="siteFooter"></footer>
 
 <script src="../assets/data.js"></script>
+<script src="../assets/i18n.js"></script>
 <script src="site.js"></script>
 <script>
 (function () {
@@ -82,7 +83,7 @@
   var l = D.listing(id) || S.featured()[0] || D.listings[0];
   var broker = D.user(l.listedBy) || {};
   var deal = D.deals.filter(function (d) { return d.listingId === l.id; })[0];
-  document.title = l.title + ' · ' + D.tenant.name;
+  document.title = S.title(l) + ' · ' + D.tenant.name;
   var isRent = l.operacion === 'arriendo', isStay = l.rentalType === 'vacacional', isUSD = l.currency === 'USD';
 
   /* ---- gallery ---- */
@@ -99,17 +100,19 @@
     var perM2 = D.pricePerM2(l);
     var unit = isRent ? (isStay ? '/ noche' : S.t('l.mes')) : (S.lang === 'en' ? 'for sale' : 'venta');
     var line = [];
-    line.push(D.typeLabel(l.type) + (isStay ? ' · Renta vacacional' : ''));
+    line.push(D.typeLabel(l.type) + (isStay ? (S.lang === 'en' ? ' · Vacation rental' : ' · Renta vacacional') : ''));
     if (l.estrato) line.push('Estrato ' + l.estrato);
-    if (l.administracion) line.push((S.lang === 'en' ? 'HOA ' : 'Administración ') + D.fmtCOP(l.administracion) + '/mes');
+    if (l.administracion) line.push((S.lang === 'en' ? 'HOA ' : 'Administración ') + D.fmtCOP(l.administracion) + (S.lang === 'en' ? '/mo' : '/mes'));
     if (isUSD) line.push(S.lang === 'en' ? 'Price in USD' : 'Precio en USD');
     document.getElementById('titleBlock').innerHTML =
-      '<div class="row" style="gap:var(--s-2);margin-bottom:var(--s-3)"><span class="pill pill-brand">' + D.typeLabel(l.type) + '</span>' + (isUSD ? '<span class="pill pill-accent">Internacional</span>' : '') + (l.division === 'lifestyle' ? '<span class="pill pill-success">Lifestyle & Experiences</span>' : '') + (l.division === 'projects' ? '<span class="pill">Dorum Projects</span>' : '') + '</div>' +
-      '<h1>' + S.esc(l.title) + '</h1>' +
+      '<div class="row" style="gap:var(--s-2);margin-bottom:var(--s-3)"><span class="pill pill-brand">' + D.typeLabel(l.type) + '</span>' + (isUSD ? '<span class="pill pill-accent">' + (S.lang === 'en' ? 'International' : 'Internacional') + '</span>' : '') + (l.division === 'lifestyle' ? '<span class="pill pill-success">Lifestyle & Experiences</span>' : '') + (l.division === 'projects' ? '<span class="pill">Dorum Projects</span>' : '') + '</div>' +
+      '<h1>' + S.esc(S.title(l)) + '</h1>' +
       '<span class="listing-loc">' + S.icon('pin') + S.esc(l.barrio + ' · ' + l.city + (l.country ? ', ' + l.country : ', ' + l.region)) + '</span>' +
       '<div class="dz-price"><span class="listing-price">' + D.fmtPrice(l) + '</span><span class="muted">' + unit + '</span>' + (perM2 && !isRent ? '<span class="muted">· ' + D.fmtMoney(perM2, l.currency) + ' ' + S.t('l.perm2') + '</span>' : '') + '</div>' +
       '<p class="dz-price-line">' + line.join(' · ') + '</p>';
-    document.getElementById('crumbTitle').textContent = l.title;
+    document.getElementById('crumbTitle').textContent = S.title(l);
+    document.title = S.title(l) + ' · ' + D.tenant.name;
+    document.getElementById('desc').textContent = S.desc(l);
     document.getElementById('crumbZone').textContent = S.zoneLabel(S.zoneOf(l));
     document.getElementById('backLink').innerHTML = S.icon('left') + S.t('l.back');
   }
@@ -124,11 +127,10 @@
       spec('bath', 'l.spec.ban', l.banos || null) +
       spec('car', 'l.spec.parq', l.parqueaderos || null) +
       spec('layers', 'l.spec.estrato', l.estrato || '—') +
-      spec('wallet', 'l.spec.admin', l.administracion ? D.fmtCOP(l.administracion) + '<span class="muted xs"> /mes</span>' : '—') +
+      spec('wallet', 'l.spec.admin', l.administracion ? D.fmtCOP(l.administracion) + '<span class="muted xs">' + (S.lang === 'en' ? ' /mo' : ' /mes') + '</span>' : '—') +
       spec('calendar', 'l.spec.ano', l.ano || null);
   }
 
-  document.getElementById('desc').textContent = l.description;
   document.getElementById('amenities').innerHTML = (l.amenities || []).map(function (a) { return '<span class="chip">' + S.icon('check') + S.esc(a) + '</span>'; }).join('');
 
   /* ---- investor callout (venta with rental potential) ---- */

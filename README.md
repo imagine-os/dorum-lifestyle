@@ -8,14 +8,18 @@ Live URL (once GitHub Pages is enabled): https://imagine-os.github.io/dorum-life
 
 | Path | What it is |
 |---|---|
-| `/` (`index.html`) | Llave OS sales site (English): hero, problem, modules, roles, device mockups, pricing, CTA. |
-| `/app/` | Dorum tenant app (Spanish). Single page with hash routes: `#/` role picker, `#/role/<roleId>/<module>[/<id>]`. Display modes via query string before the hash: `?mode=tv`, `?mode=watch`, `?mode=phone` (e.g. `app/index.html?mode=tv#/role/owner/home`). |
+| `/` (`index.html`) | Llave OS sales site (ES/EN toggle): hero, problem, modules, roles, device mockups, pricing, CTA. |
+| `/app/` | Dorum tenant app (ES/EN toggle). Single page with hash routes: `#/` role picker, `#/role/<roleId>/<module>[/<id>]`. Display modes via query string before the hash: `?mode=tv`, `?mode=watch`, `?mode=phone` (e.g. `app/index.html?mode=tv#/role/owner/home`). |
 | `/dorum/` | Dorum Lifestyle public brokerage site (ES/EN toggle): listings gallery, lifestyle, about. `dorum/listing.html?id=lst-003` is an individual listing page; `dorum/lifestyle.html` the lifestyle services page. |
 | `/mockups/` | Standalone screens used inside device frames by the sales site. |
 | `/docs/` | Product plan and build conventions, rendered as HTML (`docs/plan.html`, `docs/conventions.html`) with the Markdown sources alongside. |
 | `/404.html` | Not-found page (served by GitHub Pages). |
 
 Roles in the app: `owner`, `broker`, `sales_admin`, `rental_admin`, `accountant`, `lawyer`, `photographer`, `advertiser`, `writer`, `construction`, `lender`, `seller`, `buyer`, `landlord`, `renter`. Modules per role come from `DORUM.roles[].navItems` in `assets/data.js`.
+
+## Language toggle
+
+Every header (sales site, tenant app, Dorum site, TV/watch modes, docs) has an **ES/EN** toggle backed by `assets/i18n.js`. The default follows the browser language; the choice is persisted in `localStorage['llave-lang']` and shared across all pages of the site. Data fields in `assets/data.js` carry bilingual values where the UI shows them.
 
 ## Run locally
 
@@ -49,7 +53,7 @@ docs/                 PLAN.md, CONVENTIONS.md and their HTML renderings
 
 ## About the data
 
-Everything is **demo data**. Listings, contacts, deals, payouts and messages are invented; people have **placeholder names**. The owner's name is a single constant (`DORUM.OWNER_NAME`) and its **spelling is unverified**. Images are seeded placeholders.
+Everything is **demo data**. Listings, contacts, deals, payouts and messages are invented; people have **placeholder names**. The owner's name is a single constant (`DORUM.OWNER_NAME`) and its **spelling is unverified**. Listing photos are hotlinked Unsplash images chosen to match each listing type (lakefront, finca, modern house, apartment, office); if an image fails to load, a brand-gradient fallback takes its place (`img.img-fallback` in `assets/tokens.css`, wired in `assets/data.js`).
 
 ## GitHub Pages
 
